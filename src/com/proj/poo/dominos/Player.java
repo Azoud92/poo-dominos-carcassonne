@@ -29,10 +29,10 @@ public class Player {
 		tuileEnMain = partie.piocher();
 		
 		if (isPlayer) {
-			System.out.println("Voici votre tuile : " + tuileEnMain.toString() + "\n");
+			System.out.println("Voici votre tuile : " + tuileEnMain.toString());
 			
 			String r = "";
-			while (!r.equals("J") && !r.equals("D") && !r.equals("A")) {
+			while (!r.equalsIgnoreCase("J") && !r.equalsIgnoreCase("D") && !r.equalsIgnoreCase("A")) {
 				System.out.println("Tapez 'J' pour jouer cette tuile, 'D' pour la défausser, ou 'A' pour abandonner.");
 				r = sc.next();
 			}
@@ -64,14 +64,15 @@ public class Player {
 				
 				String resp = sc.next();
 				
-				if (resp.equals("R")) {
+				if (resp.equalsIgnoreCase("R")) {
 					tuileEnMain.rotation();
+					System.out.println("Voici votre tuile : " + tuileEnMain.toString());
 				}
-				else if (resp.equals("D")) {
+				else if (resp.equalsIgnoreCase("D")) {
 					tuileEnMain = null;
 					return;
 				}
-				else if (resp.equals("A")) {
+				else if (resp.equalsIgnoreCase("A")) {
 					partie.abandon(this);
 					return;
 				}

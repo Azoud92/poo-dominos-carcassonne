@@ -1,6 +1,7 @@
 package com.proj.poo.dominos;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
@@ -61,12 +62,12 @@ public class Dominos {
 		// Leur type et leur pseudo
 		for (int i = 0; i < nbJoueurs; i++) {			
 			String type = "";
-			while (!type.equals("IA") && !type.equals("J")) {
+			while (!type.equalsIgnoreCase("IA") && !type.equalsIgnoreCase("J")) {
 				System.out.println("Quel est le type du joueur " + (i + 1) + " ? Tapez 'IA' ou 'J'");
 				type = sc.next();				
 			}
 			
-			if (type.equals("IA")) {
+			if (type.equalsIgnoreCase("IA")) {
 				players.add(new Player("IA " + (i + 1), this, false, i));
 			}
 			else {
@@ -130,7 +131,7 @@ public class Dominos {
 			
 			
 		}
-		System.out.println("\n");
+		System.out.println();
 	}
 	
 	public void gameStart() {
@@ -219,8 +220,8 @@ public class Dominos {
 			try {
 				if (plateau[l[0]][l[1]] != null) {
 					res[index] = plateau[l[0]][l[1]];
-				}
-				index++;
+					index++;
+				}				
 			}
 			catch (IndexOutOfBoundsException e) {
 				res[index] = null;
@@ -246,10 +247,11 @@ public class Dominos {
 		
 		for (int i = 0; i < adja.length; i++) { // on doit vérifier si tous les côtés correspondent à ceux des tuiles adjacentes
 			if (adja[i] == null) break; // si on a vu toutes les adjacences on s'arrête
-			if (t.getGauche() != adja[i].getGauche() && // si un des côtés correspond on renvoie true
-					t.getDroite() != adja[i].getDroite() &&
-					t.getHaut() != adja[i].getHaut() &&
-					t.getBas() != adja[i].getBas()) {
+			
+			if (!Arrays.equals(t.getGauche(), adja[i].getGauche()) && // si un des côtés correspond on renvoie true
+					!Arrays.equals(t.getGauche(), adja[i].getGauche())  &&
+					!Arrays.equals(t.getGauche(), adja[i].getGauche()) &&
+					!Arrays.equals(t.getGauche(), adja[i].getGauche())) {
 				return false; // si une seule tuile adjacente dont le côté est collé à la nôtre ne correspond pas, on renvoie false;
 			}
 		}
