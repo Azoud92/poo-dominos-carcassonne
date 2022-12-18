@@ -90,39 +90,45 @@ public class Dominos {
 	
 	// affichage du plateau
 	private void printPlateau() {
-		// TODO: REGLER LE PROBLEME D'AFFICHAGE
+		// ces ArrayList servent à afficher correctement les tuiles : pour chaque ligne, on imprime les côtés des tuiles
+		ArrayList<String> toPrint = new ArrayList<String>();
+		ArrayList<Integer> spToPrint = new ArrayList<Integer>();
 		
-		// On enregistre les tuiles et le nombre d'espaces à afficher
-		ArrayList<Tuile> tuilesToPrint = new ArrayList<Tuile>();
-		ArrayList<Integer> spacesToPrint = new ArrayList<Integer>();;
-		
-		int curseur = 0; // représente le nombre de caractères avant lesquels nous sommes placés
+		int spaceToPrint = 0; // sert à compter le nombre d'espaces à ajouter pour l'alignement avec la partie haute de la tuile
 		
 		for (int i = 0; i < plateau.length; i++) {
 			for (int j = 0; j < plateau[i].length; j++) {
 				Tuile x = plateau[i][j];
 				if (x == null) {
 					String s = "(" + i + "; " + j + ") "; // une tuile nulle est représentée par une coordonnée "(x, y)"
-					System.out.print(s); 
-					curseur += s.length();
+					System.out.print(s);
+					spaceToPrint += s.length();
 				}
 				else {
-					String s = " " + x.toStringHaut() + " ";
+					String s = x.toStringHaut();
 					System.out.print(s); // sinon on affiche d'abord le haut de la tuile
-					tuilesToPrint.add(x); // on enregistre la tuile pour l'afficher après
-					curseur += s.length();
-					spacesToPrint.add(curseur);
-				}				
-			}
-			System.out.println(); // on passe à la ligne
-			for (Tuile t : tuilesToPrint) {
-				System.out.print(Auxiliaire.space(spacesToPrint.get(0)));
-				System.out.print(t.toStringMilieu());
-				spacesToPrint.remove(0);
+					toPrint.add(x.toStringMilieuBas());
+					spToPrint.add(spaceToPrint);
+					spaceToPrint = 0;
+				}
 				
 			}
-			tuilesToPrint.removeAll(tuilesToPrint);
-			curseur = 0;
+			spaceToPrint = 0;
+			System.out.println(); // on passe à la ligne
+			if (toPrint.size() > 0) { // s'il y a des tuiles à afficher, on le fait
+				for (int y = 0; y < 4; y++) {
+					for (int z = 0; z < toPrint.size(); z++) {
+						String[] sx = toPrint.get(z).split("\n");
+						int sp = spToPrint.get(z);
+						System.out.print(Auxiliaire.space(sp) + sx[y]); // on met le nombre d'espaces requis pour l'alignement et on affiche le "morceau" de tuile
+					}
+					System.out.println();
+				}
+				toPrint.removeAll(toPrint);
+				spToPrint.removeAll(spToPrint);
+			}
+			
+			
 		}
 		System.out.println("\n");
 	}

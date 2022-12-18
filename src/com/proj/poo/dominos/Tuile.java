@@ -34,17 +34,14 @@ public class Tuile {
 	public int[] getGauche() { return tuile[3]; }
 			
 	public String toStringHaut() {
-		return (" " + tuile[0][0] + " " + tuile[0][1] + " " + tuile[0][2] + " ");
+		return (" " + tuile[0][0] + " " + tuile[0][1] + " " + tuile[0][2] + "  ");
 	}
 	
-	public String toStringMilieu() {
+	public String toStringMilieuBas() {
 		return (tuile[3][0] + Auxiliaire.space(5) + tuile[1][0] + "\n" +
 				tuile[3][0] + Auxiliaire.space(5) + tuile[1][0] + "\n" +
-				tuile[3][2] + Auxiliaire.space(5) + tuile[1][2] + "\n");
-	}
-	
-	public String toStringBas() {
-		return (" " + tuile[2][0] + " " + tuile[2][1] + " " + tuile[2][2]);
+				tuile[3][2] + Auxiliaire.space(5) + tuile[1][2]) + "\n" +
+				(" " + tuile[2][0] + " " + tuile[2][1] + " " + tuile[2][2]) + " ";
 	}
 	
 	@Override
