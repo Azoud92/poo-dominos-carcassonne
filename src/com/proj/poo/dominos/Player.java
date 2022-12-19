@@ -37,7 +37,7 @@ public class Player {
 				r = sc.next();
 			}
 			
-			switch(r) {
+			switch(r.toUpperCase()) {
 			case "A": // le joueur souhaite abandonner
 				partie.abandon(this);
 				break;

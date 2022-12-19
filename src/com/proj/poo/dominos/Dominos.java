@@ -153,7 +153,18 @@ public class Dominos {
 			else { tour++; }			
 		}
 		
-		// TODO: AFFICHER LE VAINQUEUR
+		Player winner = null;
+		int maxPts = 0;
+		for (Player p : players) {
+			if (p.getPoints() > maxPts) maxPts = p.getPoints(); winner = p;
+		}
+		if (winner != null) {
+			System.out.println("Le vainqueur de cette partie est " + winner.pseudo + " avec " + maxPts + " marqués");
+		}
+		else {
+			System.out.println("Pas de vainqueur pour cette partie, match nul !");
+		}
+		
 		state = State.FINISHED;
 	}
 	
@@ -174,9 +185,9 @@ public class Dominos {
 				for (int i = 0; i < placement[2]; i++) t.rotation(); // on fait autant de rotations de la tuile qu'indiquées par le placement
 			}
 			
-			plateau[placement[0]][placement[1]] = t;
-			addPoints(num);
+			plateau[placement[0]][placement[1]] = t;			
 			System.out.println("Tuile jouée : (" + placement[0] + "; " + placement[1] + ")");
+			addPoints(t, adjacentesPresentes(placement[0], placement[1]), num);
 			return;
 		}
 		System.out.println("Tuile défaussée");
@@ -190,7 +201,7 @@ public class Dominos {
 			for (int j = 0; j < plateau[i].length; j++) {
 				if (plateau[i][j] == null) { // l'emplacement est libre
 					Tuile tmp = t; // on crée une tuile temporaire pour la faire tourner
-					for (int rot = 0; rot < 3; rot++) { // on fait tourner la tuile et on enregistre l'indice de rotation (0 = pas de rotation)
+					for (int rot = 0; rot < 4; rot++) { // on fait tourner la tuile et on enregistre l'indice de rotation (0 = pas de rotation)
 						if (isLegalPlacement(i, j, tmp)) {
 							int[] pos = {i, j, rot};
 							res.add(pos);
@@ -204,7 +215,7 @@ public class Dominos {
 	}
 	
 	// on regarde si des tuiles adjacentes sont présentes ou non par rapport aux coordonnées de celle fournie
-	private Tuile[] adjacentesPresentes(int x, int y) {
+	private Tuile[] adjacentesPresentes(int y, int x) {
 		/* pour gérer très simplement cette fonction, on va
 		* enregistrer les différentes possibilités d'adjacentes dans un tableau,
 		* et pour chacune d'entre-elles, on va faire un try-catch pour
@@ -212,22 +223,27 @@ public class Dominos {
 		* Si une erreur est générée --> on est sur une bordure.
 		*/
 		
-		int[][] adj = { {x - 1, y}, {x + 1, y}, {x, y - 1}, {x, y + 1} };
+		int[][] adj = { {x, y - 1}, {x + 1, y}, {x, y + 1}, {x - 1, y} }; // on prend toutes les adjacences possibles
 		Tuile[] res = new Tuile[4]; // il peut y avoir jusqu'à 4 tuiles adjacentes
+		boolean isNull = true;
 		
 		int index = 0;
 		for (int[] l : adj) {
 			try {
 				if (plateau[l[0]][l[1]] != null) {
 					res[index] = plateau[l[0]][l[1]];
-					index++;
+					isNull = false;
 				}				
 			}
 			catch (IndexOutOfBoundsException e) {
 				res[index] = null;
 			}
+			finally {
+				index++; // dans tous les cas on incrémente l'index
+			}
 		}
-		return res;		
+		if (isNull) return null;
+		return res;	// res[0] = adjacences en haut, res[1] à droite, "" en bas, "" à gauche
 	}
 	
 	// On vérifie si l'on peut placer notre tuile (sans faire de rotation) aux coordonnées données
@@ -242,24 +258,51 @@ public class Dominos {
 				
 		if (p != null) return false; // si l'emplacement est occupé on ne peut rien placer
 		
-		Tuile[] adja = adjacentesPresentes(x, y);		
-		if (adja[0] == null) return false; // s'il n'y a aucune adjacence 
+		Tuile[] adja = adjacentesPresentes(x, y);
+		if (adja == null) return false; // s'il n'y a aucune adjacence 
 		
-		for (int i = 0; i < adja.length; i++) { // on doit vérifier si tous les côtés correspondent à ceux des tuiles adjacentes
-			if (adja[i] == null) break; // si on a vu toutes les adjacences on s'arrête
-			
-			if (!Arrays.equals(t.getGauche(), adja[i].getGauche()) && // si un des côtés correspond on renvoie true
-					!Arrays.equals(t.getGauche(), adja[i].getGauche())  &&
-					!Arrays.equals(t.getGauche(), adja[i].getGauche()) &&
-					!Arrays.equals(t.getGauche(), adja[i].getGauche())) {
-				return false; // si une seule tuile adjacente dont le côté est collé à la nôtre ne correspond pas, on renvoie false;
+		// Si l'une des adjacences qui n'est pas nulle ne correspond pas à la tuile, on renvoie false
+		for (int i = 0; i < 4; i++) {
+			if (adja[i] != null) {
+				if ((i == 0 && !Arrays.equals(adja[0].getBas(), t.getHaut())) ||
+						(i == 1 && !Arrays.equals(adja[1].getGauche(), t.getDroite())) ||
+						(i == 2 && !Arrays.equals(adja[2].getHaut(), t.getBas())) ||
+						(i == 3 && !Arrays.equals(adja[3].getDroite(), t.getGauche()))) return false;
 			}
 		}
+				
 		return true;
 	}
 	
-	private void addPoints(int num) {
-		// TODO: Calculer les points et les ajouter
+	// On calcule le nombre de points en regardant sur les adjacences quels côtés ne sont pas nuls
+	private void addPoints(Tuile t, Tuile[] adja, int numPlayer) {
+		int nbPoints = 0;
+					
+		// On ne revérifie pas si les côtés correspondent, car c'est forcément le cas vu que la méthode est utilisée à la toute fin
+		if (adja[0] != null) {
+			for (int n : t.getHaut()) {
+				nbPoints += n;
+			}
+		}
+		if (adja[1] != null) {
+			for (int n : t.getDroite()) {
+				nbPoints += n;
+			}
+		}
+		if (adja[2] != null) {
+			for (int n : t.getBas()) {
+				nbPoints += n;
+			}
+		}
+		if (adja[3] != null) {
+			for (int n : t.getGauche()) {
+				nbPoints += n;
+			}
+		}
+		
+		System.out.println(players.get(numPlayer).pseudo + " gagne " + nbPoints + " point(s)");
+		players.get(numPlayer).addPoints(nbPoints);
+		
 	}
 		
 	// un joueur qui appelle cette méthode abandonne la partie et est supprimé de la liste
@@ -271,7 +314,7 @@ public class Dominos {
 	public void placer(int x, int y, Tuile tuileEnMain, int num) {
 		// TODO Auto-generated method stub
 		plateau[x][y] = tuileEnMain;
-		addPoints(num);
+		addPoints(tuileEnMain, adjacentesPresentes(x, y), num);
 	}
 	
 }
