@@ -10,7 +10,7 @@ import com.proj.poo.runner.Auxiliaire;
 
 public class Dominos {
 
-	private final static int tailleSac = 5; // on suppose que l'on dispose de 20 tuiles dans le sac
+	private final static int tailleSac = 50; // on suppose que l'on dispose de 20 tuiles dans le sac
 	
 	private ArrayList<Tuile> sac; // sac de tuiles
 	private ArrayList<Player> players; // liste des joueurs
@@ -34,8 +34,10 @@ public class Dominos {
 		}
 		
 		// choix d'une tuile au hasard à poser sur la table
-		plateau = new Tuile[tailleSac * 2][tailleSac * 2]; // 2 * tailleSac pour laisser pile assez de place dans le cas extrême
-		plateau[tailleSac][tailleSac] = piocher();
+		int taillePlat=(int) Math.sqrt(tailleSac * 2);
+		if (taillePlat%2==0)taillePlat++; // pour que la tuile de d�part se place bien au milieu du plateau
+		plateau = new Tuile[taillePlat][taillePlat]; // pour laisser assez de place pour chaque tuile du sac
+		plateau[taillePlat/2][taillePlat/2] = piocher();
 		
 		state = State.READY;
 	}
@@ -156,7 +158,10 @@ public class Dominos {
 		Player winner = null;
 		int maxPts = 0;
 		for (Player p : players) {
-			if (p.getPoints() > maxPts) maxPts = p.getPoints(); winner = p;
+			if (p.getPoints() > maxPts) {
+				maxPts = p.getPoints(); 
+				winner = p;
+				}
 		}
 		if (winner != null) {
 			System.out.println("Le vainqueur de cette partie est " + winner.pseudo + " avec " + maxPts + " marqués");
@@ -192,6 +197,7 @@ public class Dominos {
 		}
 		System.out.println("Tuile défaussée");
 	}
+	
 	
 	// cherche tous les emplacements possibles pour placer notre tuile pour l'IA
 	private ArrayList<int[]> getAllLegalPlacementsIA(Tuile t) {

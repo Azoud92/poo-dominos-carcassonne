@@ -21,7 +21,7 @@ public class Tuile {
 		}
 	}
 	
-	// Rotation vers la gauche
+	// Rotation vers la droite
 	public void rotation() {
 		int[][] tuileRotated = { tuile[3], tuile[0], tuile[1], tuile[2] };
 		tuile = tuileRotated;
