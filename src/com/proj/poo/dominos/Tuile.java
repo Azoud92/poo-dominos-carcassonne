@@ -39,7 +39,7 @@ public class Tuile {
 	
 	public String toStringMilieuBas() {
 		return (tuile[3][0] + Auxiliaire.space(5) + tuile[1][0] + " \n" +
-				tuile[3][0] + Auxiliaire.space(5) + tuile[1][0] + " \n" +
+				tuile[3][1] + Auxiliaire.space(5) + tuile[1][1] + " \n" +
 				tuile[3][2] + Auxiliaire.space(5) + tuile[1][2]) + " \n" +
 				(" " + tuile[2][0] + " " + tuile[2][1] + " " + tuile[2][2]) + "  ";
 	}

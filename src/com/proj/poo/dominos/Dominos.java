@@ -35,7 +35,7 @@ public class Dominos {
 		
 		// choix d'une tuile au hasard à poser sur la table
 		int taillePlat=(int) Math.sqrt(tailleSac * 2);
-		if (taillePlat%2==0)taillePlat++; // pour que la tuile de d�part se place bien au milieu du plateau
+		if (taillePlat%2==0)taillePlat++; // pour que la tuile de d�part se place bien au milieu du plateau
 		plateau = new Tuile[taillePlat][taillePlat]; // pour laisser assez de place pour chaque tuile du sac
 		plateau[taillePlat/2][taillePlat/2] = piocher();
 		
@@ -163,6 +163,8 @@ public class Dominos {
 				winner = p;
 				}
 		}
+		printPlateau();
+		
 		if (winner != null) {
 			System.out.println("Le vainqueur de cette partie est " + winner.pseudo + " avec " + maxPts + " marqués");
 		}
@@ -221,7 +223,7 @@ public class Dominos {
 	}
 	
 	// on regarde si des tuiles adjacentes sont présentes ou non par rapport aux coordonnées de celle fournie
-	private Tuile[] adjacentesPresentes(int y, int x) {
+	private Tuile[] adjacentesPresentes(int x, int y) {
 		/* pour gérer très simplement cette fonction, on va
 		* enregistrer les différentes possibilités d'adjacentes dans un tableau,
 		* et pour chacune d'entre-elles, on va faire un try-catch pour
@@ -229,7 +231,7 @@ public class Dominos {
 		* Si une erreur est générée --> on est sur une bordure.
 		*/
 		
-		int[][] adj = { {x, y - 1}, {x + 1, y}, {x, y + 1}, {x - 1, y} }; // on prend toutes les adjacences possibles
+		int[][] adj = { {x - 1, y}, {x, y + 1}, {x + 1, y}, {x, y - 1} }; // on prend toutes les adjacences possibles
 		Tuile[] res = new Tuile[4]; // il peut y avoir jusqu'à 4 tuiles adjacentes
 		boolean isNull = true;
 		
