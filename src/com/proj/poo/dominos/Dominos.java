@@ -166,7 +166,7 @@ public class Dominos {
 		printPlateau();
 		
 		if (winner != null) {
-			System.out.println("Le vainqueur de cette partie est " + winner.pseudo + " avec " + maxPts + " marquÃ©s");
+			System.out.println("Le vainqueur de cette partie est " + winner.pseudo + " avec " + maxPts + " points marqué(s)");
 		}
 		else {
 			System.out.println("Pas de vainqueur pour cette partie, match nul !");
