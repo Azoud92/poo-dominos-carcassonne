@@ -11,4 +11,7 @@ public final class Auxiliaire {
 		return ("-".repeat(30) + "\n" + msg + "\n" + "-".repeat(60));
 	}
 	
+	// Chemin d'accès aux resources images
+	public static String imgResourcesPath = "src/com/proj/poo/resources/img/";
+	
 }
