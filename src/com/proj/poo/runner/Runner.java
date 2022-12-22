@@ -1,7 +1,5 @@
 package com.proj.poo.runner;
 
-import com.proj.poo.dominos.Dominos;
-
 public class Runner {
 
 	public static void main(String[] args) {
