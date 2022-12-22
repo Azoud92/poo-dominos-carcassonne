@@ -29,7 +29,7 @@ public class GameView extends JFrame {
 	public GameView() {
 		EventQueue.invokeLater(() -> { // on programme de façon thread-safe
 			frame = new JFrame();		
-			frame.setSize(size.width, size.height); // par défaut la taille est de 3/4 la taille de l'écran
+			frame.setSize(size.width, size.height);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setTitle("Jeu de Dominos et de Carcassonne / Projet 2022 - Team 92");
 			frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
