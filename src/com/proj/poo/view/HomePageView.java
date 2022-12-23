@@ -34,12 +34,9 @@ public class HomePageView extends JPanel {
 	private JLabel title;
 	
 	private JButton dominosBtn, carcassonneBtn, exitBtn, ajoutBtn;
-		
-	private Image background = new ImageIcon(Auxiliaire.imgResourcesPath + "background.jpg").getImage();
 	
 	// création de plusieurs panels afin de pouvoir utiliser les differents layout et bien placer les boutons
 	public HomePageView(Dimension size, double scaleX, double scaleY, double scaleXY) {
-		
 		BorderLayout container_layout = new BorderLayout();
 		container = new JPanel(container_layout);// panel principal qui contient tout les autres panels
 		top_container = new JPanel(); // panel du haut
@@ -101,12 +98,21 @@ public class HomePageView extends JPanel {
 		game_container.add(players);
 		bottom_container.add(ajoutBtn);
 		bottom_container.add(exitBtn);
-
+				
 		// ajout de tous les container au container principal
 		container.add(top_container, BorderLayout.NORTH);
 		container.add(game_container, BorderLayout.CENTER);
 		container.add(bottom_container, BorderLayout.SOUTH);
-	
+		
+		// requis pour que le fond d'écran soit visible
+		container.setOpaque(false);
+		top_container.setOpaque(false);
+		container_test1.setOpaque(false);
+		container_test2.setOpaque(false);
+		game_container.setOpaque(false);
+		players.setOpaque(false);
+		bottom_container.setOpaque(false);
+		
 		container.setVisible(true);
 		
 	}
