@@ -2,7 +2,11 @@ package com.proj.poo.runner;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Graphics;
 import java.awt.GraphicsEnvironment;
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -23,6 +27,8 @@ public class GameView extends JFrame {
 	private JFrame frame;
 	private JPanel container;
 	
+	private Image background = new ImageIcon(Auxiliaire.imgResourcesPath + "background.jpg").getImage();
+	
 	public GameView() {
 		// Taille de l'écran en soustrayant celle de la barre des tâches et du haut de la fenêtre
 		size = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().getSize();
@@ -39,7 +45,19 @@ public class GameView extends JFrame {
 			frame.setTitle("Jeu de Dominos et de Carcassonne / Projet 2022 - Team 92");
 			frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 			
-			container = new JPanel(); // ce panel contiendra soit l'�cran d'accueil, soit la vue des dominos, soit la vue de carcassonne
+			// Afin de redéfinir la méthode "paintComponent" servant à afficher le fond d'écran, on procède par un bloc d'initialisation
+			container = new JPanel() {
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 5873722615660821503L;
+				
+				@Override
+				public void paintComponent(Graphics g) {
+					super.paintComponent(g);					
+					g.drawImage(background, 0, 0, size.width, size.height, this);
+				}
+			}; // ce panel contiendra soit l'�cran d'accueil, soit la vue des dominos, soit la vue de carcassonne
 			container.setBounds(0,0,size.width,size.height);
 			
 			//HomePageView hpv = new HomePageView(size, scaleX, scaleY, scaleXY);
@@ -54,5 +72,7 @@ public class GameView extends JFrame {
 			
 		});				
 	}
+	
+	
 	
 }
