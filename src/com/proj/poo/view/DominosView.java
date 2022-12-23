@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.color.ColorSpace;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -32,18 +33,18 @@ public class DominosView extends JPanel {
 		controle= new JPanel();
 		controle.setPreferredSize(new Dimension(size.width-size.height, size.height));
 		controle.setBackground(Color.RED);
+		controle.setLayout(null);
 		
-		game= new JPanel();
+		game= new JPanel(new GridLayout(partie.getPlateau().length, partie.getPlateau().length));
 		game.setPreferredSize(new Dimension(size.height,size.height));
-		game.setLayout(new GridLayout(partie.getPlateau().length, partie.getPlateau().length));
 		game.setBackground(Color.GRAY);
+		game.setLayout(null);
 		
 		this.add(game,BorderLayout.WEST);
 		this.add(controle,BorderLayout.EAST);
 		this.setVisible(true);
 		
-		Tuile t = partie.piocher();
-		placeTuile(t,0,0);
+		placeTuile(partie.piocher(),partie.getPlateau().length/2,partie.getPlateau().length/2);
 		
 	}
 	
@@ -70,8 +71,8 @@ public class DominosView extends JPanel {
 			this.x = x;
 			this.y = y;
 			this.setBounds(x * tailleTuile, y * tailleTuile, tailleTuile, tailleTuile);
-			this.setLayout(new BorderLayout(5,5));
-			this.setBackground(Color.BLACK);
+			this.setLayout(new GridLayout(5,5,0,0));
+			this.setBackground(Color.PINK);
 			creation();
 		}
 
@@ -82,52 +83,43 @@ public class DominosView extends JPanel {
 			int[] droite = tuile.getDroite();
 			
 			JLabel c1 = new JLabel(" ");
-			c1.setBounds(0, 0, tailleTuile/5, tailleTuile/5);
-			
 			JLabel c2 = new JLabel(" ");
-			c2.setBounds(tailleTuile/5 * 4, 0, tailleTuile/5, tailleTuile/5);
-			
 			JLabel c3 = new JLabel(" ");
-			c3.setBounds(tailleTuile/5 * 4, tailleTuile/5 * 4, tailleTuile/5, tailleTuile/5);
-			
 			JLabel c4 = new JLabel(" ");
-			c4.setBounds(0, tailleTuile/5 * 4, tailleTuile/5, tailleTuile/5);
-			
-			JLabel c5 = new JLabel(" ");
-			c4.setBounds(tailleTuile/5, tailleTuile/5, tailleTuile/5 * 3, tailleTuile/5 * 3);
-			
-			
+
 			this.add(c1);
-			this.add(c2);
-			this.add(c3);
-			this.add(c4);
-			
 			for (int i =0; i<3;i++) {
 				int h= haut[i];
-				int b= bas[i];
+				JLabel label_h = new JLabel(" "+String.valueOf(h));
+				this.add(label_h);
+			}
+			this.add(c2);
+			
+			for (int i =0; i<3;i++) {
 				int g= gauche[i];
 				int d= droite[i];
 				
-				
-				JLabel label_h = new JLabel(String.valueOf(h));
-				label_h.setLocation((tailleTuile / 5 ) + i * (tailleTuile / 5), 0);
-				this.add(label_h);
-				
-				JLabel label_b = new JLabel(String.valueOf(b));
-				label_b.setLocation((tailleTuile / 5 ) + i * (tailleTuile / 5), (tailleTuile / 5) * 4);
-				this.add(label_b);
-				
-				JLabel label_g = new JLabel(String.valueOf(g));
-				label_g.setLocation(0, (tailleTuile / 5 ) + i * (tailleTuile / 5));
+				JLabel label_g = new JLabel("  "+String.valueOf(g));
 				this.add(label_g);
 				
-				JLabel label_d = new JLabel(String.valueOf(d));
-				label_d.setLocation((tailleTuile / 5) * 4, (tailleTuile/5 )+ i * (tailleTuile/5));
+				JLabel space1 = new JLabel(" ");
+				this.add(space1);
+				JLabel space2 = new JLabel(" ");
+				this.add(space2);
+				JLabel space3 = new JLabel(" ");
+				this.add(space3);
+				
+				JLabel label_d = new JLabel(""+String.valueOf(d));
 				this.add(label_d);
-			
 			}
 			
-			this.add(c5);
+			this.add(c3);
+			for (int i =0; i<3;i++) {
+				int b= bas[i];
+				JLabel label_b = new JLabel(" "+String.valueOf(b));
+				this.add(label_b);
+			}
+			this.add(c4);
 			
 		}
 		

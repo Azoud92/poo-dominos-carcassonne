@@ -44,9 +44,7 @@ public class GameView extends JFrame {
 			
 			// Afin de redéfinir la méthode "paintComponent" servant à afficher le fond d'écran, on procède par un bloc d'initialisation
 			container = new JPanel() {
-				/**
-				 * 
-				 */
+				
 				private static final long serialVersionUID = 5873722615660821503L;
 				
 				@Override
@@ -56,6 +54,7 @@ public class GameView extends JFrame {
 				}
 			}; // ce panel contiendra soit l'�cran d'accueil, soit la vue des dominos, soit la vue de carcassonne
 			container.setBounds(0,0,size.width,size.height);
+			container.setOpaque(false);
 			
 			//HomePageView hpv = new HomePageView(size, scaleX, scaleY, scaleXY);
 			//container.add(hpv.getMainContainer());
