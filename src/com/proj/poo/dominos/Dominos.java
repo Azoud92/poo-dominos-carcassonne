@@ -25,7 +25,7 @@ public class Dominos {
 	public Dominos() {
 		players = new ArrayList<Player>();
 		
-		welcome();
+		//welcome();
 		
 		// remplissage du sac		
 		sac = new ArrayList<Tuile>();
@@ -323,6 +323,10 @@ public class Dominos {
 		// TODO Auto-generated method stub
 		plateau[x][y] = tuileEnMain;
 		addPoints(tuileEnMain, adjacentesPresentes(x, y), num);
+	}
+	
+	public Tuile[][] getPlateau(){
+		return plateau;
 	}
 	
 }
