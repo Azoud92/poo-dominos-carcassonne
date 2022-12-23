@@ -34,14 +34,11 @@ public class HomePageView extends JPanel {
 	private JLabel title;
 	
 	private JButton dominosBtn, carcassonneBtn, exitBtn, ajoutBtn;
-	
-	private double scaleX, scaleY;
-	
+		
 	private Image background = new ImageIcon(Auxiliaire.imgResourcesPath + "background.jpg").getImage();
 	
 	// création de plusieurs panels afin de pouvoir utiliser les differents layout et bien placer les boutons
-	public HomePageView(Dimension size, double scaleX, double scaleY) {
-		this.scaleX = scaleX; this.scaleY = scaleY;
+	public HomePageView(Dimension size, double scaleX, double scaleY, double scaleXY) {
 		
 		BorderLayout container_layout = new BorderLayout();
 		container = new JPanel(container_layout);// panel principal qui contient tout les autres panels
@@ -58,7 +55,7 @@ public class HomePageView extends JPanel {
 		
 						
 		title = new JLabel("Jeux de Dominos Carrés et de Carcassonne");
-		title.setFont(new Font("Arial", Font.BOLD, (int) (60 * scaleX * scaleY)));
+		title.setFont(new Font("Arial", Font.BOLD, (int) (60 * scaleX)));
 		
 		// contiendra le texte entré par l'utilisateur lorsque celui-ci ajoutera un joueur (qu'il soit IA ou Réel) et qu'il mettra son pseudo
 		players = new JPanel();
@@ -67,7 +64,7 @@ public class HomePageView extends JPanel {
 		dominosBtn.setPreferredSize(new Dimension((int) (700 * scaleX), (int) (156 * scaleY)));
 		dominosBtn.setBackground(Color.DARK_GRAY);
 		dominosBtn.setForeground(Color.ORANGE);
-		dominosBtn.setFont(new Font("Arial", Font.BOLD, (int) (50 * scaleX * scaleY)));
+		dominosBtn.setFont(new Font("Arial", Font.BOLD, (int) (50 * scaleX)));
 		dominosBtn.setEnabled(false);
 		
 		carcassonneBtn = new JButton(resizeImage(new ImageIcon(Auxiliaire.imgResourcesPath + "carcassonne.png"), (int) (700 * scaleX), (int) (156 * scaleY)));
@@ -76,14 +73,14 @@ public class HomePageView extends JPanel {
 		carcassonneBtn.setEnabled(false);
 		
 		exitBtn = new JButton("Quitter le jeu");
-		exitBtn.setFont(new Font("Arial", Font.BOLD, (int) (50 * scaleX * scaleY)));
+		exitBtn.setFont(new Font("Arial", Font.BOLD, (int) (50 * scaleX)));
 		exitBtn.setBackground(Color.RED);
 		exitBtn.addActionListener(e -> {
 			// action à effectuer pour fermer le programme
 	      });
 		
 		ajoutBtn = new JButton("Ajouter un joueur (min. 2)");
-		ajoutBtn.setFont(new Font("Arial", Font.BOLD, (int) (50 * scaleX * scaleY)));
+		ajoutBtn.setFont(new Font("Arial", Font.BOLD, (int) (50 * scaleX)));
 		ajoutBtn.setBackground(Color.YELLOW);
 		ajoutBtn.addActionListener((ActionEvent e) ->{			
 			ajoutBtn.setEnabled(false);
