@@ -15,43 +15,63 @@ public class DominosView extends JPanel {
 
 	private static final long serialVersionUID = -7758253179910801855L;
 	
-	private JPanel container, game, controle;
+	private JPanel game, controle;
 	private Dominos partie;
+	private Dimension size;
+	double scaleX, scaleY;
 
 	
 	
 	public DominosView(Dimension size, double scaleX, double scaleY) {
-		container=new JPanel();
-		container.setLayout(null);
+		this.size = size;
+		this.scaleX = scaleX;
+		this.scaleY = scaleY;
+		this.setLayout(new BorderLayout());
 		Dominos partie = new Dominos();
-		controle= new JPanel();
-		controle.setBounds(size.height, 0, size.width-size.height, size.height);
-		controle.setBackground(Color.RED);
-		game= new JPanel();
-		game.setBounds(0,0,size.height,size.height);
-		game.setLayout(new GridLayout(partie.getPlateau().length, partie.getPlateau().length));
-		container.add(controle);
-		container.add(game);
-		container.setVisible(true);
 		
+		controle= new JPanel();
+		controle.setPreferredSize(new Dimension(size.width-size.height, size.height));
+		controle.setBackground(Color.RED);
+		
+		game= new JPanel();
+		game.setPreferredSize(new Dimension(size.height,size.height));
+		game.setLayout(new GridLayout(partie.getPlateau().length, partie.getPlateau().length));
+		game.setBackground(Color.GRAY);
+		
+		this.add(game,BorderLayout.WEST);
+		this.add(controle,BorderLayout.EAST);
+		this.setVisible(true);
+		
+		Tuile t = partie.piocher();
+		placeTuile(t,0,0);
 		
 	}
 	
-	public JPanel getMainContainer() { return container; } 
+	
+	public void placeTuile(Tuile tuile, int x, int y) {
+		TuileView t= new TuileView(tuile, x, y);
+		game.add(t);
+		game.repaint();
+		//ajouter changement couleur
+	}
+	
 	
 	public class TuileView extends JPanel{
 		
+
+		private static final long serialVersionUID = 8825429997330574373L;
+		
 		Tuile tuile;
 		int x, y;
-		int line=partie.getPlateau().length;
+		int tailleTuile = (size.height / partie.getPlateau().length);
 		
 		public TuileView (Tuile tuile, int x, int y) {
 			this.tuile= tuile;
 			this.x = x;
 			this.y = y;
-			this.setBounds(x*100, y*100, 100, 100);
+			this.setBounds(x * tailleTuile, y * tailleTuile, tailleTuile, tailleTuile);
 			this.setLayout(new BorderLayout(5,5));
-			this.setBackground(Color.GRAY);
+			this.setBackground(Color.BLACK);
 			creation();
 		}
 
@@ -62,19 +82,19 @@ public class DominosView extends JPanel {
 			int[] droite = tuile.getDroite();
 			
 			JLabel c1 = new JLabel(" ");
-			c1.setBounds(0,0,20,20);
+			c1.setBounds(0, 0, tailleTuile/5, tailleTuile/5);
 			
 			JLabel c2 = new JLabel(" ");
-			c2.setBounds(80,0,20,20);
+			c2.setBounds(tailleTuile/5 * 4, 0, tailleTuile/5, tailleTuile/5);
 			
 			JLabel c3 = new JLabel(" ");
-			c3.setBounds(80,80,20,20);
+			c3.setBounds(tailleTuile/5 * 4, tailleTuile/5 * 4, tailleTuile/5, tailleTuile/5);
 			
 			JLabel c4 = new JLabel(" ");
-			c4.setBounds(0,80,20,20);
+			c4.setBounds(0, tailleTuile/5 * 4, tailleTuile/5, tailleTuile/5);
 			
 			JLabel c5 = new JLabel(" ");
-			c4.setBounds(20,20,60,60);
+			c4.setBounds(tailleTuile/5, tailleTuile/5, tailleTuile/5 * 3, tailleTuile/5 * 3);
 			
 			
 			this.add(c1);
@@ -88,17 +108,29 @@ public class DominosView extends JPanel {
 				int g= gauche[i];
 				int d= droite[i];
 				
-				 
+				
+				JLabel label_h = new JLabel(String.valueOf(h));
+				label_h.setLocation((tailleTuile / 5 ) + i * (tailleTuile / 5), 0);
+				this.add(label_h);
+				
+				JLabel label_b = new JLabel(String.valueOf(b));
+				label_b.setLocation((tailleTuile / 5 ) + i * (tailleTuile / 5), (tailleTuile / 5) * 4);
+				this.add(label_b);
+				
+				JLabel label_g = new JLabel(String.valueOf(g));
+				label_g.setLocation(0, (tailleTuile / 5 ) + i * (tailleTuile / 5));
+				this.add(label_g);
+				
+				JLabel label_d = new JLabel(String.valueOf(d));
+				label_d.setLocation((tailleTuile / 5) * 4, (tailleTuile/5 )+ i * (tailleTuile/5));
+				this.add(label_d);
+			
 			}
 			
-			
-			
+			this.add(c5);
 			
 		}
 		
-		
 	}
-
-
 
 }

@@ -29,7 +29,7 @@ public class Dominos {
 		
 		// remplissage du sac		
 		sac = new ArrayList<Tuile>();
-		for (int i = 0; i < tailleSac; i++) { 
+		for (int i = 0; i < tailleSac; i++) {  
 			sac.add(new Tuile());
 		}
 		

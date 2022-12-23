@@ -46,7 +46,7 @@ public class GameView extends JFrame {
 			//container.add(hpv.getMainContainer());
 			
 			DominosView dcv = new DominosView(size,scaleX,scaleY);
-			container.add(dcv.getMainContainer());
+			container.add(dcv);
 			
 			frame.add(container);
 			frame.setVisible(true);
