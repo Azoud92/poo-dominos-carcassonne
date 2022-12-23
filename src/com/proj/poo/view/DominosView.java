@@ -8,8 +8,8 @@ import java.awt.GridLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.proj.poo.dominos.Dominos;
-import com.proj.poo.dominos.Tuile;
+import com.proj.poo.model.dominos.Dominos;
+import com.proj.poo.model.dominos.Tuile;
 
 public class DominosView extends JPanel {
 
@@ -27,7 +27,7 @@ public class DominosView extends JPanel {
 		this.scaleX = scaleX;
 		this.scaleY = scaleY;
 		this.setLayout(new BorderLayout());
-		Dominos partie = new Dominos();
+		partie = new Dominos();
 		
 		controle= new JPanel();
 		controle.setPreferredSize(new Dimension(size.width-size.height, size.height));

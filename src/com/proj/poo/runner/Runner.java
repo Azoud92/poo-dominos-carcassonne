@@ -7,6 +7,7 @@ public class Runner {
 		//Dominos d1 = new Dominos();
 		//d1.gameStart();
 		
+		@SuppressWarnings("unused")
 		GameView gw = new GameView();
 	}
 

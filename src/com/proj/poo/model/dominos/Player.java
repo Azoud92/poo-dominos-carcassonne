@@ -1,4 +1,4 @@
-package com.proj.poo.dominos;
+package com.proj.poo.model.dominos;
 
 import java.util.Scanner;
 

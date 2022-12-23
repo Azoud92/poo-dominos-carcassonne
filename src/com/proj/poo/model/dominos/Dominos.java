@@ -1,4 +1,4 @@
-package com.proj.poo.dominos;
+package com.proj.poo.model.dominos;
 
 import java.util.ArrayList; 
 import java.util.Arrays;
@@ -166,7 +166,7 @@ public class Dominos {
 		printPlateau();
 		
 		if (winner != null) {
-			System.out.println("Le vainqueur de cette partie est " + winner.pseudo + " avec " + maxPts + " points marqué(s)");
+			System.out.println("Le vainqueur de cette partie est " + winner.pseudo + " avec " + maxPts + " points marquï¿½(s)");
 		}
 		else {
 			System.out.println("Pas de vainqueur pour cette partie, match nul !");
