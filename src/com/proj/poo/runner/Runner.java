@@ -1,5 +1,6 @@
 package com.proj.poo.runner;
 
+
 public class Runner {
 
 	public static void main(String[] args) {
@@ -7,7 +8,6 @@ public class Runner {
 		//Dominos d1 = new Dominos();
 		//d1.gameStart();
 		
-		@SuppressWarnings("unused")
 		GameView gw = new GameView();
 	}
 

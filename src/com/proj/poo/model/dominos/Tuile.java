@@ -1,6 +1,6 @@
 package com.proj.poo.model.dominos;
 
-import java.util.Random;
+import java.util.Random; 
 
 import com.proj.poo.runner.Auxiliaire;
 
@@ -16,14 +16,14 @@ public class Tuile {
 		
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 3; j++) {
-				tuile[i][j] = rd.nextInt(10); // 10 est exclu : on va de 0 à 9
+				tuile[i][j] = rd.nextInt(2); // 10 est exclu : on va de 0 à 9
 			}
 		}
 	}
 	
 	// Rotation vers la droite
 	public void rotation() {
-		int[][] tuileRotated = { tuile[3], tuile[0], tuile[1], tuile[2] };
+		int[][] tuileRotated = { {tuile[3][2],tuile[3][1],tuile[3][0]}, tuile[0], {tuile[1][2],tuile[1][1],tuile[1][0]}, tuile[2] };
 		tuile = tuileRotated;
 	}
 	

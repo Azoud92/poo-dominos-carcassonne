@@ -50,7 +50,7 @@ public class Player {
 			}	
 		}
 		else {
-			partie.placeIA(tuileEnMain, num);
+			partie.placeIA(tuileEnMain);
 			tuileEnMain = null;
 		}			
 	}
@@ -85,7 +85,7 @@ public class Player {
 						int y = Integer.valueOf(resp);
 						
 						if (partie.isLegalPlacement(x, y, tuileEnMain)) {
-							partie.placer(x, y, tuileEnMain, num);
+							partie.placer(x, y, tuileEnMain);
 							return;
 						}
 						System.out.println("Impossible de placer une tuile à cet endroit. Veuillez vérifier vos coordonnées et réessayer.");
@@ -103,5 +103,9 @@ public class Player {
 	
 	public int getPoints() { return points; }
 	public void addPoints(int nb) { points += nb; }
+	
+	
+	
+	
 	
 }

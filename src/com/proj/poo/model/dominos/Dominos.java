@@ -1,6 +1,6 @@
 package com.proj.poo.model.dominos;
 
-import java.util.ArrayList; 
+import java.util.ArrayList;   
 import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Random;
@@ -10,15 +10,17 @@ import com.proj.poo.runner.Auxiliaire;
 
 public class Dominos {
 
-	private final static int tailleSac = 50; // on suppose que l'on dispose de 20 tuiles dans le sac
+	private final static int tailleSac = 5; // on suppose que l'on dispose de 20 tuiles dans le sac
 	
 	private ArrayList<Tuile> sac; // sac de tuiles
 	private ArrayList<Player> players; // liste des joueurs
 
 	private Tuile[][] plateau; // représentation du plateau
+	public Player joueurActuel;
 	
 	private Random rd = new Random();
 	private Scanner sc = new Scanner(System.in);
+	private int tour;
 	
 	private State state;
 		
@@ -26,6 +28,7 @@ public class Dominos {
 		players = new ArrayList<Player>();
 		
 		//welcome();
+		if(!players.isEmpty()) {joueurActuel=players.get(0);}
 		
 		// remplissage du sac		
 		sac = new ArrayList<Tuile>();
@@ -92,7 +95,7 @@ public class Dominos {
 	}
 	
 	// affichage du plateau
-	private void printPlateau() {
+	public void printPlateau() {
 		// ces ArrayList servent à afficher correctement les tuiles : pour chaque ligne, on imprime les côtés des tuiles
 		ArrayList<String> toPrint = new ArrayList<String>();
 		ArrayList<Integer> spToPrint = new ArrayList<Integer>();
@@ -101,9 +104,9 @@ public class Dominos {
 		
 		for (int i = 0; i < plateau.length; i++) {
 			for (int j = 0; j < plateau[i].length; j++) {
-				Tuile x = plateau[i][j];
+				Tuile x = plateau[j][i];
 				if (x == null) {
-					String s = "(" + i + "; " + j + ") "; // une tuile nulle est représentée par une coordonnée "(x, y)"
+					String s = "(" + j + "; " + i + ") "; // une tuile nulle est représentée par une coordonnée "(x, y)"
 					System.out.print(s);
 					spaceToPrint += s.length();
 				}
@@ -142,17 +145,19 @@ public class Dominos {
 		}
 		state = State.PLAYING;
 		
-		int tour = 0; // indice servant à savoir qui doit jouer
+		tour = 0; // indice servant à savoir qui doit jouer
 		
 		// tant qu'il reste des tuiles et qu'il y a toujours plus d'un joueur la partie continue
 		while (sac.size() > 0 && players.size() > 1) {
-			printPlateau();
+			/*printPlateau();
 			
 			System.out.println("C'est au tour de " + players.get(tour).pseudo + " de jouer");
 			
-			players.get(tour).play();
+			players.get(tour).play();*/
 			if (tour + 1 >= players.size()) { tour = 0; }
-			else { tour++; }			
+			else { tour++; }
+			
+			joueurActuel = players.get(tour);
 		}
 		
 		Player winner = null;
@@ -175,15 +180,48 @@ public class Dominos {
 		state = State.FINISHED;
 	}
 	
+	public boolean passerTour() {
+		if(sac.size() <= 0 || players.size() <= 1) {
+			state = State.FINISHED;
+			return false;
+			}
+		if (tour + 1 >= players.size()) {
+			tour = 0; 
+			}
+		else { 
+			tour++; 
+			}
+		joueurActuel = players.get(tour);
+		return true;
+		
+	}
+	public Player finPartie() {
+		Player winner = null;
+		int maxPts = 0;
+		for (Player p : players) {
+			if (p.getPoints() > maxPts) {
+				maxPts = p.getPoints(); 
+				winner = p;
+				}
+		}
+		state = State.FINISHED;
+		if (winner != null) {return winner;}
+		else {return null;}
+		
+		
+	}
+	
+	
 	// enlève une tuile du sac au hasard et la renvoie
 	public Tuile piocher() {
+		System.out.println("la taille du sac est de " +sac.size());
 		Tuile piochee = sac.get(rd.nextInt(sac.size()));
 		sac.remove(piochee);
 		return piochee;
 	}
 
 	// cette fonction place, s'il y a possibilité, la tuile piochée par une IA
-	public void placeIA(Tuile t, int num) {
+	public int[] placeIA(Tuile t) {
 		ArrayList<int[]> p = getAllLegalPlacementsIA(t);
 		if (p.size() > 0) { // si des placements sont possibles
 			int index = rd.nextInt(p.size()); // on en sélectionne un au hasard
@@ -194,10 +232,11 @@ public class Dominos {
 			
 			plateau[placement[0]][placement[1]] = t;			
 			System.out.println("Tuile jouée : (" + placement[0] + "; " + placement[1] + ")");
-			addPoints(t, adjacentesPresentes(placement[0], placement[1]), num);
-			return;
+			addPoints(t, adjacentesPresentes(placement[0], placement[1]));
+			return placement;
 		}
 		System.out.println("Tuile défaussée");
+		return null;
 	}
 	
 	
@@ -231,7 +270,7 @@ public class Dominos {
 		* Si une erreur est générée --> on est sur une bordure.
 		*/
 		
-		int[][] adj = { {x - 1, y}, {x, y + 1}, {x + 1, y}, {x, y - 1} }; // on prend toutes les adjacences possibles
+		int[][] adj = { {x, y-1}, {x + 1, y}, {x, y + 1}, {x - 1, y} }; // on prend toutes les adjacences possibles
 		Tuile[] res = new Tuile[4]; // il peut y avoir jusqu'à 4 tuiles adjacentes
 		boolean isNull = true;
 		
@@ -258,7 +297,7 @@ public class Dominos {
 	public boolean isLegalPlacement(int x, int y, Tuile t) {
 		Tuile p;
 		try { // on vérifie si les coordonnées sont valides
-			p = plateau[x][y];
+			p = plateau[y][x];
 		}
 		catch(IndexOutOfBoundsException e) {
 			return false;
@@ -267,7 +306,7 @@ public class Dominos {
 		if (p != null) return false; // si l'emplacement est occupé on ne peut rien placer
 		
 		Tuile[] adja = adjacentesPresentes(x, y);
-		if (adja == null) return false; // s'il n'y a aucune adjacence 
+		if (adja == null) {return false;} // s'il n'y a aucune adjacence 
 		
 		// Si l'une des adjacences qui n'est pas nulle ne correspond pas à la tuile, on renvoie false
 		for (int i = 0; i < 4; i++) {
@@ -283,7 +322,7 @@ public class Dominos {
 	}
 	
 	// On calcule le nombre de points en regardant sur les adjacences quels côtés ne sont pas nuls
-	private void addPoints(Tuile t, Tuile[] adja, int numPlayer) {
+	private void addPoints(Tuile t, Tuile[] adja) {
 		int nbPoints = 0;
 					
 		// On ne revérifie pas si les côtés correspondent, car c'est forcément le cas vu que la méthode est utilisée à la toute fin
@@ -308,8 +347,8 @@ public class Dominos {
 			}
 		}
 		
-		System.out.println(players.get(numPlayer).pseudo + " gagne " + nbPoints + " point(s)");
-		players.get(numPlayer).addPoints(nbPoints);
+		System.out.println(players.get(tour).pseudo + " gagne " + nbPoints + " point(s)");
+		players.get(tour).addPoints(nbPoints);
 		
 	}
 		
@@ -319,14 +358,33 @@ public class Dominos {
 		players.remove(player);		
 	}
 
-	public void placer(int x, int y, Tuile tuileEnMain, int num) {
+	public void placer(int x, int y, Tuile tuileEnMain) {
 		// TODO Auto-generated method stub
 		plateau[x][y] = tuileEnMain;
-		addPoints(tuileEnMain, adjacentesPresentes(x, y), num);
+		addPoints(tuileEnMain, adjacentesPresentes(x, y));
 	}
 	
 	public Tuile[][] getPlateau(){
 		return plateau;
 	}
 	
+	public void addPlayer(Player p) {
+		players.add(p);
+	}
+	
+	public void addTuile(Tuile t, int x, int y) {
+		plateau[x][y]=t;
+	}
+	
+	public void suppTuile(int x,int y) {
+		plateau[x][y]=null;
+	}
+	
+	public ArrayList<Player> getPlayers(){
+		return players;
+	}
+	
+	public void setState(State s) {
+		state=s;
+	}
 }
