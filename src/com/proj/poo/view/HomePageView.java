@@ -1,20 +1,25 @@
 package com.proj.poo.view;
 
-import java.awt.BorderLayout; 
+import java.awt.BorderLayout;   
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+<<<<<<< HEAD
+=======
+import com.proj.poo.model.dominos.Dominos;
+import com.proj.poo.model.dominos.Player;
+>>>>>>> 21d695abc894812c5039e3f447057e047515b176
 import com.proj.poo.runner.Auxiliaire;
 
 public class HomePageView extends JPanel {
@@ -29,10 +34,15 @@ public class HomePageView extends JPanel {
 	// représente l'image du titre du jeu
 	private JLabel title;
 	
+	private Dominos partie;
+	
 	private JButton dominosBtn, carcassonneBtn, exitBtn, ajoutBtn;
 	
 	// création de plusieurs panels afin de pouvoir utiliser les differents layout et bien placer les boutons
-	public HomePageView(Dimension size, double scaleX, double scaleY, double scaleXY) {
+	public HomePageView(Dimension size, double scaleX, double scaleY, double scaleXY, JFrame frame) {
+		this.setPreferredSize(size);
+		partie= new Dominos();
+		
 		BorderLayout container_layout = new BorderLayout();
 		container = new JPanel(container_layout);// panel principal qui contient tout les autres panels
 		top_container = new JPanel(); // panel du haut
@@ -59,8 +69,13 @@ public class HomePageView extends JPanel {
 		dominosBtn.setForeground(Color.ORANGE);
 		dominosBtn.setFont(new Font("Arial", Font.BOLD, (int) (50 * scaleX)));
 		dominosBtn.setEnabled(false);
+		dominosBtn.addActionListener(e -> {
+			container.setVisible(false);
+			DominosView dcv = new DominosView(size,scaleX,scaleY,partie,frame);
+			frame.add(dcv);
+		});
 		
-		carcassonneBtn = new JButton(resizeImage(new ImageIcon(Auxiliaire.imgResourcesPath + "carcassonne.png"), (int) (700 * scaleX), (int) (156 * scaleY)));
+		carcassonneBtn = new JButton(Auxiliaire.resizeImage(new ImageIcon(Auxiliaire.imgResourcesPath + "carcassonne.png"), (int) (700 * scaleX), (int) (156 * scaleY)));
 		carcassonneBtn.setPreferredSize(new Dimension((int) (700 * scaleX), (int) (156 * scaleY)));
 		carcassonneBtn.setBackground(Color.DARK_GRAY);
 		carcassonneBtn.setEnabled(false);
@@ -70,6 +85,7 @@ public class HomePageView extends JPanel {
 		exitBtn.setBackground(Color.RED);
 		exitBtn.addActionListener(e -> {
 			// action à effectuer pour fermer le programme
+			frame.dispose();
 	      });
 		
 		ajoutBtn = new JButton("Ajouter un joueur (min. 2)");
@@ -115,9 +131,7 @@ public class HomePageView extends JPanel {
 	
 	public JPanel getMainContainer() { return container; }
 
-	private ImageIcon resizeImage(ImageIcon i, int width, int height) {
-		return new ImageIcon(i.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
-	}
+	
 			
 	private class AjoutPlayer extends JPanel{
 			
@@ -153,14 +167,23 @@ public class HomePageView extends JPanel {
 				container.add(valider);
 								
 				valider.addActionListener((ActionEvent e) ->{ // dès qu'on clique sur le bouton valider
-					valider.setEnabled(false);
-					NB_PLAYERS++; // on incremente le nombre de joueurs
-					if (!pseudo.getText().isEmpty() && !pseudo.getText().isBlank()) { // si le pseudo est non vide
+					if (!pseudo.getText().isEmpty() && !pseudo.getText().isBlank()) {// si le pseudo est non vide
+						valider.setEnabled(false);
+						NB_PLAYERS++; // on incremente le nombre de joueurs
 						if (isBot == null || !isBot.isSelected()) { // si c'est pas un bot
+<<<<<<< HEAD
 							new PlayerDominos(pseudo.getText(), null, true, NB_PLAYERS); // creation du nouveau joueur
 						}
 						else { // si c'est un vrai joueur
 							new PlayerDominos(pseudo.getText(), null, false, NB_PLAYERS);
+=======
+							Player p =new Player(pseudo.getText(), null, true, NB_PLAYERS);// creation du nouveau joueur
+							partie.addPlayer(p);
+						}
+						else { // si c'est un vrai joueur
+							Player p = new Player(pseudo.getText(), null, false, NB_PLAYERS);
+							partie.addPlayer(p);
+>>>>>>> 21d695abc894812c5039e3f447057e047515b176
 						}
 						if (NB_PLAYERS >= 2) { // si il y a au moins 2 joueurs on active les boutons de dominos et carcassonne
 							carcassonneBtn.setEnabled(true);
@@ -168,6 +191,7 @@ public class HomePageView extends JPanel {
 						}						
 											
 						ajoutBtn.setEnabled(true);
+						
 						
 					}
 				});

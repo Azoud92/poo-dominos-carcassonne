@@ -73,7 +73,6 @@ public class DominosConsole extends Dominos {
 		}
 	}
 	
-	// affichage du plateau
 	private void printPlateau() {
 		// ces ArrayList servent à afficher correctement les tuiles : pour chaque ligne, on imprime les côtés des tuiles
 		ArrayList<String> toPrint = new ArrayList<String>();
@@ -83,7 +82,7 @@ public class DominosConsole extends Dominos {
 
 		for (int i = 0; i < plateau.length; i++) {
 			for (int j = 0; j < plateau[i].length; j++) {
-				TuileDominos x = (TuileDominos) plateau[i][j];
+				TuileDominos x = (TuileDominos) plateau[j][i];
 				if (x == null) {
 					String s = "(" + Auxiliaire.space(String.valueOf(plateau.length).length() - String.valueOf(i).length()) + i + ";" + Auxiliaire.space(String.valueOf(plateau[i].length).length() - String.valueOf(j).length()) + j + ") "; // une tuile nulle est représentée par une coordonnée "(x, y)"
 					System.out.print(s);
@@ -160,7 +159,7 @@ public class DominosConsole extends Dominos {
 	}
 
 	@Override
-	public void placeIA(Tuile t, Player p) {
+	public int[] placeIA(Tuile t, Player p) {
 		// TODO Auto-generated method stub
 		ArrayList<int[]> p1acements = getAllLegalPlacementsIA(t);
 		if (p1acements.size() > 0) { // si des placements sont possibles
@@ -173,9 +172,10 @@ public class DominosConsole extends Dominos {
 			plateau[placement[0]][placement[1]] = t;			
 			System.out.println("Tuile jouée : (" + placement[0] + "; " + placement[1] + ")");
 			addPoints(t, tuilesAdjacentes(placement[0], placement[1]), p);
-			return;
+			return placement;
 		}
 		System.out.println("Tuile défaussée");
+		return null;
 	}	
 
 }

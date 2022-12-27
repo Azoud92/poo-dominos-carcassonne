@@ -1,5 +1,9 @@
 package com.proj.poo.runner;
 
+import java.awt.Image; 
+
+import javax.swing.ImageIcon;
+
 // Classe contenant toutes les méthodes auxiliaires; non extensible.
 public final class Auxiliaire {
 	
@@ -14,4 +18,7 @@ public final class Auxiliaire {
 	// Chemin d'accès aux resources images
 	public static String imgResourcesPath = "src/com/proj/poo/resources/img/";
 	
+	public static ImageIcon resizeImage(ImageIcon i, int width, int height) {
+		return new ImageIcon(i.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
+	}
 }

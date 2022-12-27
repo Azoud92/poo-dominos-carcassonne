@@ -12,7 +12,6 @@ public class Dominos extends Game {
 
 	public Dominos(int tailleSac, ArrayList<Player> p) {
 		super(tailleSac, p);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -26,22 +25,24 @@ public class Dominos extends Game {
 	@Override
 	protected void gameStart() {
 		// TODO Auto-generated method stub
+
 		if (state != State.READY) {
 			return;
 		}
 		state = State.PLAYING;
-		
-		int tour = 0; // indice servant à savoir qui doit jouer
-		
+
+		tour = 0; // indice servant à savoir qui doit jouer
+
 		// tant qu'il reste des tuiles et qu'il y a toujours plus d'un joueur la partie continue
 		while (sac.size() > 0 && players.size() > 1) {
 			// IL FAUT AVERTIR LE CONTROLEUR QUE C'EST A TEL JOUEUR DE JOUER
-			
-			players.get(tour).play();
+
 			if (tour + 1 >= players.size()) { tour = 0; }
-			else { tour++; }			
+			else { tour++; }
+
+			joueurActuel = players.get(tour);
 		}
-		
+
 		PlayerDominos winner = null;
 		int maxPts = 0;
 		for (Player p : players) {
@@ -50,19 +51,19 @@ public class Dominos extends Game {
 				winner = (PlayerDominos) p;
 			}
 		}
-		
+
 		if (winner != null) {
 			// IL FAUT AVERTIR LE CONTROLEUR DU VAINQUEUR DE LA PARTIE
 		}
 		else {
 			// IL FAUT AVERTIR LE CONTROLEUR QUE LE MATCH EST NUL
 		}
-		
+
 		state = State.FINISHED;
-	}
+	}				
 
 	@Override
-	public void placeIA(Tuile t, Player p) {
+	public int[] placeIA(Tuile t, Player p) {
 		// TODO Auto-generated method stub
 		ArrayList<int[]> p1acements = getAllLegalPlacementsIA(t);
 		if (p1acements.size() > 0) { // si des placements sont possibles
@@ -75,9 +76,17 @@ public class Dominos extends Game {
 			plateau[placement[0]][placement[1]] = t;
 			// IL FAUT AVERTIR LE CONTROLEUR QUE LA TUILE A ETE PLACEE
 			addPoints(t, tuilesAdjacentes(placement[0], placement[1]), p);
-			return;
+			return placement;
 		}
 		// IL FAUT AVERTIR LE CONTROLEUR QUE LA TUILE A ETE DEFAUSSEE
+		return null;
+	}
+	
+	@Override
+	public void placeTuile(int x, int y, Tuile t, Player p) {
+		// TODO Auto-generated method stub
+		plateau[x][y] = t;
+		addPoints(t, tuilesAdjacentes(x, y), p);
 	}
 
 	// On calcule le nombre de points en regardant sur les adjacences quels côtés ne sont pas nuls
@@ -108,7 +117,50 @@ public class Dominos extends Game {
 
 		System.out.println(p.pseudo + " gagne " + nbPoints + " point(s)");
 		((PlayerDominos) p).addPoints(nbPoints);
-
 	}
 
+	public boolean passerTour() {
+		if (sac.size() <= 0 || players.size() <= 1) {
+			state = State.FINISHED;
+			return false;
+		}
+		if (tour + 1 >= players.size()) {
+			tour = 0; 
+		}
+		else { 
+			tour++; 
+		}
+		joueurActuel = players.get(tour);
+		return true;
+	}
+
+	public Player finPartie() {
+		Player winner = null;
+		int maxPts = 0;
+		for (Player p : players) {
+			if (((PlayerDominos) p).getPoints() > maxPts) {
+				maxPts = ((PlayerDominos) p).getPoints(); 
+				winner = p;
+			}
+		}
+		state = State.FINISHED;
+		if (winner != null) return winner;
+		else return null;
+	}
+	
+	public void addTuile(Tuile t, int x, int y) {
+		plateau[x][y]=t;
+	}
+
+	public void suppTuile(int x,int y) {
+		plateau[x][y]=null;
+	}
+
+	public ArrayList<Player> getPlayers(){
+		return players;
+	}
+
+	public void setState(State s) {
+		state=s;
+	}
 }
