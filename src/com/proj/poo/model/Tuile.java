@@ -15,7 +15,10 @@ public abstract class Tuile {
 	public abstract void remplirTuile();
 	
 	public final void rotation() {
-		ZoneTuile[][] rotated = { tuile[3], tuile[0], tuile[1], tuile[2] };
+		ZoneTuile[][] rotated = { {tuile[3][2], tuile[3][1], tuile[3][0] },
+				tuile[0],
+				{ tuile[1][2], tuile[1][1], tuile[1][0] },
+				tuile[2] };
 		tuile = rotated;
 	}
 	

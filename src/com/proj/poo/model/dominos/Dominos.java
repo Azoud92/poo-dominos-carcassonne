@@ -40,7 +40,7 @@ public class Dominos extends Game {
 			if (tour + 1 >= players.size()) { tour = 0; }
 			else { tour++; }
 
-			joueurActuel = players.get(tour);
+			setJoueurActuel(players.get(tour));
 		}
 
 		PlayerDominos winner = null;
@@ -130,7 +130,7 @@ public class Dominos extends Game {
 		else { 
 			tour++; 
 		}
-		joueurActuel = players.get(tour);
+		setJoueurActuel(players.get(tour));
 		return true;
 	}
 
@@ -149,11 +149,11 @@ public class Dominos extends Game {
 	}
 	
 	public void addTuile(Tuile t, int x, int y) {
-		plateau[x][y]=t;
+		plateau[x][y] = t;
 	}
 
 	public void suppTuile(int x,int y) {
-		plateau[x][y]=null;
+		plateau[x][y] = null;
 	}
 
 	public ArrayList<Player> getPlayers(){
@@ -161,6 +161,6 @@ public class Dominos extends Game {
 	}
 
 	public void setState(State s) {
-		state=s;
+		state = s;
 	}
 }

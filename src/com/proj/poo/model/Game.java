@@ -11,7 +11,7 @@ public abstract class Game {
 	protected ArrayList<Tuile> sac;
 	protected ArrayList<Player> players;
 	
-	protected Player joueurActuel;
+	private Player joueurActuel;
 	protected int tour;
 
 	protected Tuile[][] plateau;
@@ -25,7 +25,7 @@ public abstract class Game {
 		if (players == null) this.players = new ArrayList<Player>();
 		else {
 			this.players = players;
-			joueurActuel = players.get(0);
+			setJoueurActuel(players.get(0));
 		}
 
 		remplirSac();
@@ -129,11 +129,11 @@ public abstract class Game {
 		plateau[x][y] = t;
 	}
 
-	protected final void addPlayer(Player p) {
+	public final void addPlayer(Player p) {
 		players.add(p);
 	}
 
-	protected final void removePlayer(Player p) {
+	public final void removePlayer(Player p) {
 		players.add(p);
 	}
 
@@ -149,6 +149,14 @@ public abstract class Game {
 	
 	public final Tuile[][] getPlateau(){
 		return plateau;
+	}
+
+	public Player getJoueurActuel() {
+		return joueurActuel;
+	}
+
+	public void setJoueurActuel(Player joueurActuel) {
+		this.joueurActuel = joueurActuel;
 	}
 
 }
