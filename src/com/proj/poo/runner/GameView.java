@@ -18,7 +18,7 @@ public class GameView extends JFrame {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -1577294716114661773L;
+	/*private static final long serialVersionUID = -1577294716114661773L;
 
 	private Dimension size;
 	private double scaleX, scaleY; // représente le coef. multiplicateur à appliquer selon la résolution du client
@@ -47,7 +47,7 @@ public class GameView extends JFrame {
 				/**
 				 * 
 				 */
-				private static final long serialVersionUID = 5873722615660821503L;
+				/*private static final long serialVersionUID = 5873722615660821503L;
 				
 				@Override
 				public void paintComponent(Graphics g) {
@@ -68,7 +68,7 @@ public class GameView extends JFrame {
 
 			
 		});				
-	}
+	}*/
 	
 	
 	

@@ -15,16 +15,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.proj.poo.model.dominos.Player;
 import com.proj.poo.runner.Auxiliaire;
 
 public class HomePageView extends JPanel {
 
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 5106898561647691052L;
 	
+	/*
 	// on crée un container principal
 	private JPanel container, top_container, game_container,bottom_container,container_test1,container_test2, players;
 		
@@ -136,7 +134,7 @@ public class HomePageView extends JPanel {
 				/* nouveau panel de 4 lignes contenant la requête de pseudo, sa réponse,
 				 * le champ pour connaître le type de joueur (IA / Réel), et le dernier pour valider
 				 */
-				container = new JPanel();
+				/*container = new JPanel();
 				container.setBackground(Color.CYAN);
 				container.setLayout(new GridLayout(4,1));
 								
@@ -159,10 +157,10 @@ public class HomePageView extends JPanel {
 					NB_PLAYERS++; // on incremente le nombre de joueurs
 					if (!pseudo.getText().isEmpty() && !pseudo.getText().isBlank()) { // si le pseudo est non vide
 						if (isBot == null || !isBot.isSelected()) { // si c'est pas un bot
-							new Player(pseudo.getText(), null, true, NB_PLAYERS); // creation du nouveau joueur
+							new PlayerDominos(pseudo.getText(), null, true, NB_PLAYERS); // creation du nouveau joueur
 						}
 						else { // si c'est un vrai joueur
-							new Player(pseudo.getText(), null, false, NB_PLAYERS);
+							new PlayerDominos(pseudo.getText(), null, false, NB_PLAYERS);
 						}
 						if (NB_PLAYERS >= 2) { // si il y a au moins 2 joueurs on active les boutons de dominos et carcassonne
 							carcassonneBtn.setEnabled(true);
@@ -178,7 +176,7 @@ public class HomePageView extends JPanel {
 			public JPanel getCtn() {
 				return this.container;
 			}
-		}
+		}*/
 }
 
 

@@ -8,14 +8,13 @@ import java.awt.GridLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.proj.poo.model.dominos.Dominos;
-import com.proj.poo.model.dominos.Tuile;
+import com.proj.poo.model.dominos.TuileDominos;
 
 public class DominosView extends JPanel {
 
 	private static final long serialVersionUID = -7758253179910801855L;
 	
-	private JPanel game, controle;
+	/*private JPanel game, controle;
 	private Dominos partie;
 	private Dimension size;
 	double scaleX, scaleY;
@@ -42,13 +41,13 @@ public class DominosView extends JPanel {
 		this.add(controle,BorderLayout.EAST);
 		this.setVisible(true);
 		
-		Tuile t = partie.piocher();
+		TuileDominos t = partie.piocher();
 		placeTuile(t,0,0);
 		
 	}
 	
 	
-	public void placeTuile(Tuile tuile, int x, int y) {
+	public void placeTuile(TuileDominos tuile, int x, int y) {
 		TuileView t= new TuileView(tuile, x, y);
 		game.add(t);
 		game.repaint();
@@ -61,11 +60,11 @@ public class DominosView extends JPanel {
 
 		private static final long serialVersionUID = 8825429997330574373L;
 		
-		Tuile tuile;
+		TuileDominos tuile;
 		int x, y;
 		int tailleTuile = (size.height / partie.getPlateau().length);
 		
-		public TuileView (Tuile tuile, int x, int y) {
+		public TuileView (TuileDominos tuile, int x, int y) {
 			this.tuile= tuile;
 			this.x = x;
 			this.y = y;
@@ -131,6 +130,6 @@ public class DominosView extends JPanel {
 			
 		}
 		
-	}
+	}*/
 
 }
