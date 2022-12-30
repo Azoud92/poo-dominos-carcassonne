@@ -15,7 +15,7 @@ public class DominosConsole extends Dominos {
 
 	private Scanner sc = new Scanner(System.in);
 	public DominosConsole(int tailleSac) {
-		super(tailleSac, null);
+		super(tailleSac, null, null);
 		// TODO Auto-generated constructor stub
 		
 		int nbPlayers = requestNbPlayers();
@@ -118,7 +118,7 @@ public class DominosConsole extends Dominos {
 	}
 
 	@Override
-	public void gameStart() {
+	public void play() {
 		// TODO Auto-generated method stub
 		if (state != State.READY) {
 			return;

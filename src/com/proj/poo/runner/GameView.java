@@ -57,7 +57,6 @@ public class GameView extends JFrame {
 
 			HomePageController hpc = new HomePageController();
 			HomePageView hpv = new HomePageView(size, scaleX, scaleY, scaleXY, frame, hpc);
-			hpc.setView(hpv);
 			container.add(hpv.getMainContainer());
 
 			//DominosView dcv = new DominosView(size, scaleX, scaleY, new Dominos());

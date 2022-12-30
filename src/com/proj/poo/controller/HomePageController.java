@@ -1,21 +1,20 @@
 package com.proj.poo.controller;
 
+import java.awt.Dimension;
+
 import com.proj.poo.model.Game;
 import com.proj.poo.model.GameType;
 import com.proj.poo.model.dominos.Dominos;
 import com.proj.poo.model.dominos.IADominos;
 import com.proj.poo.model.dominos.PlayerDominos;
-import com.proj.poo.view.HomePageView;
+import com.proj.poo.view.DominosView;
 
 public class HomePageController {
 
-	HomePageView view;
-	Game party;
+	private Game party;
 	
-	public void setView(HomePageView hpv) {
-		view = hpv;
-	}
-	
+	private DominosController dominosController;
+		
 	public void addDominosPlayer(String pseudo, int id, boolean isIA) {
 		if (party == null) createParty(GameType.DOMINOS);
 		if (!isIA) {
@@ -26,8 +25,19 @@ public class HomePageController {
 		}		
 	}
 	
-	private void createParty(GameType gt) {
-		if (gt == GameType.DOMINOS) party = new Dominos(50, null);
+	public DominosView runParty(Dimension size, double scaleX, double scaleY) {
+		DominosView dv = new DominosView(size, scaleX, scaleY, dominosController);
+		dominosController.setView(dv);
+		return dv;
+	}
+	
+	private void createParty(GameType gt) {		
+		if (gt == GameType.DOMINOS) {
+			dominosController = new DominosController();
+			party = new Dominos(50, null, dominosController);
+			dominosController.setParty((Dominos) party);
+		}
+		
 	}
 
 	public Dominos getDominosParty() {

@@ -66,7 +66,7 @@ public class HomePageView extends JPanel {
 		dominosBtn.setEnabled(false);
 		dominosBtn.addActionListener(e -> {
 			container.setVisible(false);
-			DominosView dcv = new DominosView(size, scaleX, scaleY, controller.getDominosParty(), frame);
+			DominosView dcv = controller.runParty(size, scaleX, scaleY);
 			frame.add(dcv);
 		});
 

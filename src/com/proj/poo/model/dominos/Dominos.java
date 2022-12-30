@@ -2,6 +2,7 @@ package com.proj.poo.model.dominos;
 
 import java.util.ArrayList;
 
+import com.proj.poo.controller.DominosController;
 import com.proj.poo.model.Game;
 import com.proj.poo.model.Player;
 import com.proj.poo.model.State;
@@ -10,8 +11,13 @@ import com.proj.poo.model.ZoneTuile;
 
 public class Dominos extends Game {
 
-	public Dominos(int tailleSac, ArrayList<Player> p) {
+	private DominosController controller;
+	
+	public Dominos(int tailleSac, ArrayList<Player> p, DominosController controller) {		
 		super(tailleSac, p);
+		this.controller = controller;
+		
+		controller.setActualTuile(plateau[plateau.length / 2][plateau.length / 2]);
 	}
 
 	@Override
@@ -23,43 +29,37 @@ public class Dominos extends Game {
 	}
 
 	@Override
-	protected void gameStart() {
+	public void play() {
 		// TODO Auto-generated method stub
 
-		if (state != State.READY) {
+		if (state == State.FINISHED) {
 			return;
 		}
 		state = State.PLAYING;
-
-		tour = 0; // indice servant à savoir qui doit jouer
-
-		// tant qu'il reste des tuiles et qu'il y a toujours plus d'un joueur la partie continue
-		while (sac.size() > 0 && players.size() > 1) {
-			// IL FAUT AVERTIR LE CONTROLEUR QUE C'EST A TEL JOUEUR DE JOUER
-
-			if (tour + 1 >= players.size()) { tour = 0; }
-			else { tour++; }
-
-			setJoueurActuel(players.get(tour));
-		}
-
-		PlayerDominos winner = null;
-		int maxPts = 0;
-		for (Player p : players) {
-			if (((PlayerDominos) p).getPoints() > maxPts) {
-				maxPts = ((PlayerDominos) p).getPoints(); 
-				winner = (PlayerDominos) p;
-			}
-		}
-
-		if (winner != null) {
-			// IL FAUT AVERTIR LE CONTROLEUR DU VAINQUEUR DE LA PARTIE
+		
+		if (sac.size() > 0 && players.size() > 1) {
+			controller.setPlayerToPlay((PlayerDominos) players.get(tour));
+			players.get(tour).play();			
 		}
 		else {
-			// IL FAUT AVERTIR LE CONTROLEUR QUE LE MATCH EST NUL
-		}
+			PlayerDominos winner = null;
+			int maxPts = 0;
+			for (Player p : players) {
+				if (((PlayerDominos) p).getPoints() > maxPts) {
+					maxPts = ((PlayerDominos) p).getPoints(); 
+					winner = (PlayerDominos) p;
+				}
+			}
 
-		state = State.FINISHED;
+			if (winner != null) {
+				controller.setWinner(winner);
+			}
+			else {
+				controller.setWinner(null);
+			}
+
+			state = State.FINISHED;
+		}		
 	}				
 
 	@Override
@@ -74,11 +74,12 @@ public class Dominos extends Game {
 			}
 
 			plateau[placement[0]][placement[1]] = t;
-			// IL FAUT AVERTIR LE CONTROLEUR QUE LA TUILE A ETE PLACEE
+			if (tour + 1 >= players.size()) { tour = 0; }
+			else { tour++; }
+			controller.setPlayerToPlay((PlayerDominos) players.get(tour));
 			addPoints(t, tuilesAdjacentes(placement[0], placement[1]), p);
 			return placement;
 		}
-		// IL FAUT AVERTIR LE CONTROLEUR QUE LA TUILE A ETE DEFAUSSEE
 		return null;
 	}
 	
@@ -87,6 +88,9 @@ public class Dominos extends Game {
 		// TODO Auto-generated method stub
 		plateau[x][y] = t;
 		addPoints(t, tuilesAdjacentes(x, y), p);
+		if (tour + 1 >= players.size()) { tour = 0; }
+		else { tour++; }
+		controller.setPlayerToPlay((PlayerDominos) players.get(tour));
 	}
 
 	// On calcule le nombre de points en regardant sur les adjacences quels côtés ne sont pas nuls
@@ -118,6 +122,13 @@ public class Dominos extends Game {
 		System.out.println(p.pseudo + " gagne " + nbPoints + " point(s)");
 		((PlayerDominos) p).addPoints(nbPoints);
 	}
+	
+	@Override
+	public Tuile piocher() {
+		Tuile t = super.piocher();
+		if (controller != null) controller.setActualTuile(t);
+		return t;
+	}
 
 	public boolean passerTour() {
 		if (sac.size() <= 0 || players.size() <= 1) {
@@ -130,7 +141,6 @@ public class Dominos extends Game {
 		else { 
 			tour++; 
 		}
-		setJoueurActuel(players.get(tour));
 		return true;
 	}
 
@@ -159,7 +169,7 @@ public class Dominos extends Game {
 	public ArrayList<Player> getPlayers(){
 		return players;
 	}
-
+	
 	public void setState(State s) {
 		state = s;
 	}

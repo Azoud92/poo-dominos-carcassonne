@@ -9,42 +9,32 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.proj.poo.model.State;
-import com.proj.poo.model.ZoneTuile;
-import com.proj.poo.model.dominos.Dominos;
-import com.proj.poo.model.dominos.IADominos;
-import com.proj.poo.model.dominos.PlayerDominos;
-import com.proj.poo.model.dominos.TuileDominos;
+import com.proj.poo.controller.DominosController;
 import com.proj.poo.runner.Auxiliaire;
 
 public class DominosView extends JPanel {
 
 	private static final long serialVersionUID = -7758253179910801855L;
 
+	private DominosController controller;
+	
 	private JPanel game, controle;
-	private Dominos partie;
 	private Dimension size;
-	private PlayerDominos jActuel;
-	private TuileDominos tActuelle;
-	private JFrame jf;
 	double scaleX, scaleY;	
 
-	public DominosView(Dimension size, double scaleX, double scaleY, Dominos partie, JFrame frame) {
+	public DominosView(Dimension size, double scaleX, double scaleY, DominosController controller) {
 		this.setPreferredSize(size);
 		this.size = size;
 		this.scaleX = scaleX;
 		this.scaleY = scaleY;
 		this.setLayout(new BorderLayout());
-		this.partie = partie;
-		jActuel = (PlayerDominos) partie.getPlayers().get(0);
-		jf = frame;
+		this.controller = controller;
 		controle = new Controle();
 
-		game = new JPanel(new GridLayout(partie.getPlateau().length, partie.getPlateau().length));
+		game = new JPanel(new GridLayout(controller.getPlateauLength(), controller.getPlateauLength()));
 		game.setPreferredSize(new Dimension(size.height,size.height));
 		game.setBackground(Color.GRAY);
 		game.setLayout(null);
@@ -52,40 +42,40 @@ public class DominosView extends JPanel {
 		this.add(game,BorderLayout.WEST);
 		this.add(controle,BorderLayout.EAST);
 		this.setVisible(true);
-		partie.setState(State.READY);
 
-		tActuelle = (TuileDominos) partie.piocher();
-		partie.addTuile(tActuelle,partie.getPlateau().length/2, partie.getPlateau().length/2);
-		placeTuile(tActuelle,partie.getPlateau().length/2,partie.getPlateau().length/2);
-		partie.setState(State.PLAYING);
+		
 	}
 
-	public void placeTuile(TuileDominos tuile, int x, int y) {
-		TuileView t= new TuileView(tuile, x, y);
+	public void placeTuile(int x, int y) {
+		TuileView t= new TuileView(x, y);
 		t.setBackground(Color.PINK);
 		game.add(t);
 		game.repaint();
 		game.paintComponents(game.getGraphics());
 
 	}
-	public TuileView initTuile(TuileDominos tuile, int x, int y) {
-		TuileView t = new TuileView(tuile, x, y);
+	public TuileView initTuile(int x, int y) {
+		TuileView t = new TuileView(x, y);
 		game.add(t);
 		game.repaint();
 		game.paintComponents(game.getGraphics());
 		return t;
 	}
 	
+	public Dimension getSizeView() {
+		return size;
+	}
+	
+	public Controle getControle() { return (Controle) controle; }
+	
 	public class TuileView extends JPanel {
 
 		private static final long serialVersionUID = 8825429997330574373L;
 
-		TuileDominos tuile;
 		int x, y;
-		int tailleTuile = (size.height / partie.getPlateau().length);
+		int tailleTuile = (size.height / controller.getPlateauLength());
 
-		public TuileView (TuileDominos tuile, int x, int y) {
-			this.tuile= tuile;
+		public TuileView (int x, int y) {
 			this.x = x;
 			this.y = y;
 			this.setBounds(x * tailleTuile, y * tailleTuile, tailleTuile, tailleTuile);
@@ -101,10 +91,6 @@ public class DominosView extends JPanel {
 		}
 
 		private void creation() {
-			ZoneTuile[] haut = tuile.getHaut();
-			ZoneTuile[] bas = tuile.getBas();
-			ZoneTuile[] gauche = tuile.getGauche();
-			ZoneTuile[] droite = tuile.getDroite();
 
 			JLabel c1 = new JLabel(" ");
 			JLabel c2 = new JLabel(" ");
@@ -113,19 +99,15 @@ public class DominosView extends JPanel {
 
 			this.add(c1);
 			for (int i = 0; i < 3;i++) {
-				ZoneTuile h = haut[i];
-				JLabel label_h = new JLabel(" " + String.valueOf(h.getValue()));
-				label_h.setFont(new Font("Arial", Font.BOLD, (size.height / partie.getPlateau().length) / 7));
+				JLabel label_h = new JLabel(controller.getHautValue(i));
+				label_h.setFont(new Font("Arial", Font.BOLD, (size.height / controller.getPlateauLength()) / 7));
 				this.add(label_h);
 			}
 			this.add(c2);
 
 			for (int i = 0; i < 3;i++) {
-				ZoneTuile g = gauche[i];
-				ZoneTuile d = droite[i];
-
-				JLabel label_g = new JLabel("  " + String.valueOf(g.getValue()));
-				label_g.setFont(new Font("Arial", Font.BOLD, (size.height / partie.getPlateau().length) / 7));
+				JLabel label_g = new JLabel(controller.getLeftValue(i));
+				label_g.setFont(new Font("Arial", Font.BOLD, (size.height / controller.getPlateauLength()) / 7));
 				this.add(label_g);
 
 				JLabel space1 = new JLabel(" ");
@@ -135,16 +117,15 @@ public class DominosView extends JPanel {
 				JLabel space3 = new JLabel(" ");
 				this.add(space3);
 
-				JLabel label_d = new JLabel("" + String.valueOf(d.getValue()));
-				label_d.setFont(new Font("Arial", Font.BOLD, (size.height / partie.getPlateau().length) / 7));
+				JLabel label_d = new JLabel(controller.getRightValue(i));
+				label_d.setFont(new Font("Arial", Font.BOLD, (size.height / controller.getPlateauLength()) / 7));
 				this.add(label_d);
 			}
 
 			this.add(c3);
 			for (int i = 0; i < 3;i++) {
-				ZoneTuile b = bas[i];
-				JLabel label_b = new JLabel(" " + String.valueOf(b.getValue()));
-				label_b.setFont(new Font("Arial", Font.BOLD, (size.height / partie.getPlateau().length) / 7));
+				JLabel label_b = new JLabel(controller.getBottomValue(i));
+				label_b.setFont(new Font("Arial", Font.BOLD, (size.height / controller.getPlateauLength()) / 7));
 				this.add(label_b);
 			}
 			this.add(c4);
@@ -152,9 +133,17 @@ public class DominosView extends JPanel {
 
 		public void tuileRotation() {
 			this.removeAll();
-			tuile.rotation();
+			controller.rotationTuile();
 			creation();
 			game.paintComponents(game.getGraphics());
+		}
+		public void setTy(int y) {
+			// TODO Auto-generated method stub
+			this.y = y;
+		}
+		
+		public void setTx(int x) {
+			this.x = x;
 		}
 
 	}
@@ -194,48 +183,11 @@ public class DominosView extends JPanel {
 			piocheBtn.setFont(new Font("Arial", Font.BOLD, (int) (30 * scaleX)));
 			boutonsPerso(piocheBtn,new Color(0,128,255),new Color(204,229,255));
 			piocheBtn.addActionListener((ActionEvent e) ->{
-				if (partie.getPlateau()[0][0]==null) {
-					tActuelle = (TuileDominos) partie.piocher();
-					tuileV = new TuileView(tActuelle, 0, 0);
-
-				}		
-				else {
-					int place_x = 0;
-					int place_y = 0;
-					while(partie.getPlateau()[place_y][place_x] != null) {
-						if (place_x + 1 == partie.getPlateau()[place_y].length) {
-							place_x = 0;
-							place_y++;
-						}
-						if (place_y + 1 == partie.getPlateau().length) {
-							PlayerDominos winner = (PlayerDominos) partie.finPartie();
-							info.remove(name);
-							info.remove(points);
-							abandonBtn.setEnabled(false);
-							if (winner != null) {
-								communication.setText(winner.pseudo + " a gagn� la partie avec " + winner.getPoints() + " points.");
-								info.add(communication);
-								info.paintComponents(info.getGraphics());
-								break;
-							}
-							else{
-								communication.setText("Pas de vainqueur pour cette partie, match nul !");
-								communication.setVisible(true);
-								info.add(communication);
-								info.setVisible(true);
-								communication.paintComponents(communication.getGraphics());
-								break;
-							}
-						}
-						place_x++;
-					}
-					tActuelle = (TuileDominos) partie.piocher();
-					tuileV = new TuileView(tActuelle, place_x, place_y);
-
-				}
+				
+				tuileV = controller.piocheTuile();
+				
 				game.add(tuileV);
 				game.paintComponents(game.getGraphics());
-				System.out.println(tActuelle.toString());
 				piocheBtn.setEnabled(false);
 				poserBtn.setEnabled(true);
 				rotationBtn.setEnabled(true);
@@ -253,14 +205,13 @@ public class DominosView extends JPanel {
 				int y = tuileV.getTy();
 				System.out.println("tuile x: " + tuileV.getX() + "  tuile y : " + tuileV.getY());	
 				System.out.println("tuile x: " + tuileV.getTx() + "  tuile y : " + tuileV.getTy());
-				System.out.println(tActuelle.toString());
-				if (partie.isLegalPlacement(x, y, tActuelle)) {
-					System.out.println("true");
+
+				controller.placeTuile(x, y);
+				
+				if (controller.placeTuile(x, y) == true) {
 					game.remove(tuileV);
 					tuileV = null;
-					placeTuile(tActuelle, x, y);
-					partie.placeTuile(x, y, tActuelle, jActuel);
-					tActuelle = null;
+					placeTuile(x, y);
 					communication.setText("Bien jou�, vous avez r�ussi � placer votre tuile");
 					info.add(communication);
 					this.repaint();
@@ -274,10 +225,7 @@ public class DominosView extends JPanel {
 						e1.printStackTrace();
 					}
 					tour();
-
-				}	
-				//partie.printPlateau();
-
+				}
 			});
 
 			rotationBtn = new JButton("Rotation");
@@ -309,7 +257,7 @@ public class DominosView extends JPanel {
 			abandonBtn.setFont(new Font("Arial", Font.BOLD, (int) (30 * scaleX)));
 			boutonsPerso(abandonBtn,new Color(0, 128, 255),new Color(204, 229, 255));
 			abandonBtn.addActionListener((ActionEvent e) ->{
-				partie.abandon(jActuel);
+				controller.abandon();
 				tour();
 			});
 
@@ -328,94 +276,30 @@ public class DominosView extends JPanel {
 			hautBtn = new JButton(new ImageIcon(Auxiliaire.imgResourcesPath + "touche_haut.png"));
 			boutonsPerso(hautBtn,new Color(0,128,255),null);
 			hautBtn.addActionListener((ActionEvent e)->{
-				if (tuileV != null) {
-					try {
-						if (partie.getPlateau()[tuileV.x][tuileV.y-1] == null) {
-							tuileV.setLocation(tuileV.getX(),tuileV.getY() - ((size.height / partie.getPlateau().length)));
-							tuileV.y--;
-							System.out.println("tuile x: " + tuileV.getX() + "  tuile y : " + tuileV.getY());	
-							System.out.println("tuile x: " + tuileV.getTx() + "  tuile y : " + tuileV.getTy());	
-						}
-						else{System.out.println(partie.getPlateau()[tuileV.x][tuileV.y-1].toString());}
-					}
-					catch (ArrayIndexOutOfBoundsException e1) {
-						tuileV.setLocation(tuileV.getX(),(size.height / partie.getPlateau().length) * (partie.getPlateau().length - 1));
-						tuileV.y = tuileV.getY()/(size.height / partie.getPlateau().length);
-						System.out.println("tuile x: " + tuileV.getX() + "  tuile y : " + tuileV.getY());	
-						System.out.println("tuile x: " + tuileV.getTx() + "  tuile y : " + tuileV.getTy());
-					}
-				}
+				controller.haut();
 			});
 
 			basBtn = new JButton(new ImageIcon(Auxiliaire.imgResourcesPath + "touche_bas.png"));
 			boutonsPerso(basBtn,new Color(0,128,255),null);
 			basBtn.addActionListener((ActionEvent e)->{
-				if (tuileV != null) {
-					try {
-						if (partie.getPlateau()[tuileV.x][tuileV.y+1] == null) {
-							tuileV.setLocation(tuileV.getX(), tuileV.getY() + ((size.height / partie.getPlateau().length)));
-							tuileV.y++;
-							System.out.println("tuile x: " + tuileV.getX() + "  tuile y : " + tuileV.getY());	
-							System.out.println("tuile x: " + tuileV.getTx() + "  tuile y : " + tuileV.getTy());	
-						}
-						else {System.out.println(partie.getPlateau()[tuileV.x][tuileV.y + 1].toString());}
-					}
-					catch (ArrayIndexOutOfBoundsException e1) {
-						tuileV.setLocation(tuileV.getX(), 0);
-						tuileV.y = 0;
-						System.out.println("tuile x: " + tuileV.getX()+"  tuile y : " + tuileV.getY());	
-						System.out.println("tuile x: " + tuileV.getTx()+"  tuile y : " + tuileV.getTy());
-					}
-				}
+				controller.bas();
 			});
 
 			gaucheBtn = new JButton(new ImageIcon(Auxiliaire.imgResourcesPath + "touche_gauche.png"));
 			boutonsPerso(gaucheBtn,new Color(0, 128, 255), null);
 			gaucheBtn.addActionListener((ActionEvent e)->{
-				if (tuileV != null) {
-					try {
-						if (partie.getPlateau()[tuileV.x - 1][tuileV.y] == null) {
-							tuileV.setLocation(tuileV.getX() - ((size.height / partie.getPlateau().length)), tuileV.getY());
-							tuileV.x--;
-							System.out.println("tuile x: " + tuileV.getX()+"  tuile y : " + tuileV.getY());	
-							System.out.println("tuile x: " + tuileV.getTx()+"  tuile y : " + tuileV.getTy());	
-						}
-						else {System.out.println(partie.getPlateau()[tuileV.x-1][tuileV.y].toString());}
-					}
-					catch (ArrayIndexOutOfBoundsException e1) {
-						tuileV.setLocation((size.height / partie.getPlateau().length) * (partie.getPlateau().length-1), tuileV.getY());
-						tuileV.x = tuileV.getX() / (size.height / partie.getPlateau().length);
-						System.out.println("tuile x: " + tuileV.getX() + "  tuile y : " + tuileV.getY());	
-						System.out.println("tuile x: " + tuileV.getTx() + "  tuile y : " + tuileV.getTy());
-					}
-				}
+				controller.gauche();				
 			});
 
 			droiteBtn = new JButton(new ImageIcon(Auxiliaire.imgResourcesPath + "touche_droite.png"));
 			boutonsPerso(droiteBtn, new Color(0, 128, 255),null);
 			droiteBtn.addActionListener((ActionEvent e)->{
-				if (tuileV != null) {
-					try {
-						if (partie.getPlateau()[tuileV.x + 1][tuileV.y]==null) {
-							tuileV.setLocation(tuileV.getX() + ((size.height / partie.getPlateau().length)), tuileV.getY());
-							tuileV.x++;
-							System.out.println("tuile x: " + tuileV.getX() + "  tuile y : " + tuileV.getY());	
-							System.out.println("tuile x: " + tuileV.getTx() + "  tuile y : " + tuileV.getTy());
-						}
-						else {System.out.println(partie.getPlateau()[tuileV.x+1][tuileV.y].toString());}
-					}
-					catch (ArrayIndexOutOfBoundsException e1) {
-						tuileV.setLocation(0, tuileV.getY());
-						tuileV.x = 0;
-						System.out.println("tuile x: " + tuileV.getX() + "  tuile y : " + tuileV.getY());	
-						System.out.println("tuile x: " + tuileV.getTx() + "  tuile y : " + tuileV.getTy());
-					}
-				}
+				controller.droite();				
 			});
 
 
-			JLabel j1 =new JLabel();
-			JLabel j2 =new JLabel();
+			JLabel j1 = new JLabel();
+			JLabel j2 = new JLabel();
 
 			commandes.add(j1);
 			commandes.add(hautBtn);
@@ -425,11 +309,11 @@ public class DominosView extends JPanel {
 			commandes.add(droiteBtn);
 
 
-			name = new JLabel("Pseudo du joueur : " + jActuel.pseudo);
+			name = new JLabel("Pseudo du joueur : ");
 			name.setFont(new Font("Arial", Font.BOLD, (int) (30 * scaleX)));
 			name.setForeground(new Color(0, 128, 255));
 
-			points = new JLabel("Nombre de points du joueur : " + jActuel.getPoints());
+			points = new JLabel("Nombre de points du joueur : ");
 			points.setFont(new Font("Arial", Font.BOLD, (int) (30 * scaleX)));
 			points.setForeground(new Color(0, 128, 255));
 
@@ -445,70 +329,61 @@ public class DominosView extends JPanel {
 			this.add(commandes);
 		}
 		
+		public TuileView getTuileV() {
+			return tuileV;
+		}
+		
 		public void tour() {
-			boolean b = partie.passerTour();
-			if(!b) {
-				PlayerDominos winner = (PlayerDominos) partie.finPartie();
-				info.remove(name);
-				info.remove(points);
-				abandonBtn.setEnabled(false);
-				if (winner != null) {
-					communication.setText("Bravo � " + winner.pseudo + " qui a gagn� la partie avec " + winner.getPoints() + " points.");
-					info.add(communication);
-					info.paintComponents(info.getGraphics());
-				}
-				else{
-					communication.setText("Pas de vainqueur pour cette partie, match nul !");
-					communication.setVisible(true);
-					info.add(communication);
-					info.setVisible(true);
-				}
-				JButton exitBtn = new JButton("Quitter le jeu");
-				exitBtn.setFont(new Font("Arial", Font.BOLD, (int) (30 * scaleX)));
-				exitBtn.setBackground(Color.RED);
-				exitBtn.addActionListener(e -> {
-					// action à effectuer pour fermer le programme
-					jf.dispose();
-				});
-				info.add(exitBtn);
+			controller.tour();
+			
+			piocheBtn.setEnabled(true);
+			if (communication!=null) {
+				info.remove(communication);
+			}
+		}
+		
+		public void winner(String pseudo, int pts) {
+			info.remove(name);
+			info.remove(points);
+			abandonBtn.setEnabled(false);
+			if (pseudo != null && pts != -1) {
+				communication.setText("Bravo � " + pseudo + " qui a gagn� la partie avec " + pts + " points.");
+				info.add(communication);
 				info.paintComponents(info.getGraphics());
 			}
-			else {
-				jActuel = (PlayerDominos) partie.getJoueurActuel();
-
-				piocheBtn.setEnabled(true);
-				if (communication!=null) {
-					info.remove(communication);
-				}
-				if(jActuel instanceof IADominos) {
-					tActuelle = (TuileDominos) partie.piocher();
-					int[] xy = partie.placeIA(tActuelle, jActuel);
-					if (xy != null) {
-						try {
-							Thread.sleep(500);
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						placeTuile(tActuelle, xy[0], xy[1]);
-						partie.placeTuile(xy[0], xy[1], tActuelle, jActuel);
-						this.repaint();
-						this.paintComponents(getGraphics());
-					}
-					tActuelle = null;
-					tour();
-
-				}
-				name.setText("Pseudo du joueur : " + jActuel.pseudo);
-				points.setText("Nombre de points du joueur : " + jActuel.getPoints());
-
-
+			else{
+				communication.setText("Pas de vainqueur pour cette partie, match nul !");
+				communication.setVisible(true);
+				info.add(communication);
+				info.setVisible(true);
 			}
+			JButton exitBtn = new JButton("Quitter le jeu");
+			exitBtn.setFont(new Font("Arial", Font.BOLD, (int) (30 * scaleX)));
+			exitBtn.setBackground(Color.RED);
+			exitBtn.addActionListener(e -> {
+				// action à effectuer pour fermer le programme
+				System.exit(0);
+			});
+			info.add(exitBtn);
+			info.paintComponents(info.getGraphics());
+		}
+		
+		public void paint() {
+			this.repaint();
+			this.paintComponents(getGraphics());
 		}
 
 		public void boutonsPerso(JButton b, Color bg, Color fg) {
 			b.setBackground(bg);
 			b.setForeground(fg);
+		}
+		
+		public void setPseudoLabelText(String s) {
+			this.name.setText("Pseudo du joueur : " + s);
+		}
+		
+		public void setPointsLabelText(String s) {
+			this.points.setText("Nombre de points du joueur : " + s);
 		}
 	}
 }

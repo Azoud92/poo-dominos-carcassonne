@@ -11,7 +11,6 @@ public abstract class Game {
 	protected ArrayList<Tuile> sac;
 	protected ArrayList<Player> players;
 	
-	private Player joueurActuel;
 	protected int tour;
 
 	protected Tuile[][] plateau;
@@ -25,7 +24,7 @@ public abstract class Game {
 		if (players == null) this.players = new ArrayList<Player>();
 		else {
 			this.players = players;
-			setJoueurActuel(players.get(0));
+			tour = 0;
 		}
 
 		remplirSac();
@@ -39,11 +38,17 @@ public abstract class Game {
 		state = State.READY;
 	}
 
+	public abstract void play();
+	
 	protected abstract void remplirSac();
 
-	protected abstract void gameStart();
-
 	public abstract int[] placeIA(Tuile t, Player p);
+	
+	public Tuile piocher() {
+		Tuile t = sac.get(rd.nextInt(sac.size()));
+		sac.remove(t);
+		return t;
+	}
 
 	// Ces méthodes ne peuvent pas être redéfinies étant donné qu'elles ne peuvent, par définition, pas dériver
 	
@@ -136,13 +141,7 @@ public abstract class Game {
 	public final void removePlayer(Player p) {
 		players.add(p);
 	}
-
-	public final Tuile piocher() {
-		Tuile t = sac.get(rd.nextInt(sac.size()));
-		sac.remove(t);
-		return t;
-	}
-
+	
 	public final void abandon(Player p) {
 		players.remove(p);
 	}
@@ -150,13 +149,10 @@ public abstract class Game {
 	public final Tuile[][] getPlateau(){
 		return plateau;
 	}
-
-	public Player getJoueurActuel() {
-		return joueurActuel;
-	}
-
-	public void setJoueurActuel(Player joueurActuel) {
-		this.joueurActuel = joueurActuel;
+	
+	public final Player getActualPlayer() {
+		if (players.size() > 0) return players.get(tour);
+		return null;
 	}
 
 }
