@@ -48,7 +48,6 @@ public class DominosController {
 	
 	public boolean placeTuile(int x, int y) {
 		if (party.isLegalPlacement(x, y, actualTuile)) {
-			System.out.println("true");
 			party.placeTuile(x, y, actualTuile, party.getActualPlayer());
 			setPlayerToPlay((PlayerDominos) party.getPlayers().get(party.getTour()));
 			return true;
@@ -63,8 +62,7 @@ public class DominosController {
 				if (party.getPlateau()[tuileV.getTx()][tuileV.getTy() - 1] == null) {
 					tuileV.setLocation(tuileV.getX(),tuileV.getY() - ((view.getSizeView().height / getPlateauLength())));
 					tuileV.setTy(tuileV.getTy() - 1);
-					System.out.println("tuile x: " + tuileV.getX() + "  tuile y : " + tuileV.getY());	
-					System.out.println("tuile x: " + tuileV.getTx() + "  tuile y : " + tuileV.getTy());	
+
 				}
 				else if (party.getPlateau()[tuileV.getTx()][tuileV.getTy() - 1] != null) {
 					int tuile_y = tuileV.getTy() - 1;
@@ -79,14 +77,12 @@ public class DominosController {
 					
 					
 				}
-				else{System.out.println(party.getPlateau()[tuileV.getTx()][tuileV.getTy() - 1].toString());}
 			}
 			catch (ArrayIndexOutOfBoundsException e1) {
 				if (party.getPlateau()[tuileV.getTx()][party.getPlateau()[tuileV.getTx()].length-1] == null) {
 					tuileV.setLocation(tuileV.getX(),(view.getSizeView().height / getPlateauLength()) * (getPlateauLength() - 1));
 					tuileV.setTy(tuileV.getY() / (view.getSizeView().height / getPlateauLength()));
-					System.out.println("tuile x: " + tuileV.getX() + "  tuile y : " + tuileV.getY());	
-					System.out.println("tuile x: " + tuileV.getTx() + "  tuile y : " + tuileV.getTy());
+
 				}
 				else if (party.getPlateau()[tuileV.getTx()][party.getPlateau()[tuileV.getTx()].length-1] != null) {
 					int tuile_y = party.getPlateau()[tuileV.getTx()].length-1;
@@ -112,8 +108,7 @@ public class DominosController {
 				if (party.getPlateau()[tuileV.getTx()][tuileV.getTy() + 1] == null) {
 					tuileV.setLocation(tuileV.getX(), tuileV.getY() + ((view.getSizeView().height / getPlateauLength())));
 					tuileV.setTy(tuileV.getTy() + 1);
-					System.out.println("tuile x: " + tuileV.getX() + "  tuile y : " + tuileV.getY());	
-					System.out.println("tuile x: " + tuileV.getTx() + "  tuile y : " + tuileV.getTy());	
+	
 				}
 				else if (party.getPlateau()[tuileV.getTx()][tuileV.getTy() + 1] != null) {
 					int tuile_y=tuileV.getTy()+1;
@@ -128,14 +123,12 @@ public class DominosController {
 					
 					
 				}
-				else {System.out.println(party.getPlateau()[tuileV.getTx()][tuileV.getTy() + 1].toString());}
 			}
 			catch (ArrayIndexOutOfBoundsException e1) {
 				if(party.getPlateau()[tuileV.getTx()][0] == null) {
 					tuileV.setLocation(tuileV.getX(), 0);
 					tuileV.setTy(0);
-					System.out.println("tuile x: " + tuileV.getX()+"  tuile y : " + tuileV.getY());	
-					System.out.println("tuile x: " + tuileV.getTx()+"  tuile y : " + tuileV.getTy());
+
 				}
 				else if (party.getPlateau()[tuileV.getTx()][0] != null) {
 					int tuile_y = 0;
@@ -161,8 +154,7 @@ public class DominosController {
 				if (party.getPlateau()[tuileV.getTx() - 1][tuileV.getTy()] == null) {
 					tuileV.setLocation(tuileV.getX() - ((view.getSizeView().height / getPlateauLength())), tuileV.getY());
 					tuileV.setTx(tuileV.getTx() - 1);
-					System.out.println("tuile x: " + tuileV.getX()+"  tuile y : " + tuileV.getY());	
-					System.out.println("tuile x: " + tuileV.getTx()+"  tuile y : " + tuileV.getTy());	
+
 				}
 				else if (party.getPlateau()[tuileV.getTx()-1][tuileV.getTy()] != null) {
 					int tuile_x=tuileV.getTx()-1;
@@ -177,14 +169,13 @@ public class DominosController {
 					
 					
 				}
-				else {System.out.println(party.getPlateau()[tuileV.getTx() - 1][tuileV.getTy()].toString());}
+
 			}
 			catch (ArrayIndexOutOfBoundsException e1) {
 				if (party.getPlateau()[getPlateauLength()-1][tuileV.getTy()] == null) {
 					tuileV.setLocation((view.getSizeView().height / getPlateauLength()) * (getPlateauLength() - 1), tuileV.getY());
 					tuileV.setTx(tuileV.getX() / (view.getSizeView().height / getPlateauLength()));
-					System.out.println("tuile x: " + tuileV.getX() + "  tuile y : " + tuileV.getY());	
-					System.out.println("tuile x: " + tuileV.getTx() + "  tuile y : " + tuileV.getTy());
+
 				}
 				else if (party.getPlateau()[getPlateauLength()-1][tuileV.getTy()] != null) {
 					int tuile_x = getPlateauLength()-1;
@@ -211,8 +202,7 @@ public class DominosController {
 				if (party.getPlateau()[tuileV.getTx() + 1][tuileV.getTy()] == null) {
 					tuileV.setLocation(tuileV.getX() + ((view.getSizeView().height / getPlateauLength())), tuileV.getY());
 					tuileV.setTx(tuileV.getTx() + 1);
-					System.out.println("tuile x: " + tuileV.getX() + "  tuile y : " + tuileV.getY());	
-					System.out.println("tuile x: " + tuileV.getTx() + "  tuile y : " + tuileV.getTy());
+
 				}
 				else if (party.getPlateau()[tuileV.getTx()+1][tuileV.getTy()] != null) {
 					int tuile_x=tuileV.getTx()+1;
@@ -225,14 +215,12 @@ public class DominosController {
 					tuileV.setLocation(tuile_x * (view.getSizeView().height / getPlateauLength()),tuileV.getY());
 					tuileV.setTx(tuile_x);
 					}
-				else {System.out.println(party.getPlateau()[tuileV.getTx() + 1][tuileV.getTy()].toString());}
+
 			}
 			catch (ArrayIndexOutOfBoundsException e1) {
 				if(party.getPlateau()[0][tuileV.getTy()] == null) {
 					tuileV.setLocation(0, tuileV.getY());
 					tuileV.setTx(0);
-					System.out.println("tuile x: " + tuileV.getX() + "  tuile y : " + tuileV.getY());	
-					System.out.println("tuile x: " + tuileV.getTx() + "  tuile y : " + tuileV.getTy());
 				}
 				else if (party.getPlateau()[0][tuileV.getTy()] != null) {
 					int tuile_x = 0;

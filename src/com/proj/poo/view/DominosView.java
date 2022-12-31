@@ -190,8 +190,6 @@ public class DominosView extends JPanel {
 				poserBtn.setEnabled(true);
 				rotationBtn.setEnabled(true);
 				defausserBtn.setEnabled(true);
-				System.out.println("tuile x: " + tuileV.getX() + "  tuile y : " + tuileV.getY());	
-				System.out.println("tuile x: " + tuileV.getTx() + "  tuile y : " + tuileV.getTy());
 			});
 
 			poserBtn = new JButton("Poser");
@@ -201,8 +199,6 @@ public class DominosView extends JPanel {
 			poserBtn.addActionListener((ActionEvent e) -> {
 				int x = tuileV.getTx();
 				int y = tuileV.getTy();
-				System.out.println("tuile x: " + tuileV.getX() + "  tuile y : " + tuileV.getY());	
-				System.out.println("tuile x: " + tuileV.getTx() + "  tuile y : " + tuileV.getTy());
 
 				
 				if (controller.placeTuile(x, y) == true) {
@@ -232,8 +228,6 @@ public class DominosView extends JPanel {
 			rotationBtn.setEnabled(false);
 			rotationBtn.addActionListener((ActionEvent e) -> {
 				tuileV.tuileRotation();
-				System.out.println("tuile x: " + tuileV.getX() + "  tuile y : " + tuileV.getY());	
-				System.out.println("tuile x: " + tuileV.getTx() + "  tuile y : " + tuileV.getTy());
 
 			});
 			defausserBtn = new JButton("Défausser");

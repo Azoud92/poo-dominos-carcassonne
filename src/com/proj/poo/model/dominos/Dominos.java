@@ -89,7 +89,6 @@ public class Dominos extends Game {
 			}
 		}
 
-		System.out.println(p.pseudo + " gagne " + nbPoints + " point(s)");
 		((PlayerDominos) p).addPoints(nbPoints);
 	}
 	
