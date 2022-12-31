@@ -34,7 +34,7 @@ public class HomePageController {
 	private void createParty(GameType gt) {		
 		if (gt == GameType.DOMINOS) {
 			dominosController = new DominosController();
-			party = new Dominos(50, null, dominosController);
+			party = new Dominos(30, null, dominosController);
 			dominosController.setParty((Dominos) party);
 		}
 		

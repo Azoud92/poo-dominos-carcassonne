@@ -72,7 +72,7 @@ public class DominosView extends JPanel {
 
 		private static final long serialVersionUID = 8825429997330574373L;
 
-		int x, y;
+		private int x, y;
 		int tailleTuile = (size.height / controller.getPlateauLength());
 
 		public TuileView (int x, int y) {
@@ -138,7 +138,6 @@ public class DominosView extends JPanel {
 			game.paintComponents(game.getGraphics());
 		}
 		public void setTy(int y) {
-			// TODO Auto-generated method stub
 			this.y = y;
 		}
 		
@@ -156,7 +155,6 @@ public class DominosView extends JPanel {
 		JButton hautBtn, basBtn, gaucheBtn, droiteBtn;
 		JLabel name, points, communication;
 		TuileView tuileV;
-
 		JPanel info, boutons, commandes;
 
 
@@ -206,16 +204,16 @@ public class DominosView extends JPanel {
 				System.out.println("tuile x: " + tuileV.getX() + "  tuile y : " + tuileV.getY());	
 				System.out.println("tuile x: " + tuileV.getTx() + "  tuile y : " + tuileV.getTy());
 
-				controller.placeTuile(x, y);
 				
 				if (controller.placeTuile(x, y) == true) {
 					game.remove(tuileV);
 					tuileV = null;
 					placeTuile(x, y);
+					controller.setActualTuile(null);
 					communication.setText("Bien jouï¿½, vous avez rï¿½ussi ï¿½ placer votre tuile");
 					info.add(communication);
 					this.repaint();
-					this.paintComponents(getGraphics());
+					this.paintComponents(this.getGraphics());
 					poserBtn.setEnabled(false);
 					rotationBtn.setEnabled(false);
 					defausserBtn.setEnabled(false);
@@ -234,19 +232,18 @@ public class DominosView extends JPanel {
 			rotationBtn.setEnabled(false);
 			rotationBtn.addActionListener((ActionEvent e) -> {
 				tuileV.tuileRotation();
-				//partie.printPlateau();
 				System.out.println("tuile x: " + tuileV.getX() + "  tuile y : " + tuileV.getY());	
 				System.out.println("tuile x: " + tuileV.getTx() + "  tuile y : " + tuileV.getTy());
 
 			});
-			defausserBtn = new JButton("Dï¿½fausser");
+			defausserBtn = new JButton("Défausser");
 			defausserBtn.setFont(new Font("Arial", Font.BOLD, (int) (30 * scaleX)));
 			boutonsPerso(defausserBtn,new Color(0, 128, 255),new Color(204, 229, 255));
 			defausserBtn.setEnabled(false);
 			defausserBtn.addActionListener((ActionEvent e) ->{
 				game.remove(tuileV);
-				this.repaint();
-				this.paintComponents(this.getGraphics());
+				game.repaint();
+				game.paintComponents(game.getGraphics());
 				poserBtn.setEnabled(false);
 				rotationBtn.setEnabled(false);
 				defausserBtn.setEnabled(false);
@@ -258,6 +255,16 @@ public class DominosView extends JPanel {
 			boutonsPerso(abandonBtn,new Color(0, 128, 255),new Color(204, 229, 255));
 			abandonBtn.addActionListener((ActionEvent e) ->{
 				controller.abandon();
+				if (tuileV !=null) {
+					game.remove(tuileV);
+					game.repaint();
+					game.paintComponents(game.getGraphics());
+					}
+				
+				
+				poserBtn.setEnabled(false);
+				rotationBtn.setEnabled(false);
+				defausserBtn.setEnabled(false);
 				tour();
 			});
 
@@ -334,11 +341,13 @@ public class DominosView extends JPanel {
 		}
 		
 		public void tour() {
-			controller.tour();
+			boolean b = controller.tour();
 			
-			piocheBtn.setEnabled(true);
-			if (communication!=null) {
-				info.remove(communication);
+			if (b) {
+				piocheBtn.setEnabled(true);
+				if (communication!=null) {
+					info.remove(communication);
+				}
 			}
 		}
 		
@@ -346,16 +355,17 @@ public class DominosView extends JPanel {
 			info.remove(name);
 			info.remove(points);
 			abandonBtn.setEnabled(false);
+			piocheBtn.setEnabled(false);
 			if (pseudo != null && pts != -1) {
-				communication.setText("Bravo ï¿½ " + pseudo + " qui a gagnï¿½ la partie avec " + pts + " points.");
+				communication.setText("Bravo à " + pseudo + " qui a gagné la partie avec " + pts + " points.");
+				communication.setVisible(true);
 				info.add(communication);
-				info.paintComponents(info.getGraphics());
+				communication.paintComponents(communication.getGraphics());
 			}
 			else{
 				communication.setText("Pas de vainqueur pour cette partie, match nul !");
 				communication.setVisible(true);
 				info.add(communication);
-				info.setVisible(true);
 			}
 			JButton exitBtn = new JButton("Quitter le jeu");
 			exitBtn.setFont(new Font("Arial", Font.BOLD, (int) (30 * scaleX)));
@@ -365,7 +375,7 @@ public class DominosView extends JPanel {
 				System.exit(0);
 			});
 			info.add(exitBtn);
-			info.paintComponents(info.getGraphics());
+			this.paintComponents(this.getGraphics());
 		}
 		
 		public void paint() {
@@ -379,11 +389,13 @@ public class DominosView extends JPanel {
 		}
 		
 		public void setPseudoLabelText(String s) {
-			this.name.setText("Pseudo du joueur : " + s);
+			name.setText("Pseudo du joueur : " + s);
+			name.paintComponents(name.getGraphics());
 		}
 		
 		public void setPointsLabelText(String s) {
-			this.points.setText("Nombre de points du joueur : " + s);
+			points.setText("Nombre de points du joueur : " + s);
+			points.paintComponents(points.getGraphics());
 		}
 	}
 }

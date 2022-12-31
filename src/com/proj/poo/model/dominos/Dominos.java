@@ -18,6 +18,7 @@ public class Dominos extends Game {
 		this.controller = controller;
 		
 		controller.setActualTuile(plateau[plateau.length / 2][plateau.length / 2]);
+		state = State.PLAYING;
 	}
 
 	@Override
@@ -36,30 +37,8 @@ public class Dominos extends Game {
 			return;
 		}
 		state = State.PLAYING;
+		controller.setPlayerToPlay((PlayerDominos) players.get(tour));
 		
-		if (sac.size() > 0 && players.size() > 1) {
-			controller.setPlayerToPlay((PlayerDominos) players.get(tour));
-			players.get(tour).play();			
-		}
-		else {
-			PlayerDominos winner = null;
-			int maxPts = 0;
-			for (Player p : players) {
-				if (((PlayerDominos) p).getPoints() > maxPts) {
-					maxPts = ((PlayerDominos) p).getPoints(); 
-					winner = (PlayerDominos) p;
-				}
-			}
-
-			if (winner != null) {
-				controller.setWinner(winner);
-			}
-			else {
-				controller.setWinner(null);
-			}
-
-			state = State.FINISHED;
-		}		
 	}				
 
 	@Override
@@ -72,12 +51,6 @@ public class Dominos extends Game {
 			if (placement[2] > 0) {
 				for (int i = 0; i < placement[2]; i++) t.rotation(); // on fait autant de rotations de la tuile qu'indiquées par le placement
 			}
-
-			plateau[placement[0]][placement[1]] = t;
-			if (tour + 1 >= players.size()) { tour = 0; }
-			else { tour++; }
-			controller.setPlayerToPlay((PlayerDominos) players.get(tour));
-			addPoints(t, tuilesAdjacentes(placement[0], placement[1]), p);
 			return placement;
 		}
 		return null;
@@ -88,9 +61,6 @@ public class Dominos extends Game {
 		// TODO Auto-generated method stub
 		plateau[x][y] = t;
 		addPoints(t, tuilesAdjacentes(x, y), p);
-		if (tour + 1 >= players.size()) { tour = 0; }
-		else { tour++; }
-		controller.setPlayerToPlay((PlayerDominos) players.get(tour));
 	}
 
 	// On calcule le nombre de points en regardant sur les adjacences quels côtés ne sont pas nuls
@@ -144,18 +114,23 @@ public class Dominos extends Game {
 		return true;
 	}
 
-	public Player finPartie() {
-		Player winner = null;
-		int maxPts = 0;
+	public PlayerDominos finPartie() {
+		PlayerDominos winner = null;
+		int maxPts = -1;
+		int count=0;
 		for (Player p : players) {
 			if (((PlayerDominos) p).getPoints() > maxPts) {
 				maxPts = ((PlayerDominos) p).getPoints(); 
-				winner = p;
+				winner = (PlayerDominos) p;
+				count=0;
+			}
+			else if (((PlayerDominos) p).getPoints()==maxPts) {
+				count++;
 			}
 		}
 		state = State.FINISHED;
-		if (winner != null) return winner;
-		else return null;
+		if (winner == null||count!=0) return null;
+		else return winner;
 	}
 	
 	public void addTuile(Tuile t, int x, int y) {
@@ -172,5 +147,8 @@ public class Dominos extends Game {
 	
 	public void setState(State s) {
 		state = s;
+	}
+	public int getTour() {
+		return tour;
 	}
 }
