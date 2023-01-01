@@ -2,6 +2,7 @@ package com.proj.poo.controller;
 
 import com.proj.poo.model.Tuile;
 import com.proj.poo.model.carcassonne.Carcassonne;
+import com.proj.poo.model.carcassonne.tuiles.TuileCarcassonne;
 import com.proj.poo.view.CarcassonneView;
 
 public class CarcassonneController {
@@ -20,6 +21,11 @@ public class CarcassonneController {
 		// placer tuile au milieu du plateau (view.placeTuile(getPlateauLength() / 2, getPlateauLength() / 2);)
 		party.play();
 		}
+
+
+	public void setActualTuile(Tuile tuile) {
+		this.actualTuile = (TuileCarcassonne) tuile;
+	}
 		
 
 

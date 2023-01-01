@@ -14,27 +14,28 @@ import com.proj.poo.view.DominosView;
 
 public class HomePageController {
 
-	private Game party;
+	private Dominos party_dominos;
+	private Carcassonne party_carca;
 	private CarcassonneController carcassonneController;
 	private DominosController dominosController;
 		
 	public void addDominosPlayer(String pseudo, int id, boolean isIA) {
-		if (party == null) createParty(GameType.DOMINOS);
+		if (party_dominos == null) createParty(GameType.DOMINOS);
 		if (!isIA) {
-			party.addPlayer(new PlayerDominos(pseudo, id, party));
+			party_dominos.addPlayer(new PlayerDominos(pseudo, id, party_dominos));
 		}
 		else {
-			party.addPlayer(new IADominos(pseudo, id, party));
+			party_dominos.addPlayer(new IADominos(pseudo, id, party_dominos));
 		}		
 	}
 	
 	public void addCarcassonnePlayer(String pseudo, int id, boolean isIA) {
-		if (party == null) createParty(GameType.CARCASSONNE);
+		if (party_carca == null) createParty(GameType.CARCASSONNE);
 		if (!isIA) {
-			party.addPlayer(new PlayerCarcassonne(pseudo, id, PlayerColor.BLEU, party));
+			party_carca.addPlayer(new PlayerCarcassonne(pseudo, id, PlayerColor.BLEU, party_carca));
 		}
 		else {
-			party.addPlayer(new PlayerCarcassonne(pseudo, id, PlayerColor.BLEU, party));//mettre la creation du bot carcassonne ici
+			party_carca.addPlayer(new PlayerCarcassonne(pseudo, id, PlayerColor.BLEU, party_carca));//mettre la creation du bot carcassonne ici
 		}		
 	}
 	
@@ -53,20 +54,25 @@ public class HomePageController {
 	private void createParty(GameType gt) {		
 		if (gt == GameType.DOMINOS) {
 			dominosController = new DominosController();
-			party = new Dominos(30, null, dominosController);
-			dominosController.setParty((Dominos) party);
+			party_dominos = new Dominos(30, null, dominosController);
+			dominosController.setParty(party_dominos);
 		}
 		else if (gt == GameType.CARCASSONNE) {
 			carcassonneController = new CarcassonneController();
-			party = new Carcassonne(null, carcassonneController);
-			carcassonneController.setParty((Carcassonne) party);
+			party_carca = new Carcassonne(null, carcassonneController);
+			carcassonneController.setParty(party_carca);
 		}
 		
 	}
 
 	public Dominos getDominosParty() {
 		// TODO Auto-generated method stub
-		return (Dominos) party;
+		return party_dominos;
+	}
+	
+	public Carcassonne getCarcassonneParty() {
+		// TODO Auto-generated method stub
+		return party_carca;
 	}
 	
 }
