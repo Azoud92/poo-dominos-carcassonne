@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -66,7 +67,7 @@ public class HomePageView extends JPanel {
 		dominosBtn.setEnabled(false);
 		dominosBtn.addActionListener(e -> {
 			container.setVisible(false);
-			DominosView dcv = controller.runParty(size, scaleX, scaleY);
+			DominosView dcv = controller.runDominosParty(size, scaleX, scaleY);
 			frame.add(dcv);
 		});
 
@@ -74,6 +75,12 @@ public class HomePageView extends JPanel {
 		carcassonneBtn.setPreferredSize(new Dimension((int) (700 * scaleX), (int) (156 * scaleY)));
 		carcassonneBtn.setBackground(Color.DARK_GRAY);
 		carcassonneBtn.setEnabled(false);
+		carcassonneBtn.addActionListener(e -> {
+			container.setVisible(false);
+			CarcassonneView ccv = controller.runCarcassonneParty(size, scaleX, scaleY);
+			frame.add(ccv);
+			
+		});
 
 		exitBtn = new JButton("Quitter le jeu");
 		exitBtn.setFont(new Font("Arial", Font.BOLD, (int) (50 * scaleX)));
@@ -131,8 +138,10 @@ public class HomePageView extends JPanel {
 		JTextField pseudo;
 		JCheckBox isBot;
 		JButton valider;
-		static int NB_PLAYERS = 0;
+		static int NB_PLAYERS_D = 0;
+		static int NB_PLAYERS_C = 0;
 		JPanel container;
+		JComboBox choix_partie;
 
 		public AjoutPlayer() {
 
@@ -142,42 +151,75 @@ public class HomePageView extends JPanel {
 			 */
 			container = new JPanel();
 			container.setBackground(Color.CYAN);
-			container.setLayout(new GridLayout(4,1));
+			container.setLayout(new GridLayout(5,1));
 
-			JLabel nom = new JLabel("Pseudo du joueur " + (NB_PLAYERS + 1) + " : " );
+			JLabel nom = new JLabel("Pseudo du joueur : " );
 			container.add(nom);
 
 			pseudo = new JTextField();
 			container.add(pseudo);
+			
+			String[] t = {"Dominos Carré", "Carcassonne"};
+			choix_partie= new JComboBox<String>(t);
+			container.add(choix_partie);
 
-			if (NB_PLAYERS != 0) { // on peut creer un bot seulement apres avoir crÃ©Ã© au moins un vrai joueur
+			if ((NB_PLAYERS_D != 0 && choix_partie.getSelectedIndex()==0) || (NB_PLAYERS_C != 0 && choix_partie.getSelectedIndex()==1)) { // on peut creer un bot seulement apres avoir créé au moins un vrai joueur
 				isBot = new JCheckBox("IA");
 				container.add(isBot);
 			}
+			
+			
+		
+			
 
 			valider = new JButton("VALIDER");
 			container.add(valider);
+			
+
 
 			valider.addActionListener((ActionEvent e) ->{ // dÃ¨s qu'on clique sur le bouton valider
 				if (!pseudo.getText().isEmpty() && !pseudo.getText().isBlank()) {// si le pseudo est non vide
 					valider.setEnabled(false);
-					NB_PLAYERS++; // on incremente le nombre de joueurs
 					if (isBot == null || !isBot.isSelected()) { // si c'est pas un bot
 						// IL FAUT AJOUTER UN PARAMETRE POUR SAVOIR SI ON VEUT AJOUTER UN JOUEUR DE DOMINOS OU DE CARCASSONNE
-						controller.addDominosPlayer(pseudo.getText(), NB_PLAYERS, false);
+						if (choix_partie.getSelectedIndex()==0) {
+							NB_PLAYERS_D++;
+							controller.addDominosPlayer(pseudo.getText(), NB_PLAYERS_D, false);
+							}
+						else {
+							NB_PLAYERS_C++;
+							controller.addCarcassonnePlayer(pseudo.getText(), NB_PLAYERS_C, false);
+							
+						}
 					}
 					else { 
-						controller.addDominosPlayer(pseudo.getText(), NB_PLAYERS, true); 
+						if (choix_partie.getSelectedIndex()==0 && NB_PLAYERS_D != 0) {
+							NB_PLAYERS_D++;
+							controller.addDominosPlayer(pseudo.getText(), NB_PLAYERS_D, true);
+							}
+						else if (choix_partie.getSelectedIndex() == 1 && NB_PLAYERS_C != 0) {
+							NB_PLAYERS_C++;
+							controller.addCarcassonnePlayer(pseudo.getText(), NB_PLAYERS_C, true);
+							
+						}
 					}
-					if (NB_PLAYERS >= 2) { // si il y a au moins 2 joueurs on active les boutons de dominos et carcassonne
-						carcassonneBtn.setEnabled(true);
+					if (NB_PLAYERS_D >= 2) { // si il y a au moins 2 joueurs on active les boutons de dominos et carcassonne
 						dominosBtn.setEnabled(true);
 					}
+					if (NB_PLAYERS_C >= 2) { 
+						carcassonneBtn.setEnabled(true);
+					}
+					
 					ajoutBtn.setEnabled(true);
 				}
 			});
 		}
 
+		
+		public void verif() {
+			
+		}
+		
 		public JPanel getCtn() {
 			return this.container;
 		}

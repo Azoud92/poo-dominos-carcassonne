@@ -206,7 +206,7 @@ public class DominosView extends JPanel {
 					tuileV = null;
 					placeTuile(x, y);
 					controller.setActualTuile(null);
-					communication.setText("Bien jouï¿½, vous avez rï¿½ussi ï¿½ placer votre tuile");
+					communication.setText("Bien joué, vous avez réussi à placer votre tuile");
 					info.add(communication);
 					this.repaint();
 					this.paintComponents(this.getGraphics());
@@ -351,7 +351,7 @@ public class DominosView extends JPanel {
 			abandonBtn.setEnabled(false);
 			piocheBtn.setEnabled(false);
 			if (pseudo != null && pts != -1) {
-				communication.setText("Bravo à " + pseudo + " qui a gagné la partie avec " + pts + " points.");
+				communication.setText("Bravo à " + pseudo + " qui gagné la partie avec " + pts + " points.");
 				communication.setVisible(true);
 				info.add(communication);
 				communication.paintComponents(communication.getGraphics());

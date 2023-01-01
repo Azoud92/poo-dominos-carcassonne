@@ -1,6 +1,6 @@
 package com.proj.poo.controller;
 
-import com.proj.poo.model.Tuile; 
+import com.proj.poo.model.Tuile;  
 import com.proj.poo.model.dominos.Dominos;
 import com.proj.poo.model.dominos.IADominos;
 import com.proj.poo.model.dominos.PlayerDominos;
