@@ -32,7 +32,8 @@ public abstract class Game {
 		// choix d'une tuile au hasard à poser sur la table
 		int taillePlat = (int) Math.sqrt(tailleSac * 2);
 		if (taillePlat % 2 == 0) taillePlat++; // pour que la tuile de départ se place bien au milieu du plateau
-		plateau = new TuileDominos[taillePlat][taillePlat]; // pour laisser assez de place pour chaque tuile du sac
+		plateau = new Tuile[taillePlat][taillePlat]; // pour laisser assez de place pour chaque tuile du sac
+		
 		plateau[taillePlat / 2][taillePlat / 2] = piocher();
 
 		state = State.READY;

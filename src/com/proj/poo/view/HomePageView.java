@@ -181,15 +181,13 @@ public class HomePageView extends JPanel {
 				if (!pseudo.getText().isEmpty() && !pseudo.getText().isBlank()) {// si le pseudo est non vide
 					valider.setEnabled(false);
 					if (isBot == null || !isBot.isSelected()) { // si c'est pas un bot
-						// IL FAUT AJOUTER UN PARAMETRE POUR SAVOIR SI ON VEUT AJOUTER UN JOUEUR DE DOMINOS OU DE CARCASSONNE
 						if (choix_partie.getSelectedIndex()==0) {
 							NB_PLAYERS_D++;
 							controller.addDominosPlayer(pseudo.getText(), NB_PLAYERS_D, false);
 							}
 						else {
 							NB_PLAYERS_C++;
-							controller.addCarcassonnePlayer(pseudo.getText(), NB_PLAYERS_C, false);
-							
+							controller.addCarcassonnePlayer(pseudo.getText(), NB_PLAYERS_C, false);							
 						}
 					}
 					else { 
