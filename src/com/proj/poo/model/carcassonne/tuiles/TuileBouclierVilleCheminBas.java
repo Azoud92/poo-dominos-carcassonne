@@ -1,12 +1,13 @@
 package com.proj.poo.model.carcassonne.tuiles;
 
+import com.proj.poo.model.carcassonne.tuiles.zones.ZoneChemin;
 import com.proj.poo.model.carcassonne.tuiles.zones.ZoneLimiteVille;
 import com.proj.poo.model.carcassonne.tuiles.zones.ZonePre;
 import com.proj.poo.model.carcassonne.tuiles.zones.ZoneQuartierVille;
 
-public class TuileBouclierVilleHautGauchePre extends TuileCarcassonne {
+public class TuileBouclierVilleCheminBas extends TuileCarcassonne {
 
-	public TuileBouclierVilleHautGauchePre() {
+	public TuileBouclierVilleCheminBas() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -14,25 +15,25 @@ public class TuileBouclierVilleHautGauchePre extends TuileCarcassonne {
 	@Override
 	public void remplirTuile() {
 		// TODO Auto-generated method stub
-		// Le haut de la tuile est constitué d'un quartier, d'un quartier, d'une limite
+		// Le haut de la tuile est constitué d'un quartier, d'un quartier, d'un quartier
 		tuile[0][0] = new ZoneQuartierVille();
 		tuile[0][1] = new ZoneQuartierVille();
-		tuile[0][2] = new ZoneLimiteVille();
+		tuile[0][2] = new ZoneQuartierVille();
 
-		// La droite contient un pré, un pré, un pré
-		tuile[1][0] = new ZonePre();
-		tuile[1][1] = new ZonePre();
-		tuile[1][2] = new ZonePre();
+		// La droite contient un quartier, un quartier, une limite
+		tuile[1][0] = new ZoneQuartierVille();
+		tuile[1][1] = new ZoneQuartierVille();
+		tuile[1][2] = new ZoneLimiteVille();
 
-		// Le bas contient un pré, un pré, et un pré
+		// Le bas contient un pré, un chemin, un pré
 		tuile[2][0] = new ZonePre();
-		tuile[2][1] = new ZonePre();
+		tuile[2][1] = new ZoneChemin();
 		tuile[2][2] = new ZonePre();
 
 		// La gauche contient un quartier, un quartier, une limite
 		tuile[3][0] = new ZoneQuartierVille();
 		tuile[3][1] = new ZoneQuartierVille();
-		tuile[3][2] = new ZonePre();
+		tuile[3][2] = new ZoneLimiteVille();
 	}
-
+	
 }

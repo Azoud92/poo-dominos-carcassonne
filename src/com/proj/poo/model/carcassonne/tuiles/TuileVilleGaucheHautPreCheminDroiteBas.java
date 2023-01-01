@@ -1,15 +1,14 @@
 package com.proj.poo.model.carcassonne.tuiles;
 
-import com.proj.poo.model.Tuile;
 import com.proj.poo.model.carcassonne.tuiles.zones.ZoneChemin;
 import com.proj.poo.model.carcassonne.tuiles.zones.ZoneLimiteVille;
 import com.proj.poo.model.carcassonne.tuiles.zones.ZonePre;
 import com.proj.poo.model.carcassonne.tuiles.zones.ZoneQuartierVille;
 
-public class TuileVilleGaucheHautPreCheminDroiteBas extends Tuile {
+public class TuileVilleGaucheHautPreCheminDroiteBas extends TuileCarcassonne {
 
 	public TuileVilleGaucheHautPreCheminDroiteBas() {
-		super(3);
+		super();
 		// TODO Auto-generated constructor stub
 	}
 

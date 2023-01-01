@@ -1,13 +1,12 @@
 package com.proj.poo.model.carcassonne.tuiles;
 
-import com.proj.poo.model.Tuile;
 import com.proj.poo.model.carcassonne.tuiles.zones.ZoneChemin;
 import com.proj.poo.model.carcassonne.tuiles.zones.ZonePre;
 
-public class TuilePreCheminHautBas extends Tuile {
+public class TuilePreCheminHautBas extends TuileCarcassonne {
 
 	public TuilePreCheminHautBas() {
-		super(3);
+		super();
 		// TODO Auto-generated constructor stub
 	}
 

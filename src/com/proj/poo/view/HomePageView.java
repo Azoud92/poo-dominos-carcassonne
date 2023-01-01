@@ -159,11 +159,11 @@ public class HomePageView extends JPanel {
 			pseudo = new JTextField();
 			container.add(pseudo);
 			
-			String[] t = {"Dominos Carré", "Carcassonne"};
+			String[] t = {"Dominos Carrï¿½", "Carcassonne"};
 			choix_partie= new JComboBox<String>(t);
 			container.add(choix_partie);
 
-			if ((NB_PLAYERS_D != 0 && choix_partie.getSelectedIndex()==0) || (NB_PLAYERS_C != 0 && choix_partie.getSelectedIndex()==1)) { // on peut creer un bot seulement apres avoir créé au moins un vrai joueur
+			if ((NB_PLAYERS_D != 0 && choix_partie.getSelectedIndex()==0) || (NB_PLAYERS_C != 0 && choix_partie.getSelectedIndex()==1)) { // on peut creer un bot seulement apres avoir crï¿½ï¿½ au moins un vrai joueur
 				isBot = new JCheckBox("IA");
 				container.add(isBot);
 			}
@@ -213,11 +213,6 @@ public class HomePageView extends JPanel {
 					ajoutBtn.setEnabled(true);
 				}
 			});
-		}
-
-		
-		public void verif() {
-			
 		}
 		
 		public JPanel getCtn() {

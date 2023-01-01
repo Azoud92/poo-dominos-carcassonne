@@ -58,7 +58,7 @@ public class HomePageController {
 		}
 		else if (gt == GameType.CARCASSONNE) {
 			carcassonneController = new CarcassonneController();
-			party = new Carcassonne(30, null, carcassonneController);
+			party = new Carcassonne(null, carcassonneController);
 			carcassonneController.setParty((Carcassonne) party);
 		}
 		
