@@ -18,7 +18,7 @@ private CarcassonneController controller;
 		super(72, p);
 		this.controller = controller;
 		
-		//ajouter tuile au milieu (controller.setActualTuile(plateau[plateau.length / 2][plateau.length / 2]);)
+		controller.setActualTuile(plateau[plateau.length / 2][plateau.length / 2]);
 		state = State.PLAYING;
 	}
 
@@ -26,6 +26,12 @@ private CarcassonneController controller;
 	public void play() {
 		// TODO Auto-generated method stub
 		
+	}
+	@Override
+	public Tuile piocher() {
+		Tuile t = super.piocher();
+		if (controller != null) controller.setActualTuile(t);
+		return t;
 	}
 	
 

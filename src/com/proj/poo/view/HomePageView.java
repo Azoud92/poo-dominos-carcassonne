@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -25,7 +26,7 @@ public class HomePageView extends JPanel {
 	private static final long serialVersionUID = 5106898561647691052L;	
 
 	// on crée un container principal
-	private JPanel container, top_container, game_container, bottom_container, container_test1, container_test2, players;
+	private JPanel container, top_container, game_container, bottom_container, container_1, container_2, players;
 
 	// représente l'image du titre du jeu
 	private JLabel title;
@@ -45,13 +46,13 @@ public class HomePageView extends JPanel {
 		game_container = new JPanel(game_layout);// contient bouton des 2 jeux et les ajouts de joueurs
 		GridLayout bottom_layout = new GridLayout(1, 2);
 		bottom_container = new JPanel(bottom_layout); // le bas
-		container_test1 = new JPanel(); // contient uniq. le bouton du domino (pour pouvoir les placer comme souhaité)
-		container_test2 = new JPanel(); // contient uniq. le bouton de carcassonne
+		container_1 = new JPanel(); // contient uniq. le bouton du domino (pour pouvoir les placer comme souhaité)
+		container_2 = new JPanel(); // contient uniq. le bouton de carcassonne
 
 		container_layout.setVgap((int) (10 * scaleY));
 		bottom_layout.setHgap((int) (20 * scaleX));		
 
-		title = new JLabel("Jeux de Dominos Carrés et de Carcassonne");
+		title = new JLabel("Jeux de Dominos Carr�s et de Carcassonne");
 		title.setFont(new Font("Arial", Font.BOLD, (int) (60 * scaleX)));
 
 		// contiendra le texte entré par l'utilisateur lorsque celui-ci ajoutera un joueur (qu'il soit IA ou Réel) et qu'il mettra son pseudo
@@ -59,7 +60,7 @@ public class HomePageView extends JPanel {
 		
 		controller = hpc;
 
-		dominosBtn = new JButton("DOMINOS CARRÉS");
+		dominosBtn = new JButton("DOMINOS CARR�S");
 		dominosBtn.setPreferredSize(new Dimension((int) (700 * scaleX), (int) (156 * scaleY)));
 		dominosBtn.setBackground(Color.DARK_GRAY);
 		dominosBtn.setForeground(Color.ORANGE);
@@ -105,10 +106,10 @@ public class HomePageView extends JPanel {
 
 		// ajout de tous les container à ceux correspondant
 		top_container.add(title);
-		container_test1.add(dominosBtn);
-		container_test2.add(carcassonneBtn);
-		game_container.add(container_test1);
-		game_container.add(container_test2);
+		container_1.add(dominosBtn);
+		container_2.add(carcassonneBtn);
+		game_container.add(container_1);
+		game_container.add(container_2);
 		game_container.add(players);
 		bottom_container.add(ajoutBtn);
 		bottom_container.add(exitBtn);
@@ -121,8 +122,8 @@ public class HomePageView extends JPanel {
 		// requis pour que le fond d'écran soit visible
 		container.setOpaque(false);
 		top_container.setOpaque(false);
-		container_test1.setOpaque(false);
-		container_test2.setOpaque(false);
+		container_1.setOpaque(false);
+		container_2.setOpaque(false);
 		game_container.setOpaque(false);
 		players.setOpaque(false);
 		bottom_container.setOpaque(false);
@@ -151,7 +152,7 @@ public class HomePageView extends JPanel {
 			 */
 			container = new JPanel();
 			container.setBackground(Color.CYAN);
-			container.setLayout(new GridLayout(5,1));
+			container.setLayout(new GridLayout(6,1));
 
 			JLabel nom = new JLabel("Pseudo du joueur : " );
 			container.add(nom);
@@ -159,14 +160,34 @@ public class HomePageView extends JPanel {
 			pseudo = new JTextField();
 			container.add(pseudo);
 			
-			String[] t = {"Dominos Carr�", "Carcassonne"};
+			String[] t = {"Dominos Carr�s", "Carcassonne"};
 			choix_partie= new JComboBox<String>(t);
 			container.add(choix_partie);
-
+			
+			isBot = new JCheckBox("IA");
 			if ((NB_PLAYERS_D != 0 && choix_partie.getSelectedIndex()==0) || (NB_PLAYERS_C != 0 && choix_partie.getSelectedIndex()==1)) { // on peut creer un bot seulement apres avoir cr�� au moins un vrai joueur
-				isBot = new JCheckBox("IA");
-				container.add(isBot);
+				isBot.setEnabled(true);
 			}
+        	else {
+        		isBot.setEnabled(false);
+        	}
+			container.add(isBot);
+			
+			choix_partie.addActionListener(new ActionListener() {
+	            public void actionPerformed(ActionEvent event) {
+	            	if ((NB_PLAYERS_D != 0 && choix_partie.getSelectedIndex()==0) || (NB_PLAYERS_C != 0 && choix_partie.getSelectedIndex()==1)) { // on peut creer un bot seulement apres avoir cr�� au moins un vrai joueur
+	    				isBot.setEnabled(true);
+	    			}
+	            	else {
+	            		isBot.setSelected(false);
+	            		isBot.setEnabled(false);
+	            	}
+	            	
+	            }
+	            });
+	                
+	            	
+			
 			
 			
 		
@@ -180,7 +201,7 @@ public class HomePageView extends JPanel {
 			valider.addActionListener((ActionEvent e) ->{ // dès qu'on clique sur le bouton valider
 				if (!pseudo.getText().isEmpty() && !pseudo.getText().isBlank()) {// si le pseudo est non vide
 					valider.setEnabled(false);
-					if (isBot == null || !isBot.isSelected()) { // si c'est pas un bot
+					if (!isBot.isSelected()) { // si c'est pas un bot
 						// IL FAUT AJOUTER UN PARAMETRE POUR SAVOIR SI ON VEUT AJOUTER UN JOUEUR DE DOMINOS OU DE CARCASSONNE
 						if (choix_partie.getSelectedIndex()==0) {
 							NB_PLAYERS_D++;
@@ -209,8 +230,11 @@ public class HomePageView extends JPanel {
 					if (NB_PLAYERS_C >= 2) { 
 						carcassonneBtn.setEnabled(true);
 					}
+					if(NB_PLAYERS_C + NB_PLAYERS_D < 14) {
+						ajoutBtn.setEnabled(true);
+					}
 					
-					ajoutBtn.setEnabled(true);
+
 				}
 			});
 		}
