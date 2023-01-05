@@ -8,6 +8,8 @@ import com.proj.poo.model.carcassonne.PlayerCarcassonne;
 import com.proj.poo.model.carcassonne.tuiles.TuileCarcassonne;
 import com.proj.poo.model.dominos.IADominos;
 import com.proj.poo.view.CarcassonneView;
+import com.proj.poo.view.CarcassonneView.Circle;
+import com.proj.poo.view.CarcassonneView.TuileView;
 
 public class CarcassonneController {
 	
@@ -66,8 +68,8 @@ public class CarcassonneController {
 	}
 	
 	public void haut() {
-		CarcassonneView.TuileView tuileV = view.getControle().getTuileV();
-		if (tuileV != null) {
+		TuileView tuileV = view.getControle().getTuileV();
+		if (view.getPartisanAct()==null && tuileV!=null) {
 			try {
 				if (party.getPlateau()[tuileV.getTx()][tuileV.getTy() - 1] == null) {
 					tuileV.setLocation(tuileV.getX(),tuileV.getY() - ((view.getSizeView().height / getPlateauLength())));
@@ -109,10 +111,20 @@ public class CarcassonneController {
 				}
 			}
 		}
+		else {
+			Circle c  = view.getPartisanAct();
+			if (c != null) {
+				if(c.getY() != tuileV.getY()) {
+					c.deplace(c.getX(), c.getY() - view.getTailleTuile()/4);
+				}
+			}
+			
+		}
+		
 	}
 	
 	public void bas() {
-		CarcassonneView.TuileView tuileV = view.getControle().getTuileV();
+		TuileView tuileV = view.getControle().getTuileV();
 		if (tuileV != null) {
 			try {
 				if (party.getPlateau()[tuileV.getTx()][tuileV.getTy() + 1] == null) {
@@ -158,7 +170,7 @@ public class CarcassonneController {
 	}
 	
 	public void gauche() {
-		CarcassonneView.TuileView tuileV = view.getControle().getTuileV();
+		TuileView tuileV = view.getControle().getTuileV();
 		if (tuileV != null) {
 			try {
 				if (party.getPlateau()[tuileV.getTx() - 1][tuileV.getTy()] == null) {
@@ -206,7 +218,7 @@ public class CarcassonneController {
 	}
 	
 	public void droite() {
-		CarcassonneView.TuileView tuileV = view.getControle().getTuileV();
+		TuileView tuileV = view.getControle().getTuileV();
 		if (tuileV != null) {
 			try {
 				if (party.getPlateau()[tuileV.getTx() + 1][tuileV.getTy()] == null) {
