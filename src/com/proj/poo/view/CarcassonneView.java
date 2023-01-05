@@ -316,6 +316,7 @@ public class CarcassonneView extends JPanel{
 			boutonsPerso(hautBtn,new Color(0,128,255),null);
 			hautBtn.addActionListener((ActionEvent e)->{
 				controller.haut();
+				game.paintComponents(game.getGraphics());
 				affichePartisans();
 			});
 
@@ -323,6 +324,7 @@ public class CarcassonneView extends JPanel{
 			boutonsPerso(basBtn,new Color(0,128,255),null);
 			basBtn.addActionListener((ActionEvent e)->{
 				controller.bas();
+				game.paintComponents(game.getGraphics());
 				affichePartisans();
 			});
 
@@ -330,6 +332,7 @@ public class CarcassonneView extends JPanel{
 			boutonsPerso(gaucheBtn,new Color(0, 128, 255), null);
 			gaucheBtn.addActionListener((ActionEvent e)->{
 				controller.gauche();
+				game.paintComponents(game.getGraphics());
 				affichePartisans();
 			});
 
@@ -337,6 +340,7 @@ public class CarcassonneView extends JPanel{
 			boutonsPerso(droiteBtn, new Color(0, 128, 255),null);
 			droiteBtn.addActionListener((ActionEvent e)->{
 				controller.droite();
+				game.paintComponents(game.getGraphics());
 				affichePartisans();
 			});
 
