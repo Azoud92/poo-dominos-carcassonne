@@ -209,8 +209,7 @@ public class HomePageView extends JPanel {
 							}
 						else {
 							NB_PLAYERS_C++;
-							controller.addCarcassonnePlayer(pseudo.getText(), NB_PLAYERS_C, false);
-							
+							controller.addCarcassonnePlayer(pseudo.getText(), NB_PLAYERS_C, false);							
 						}
 					}
 					else { 

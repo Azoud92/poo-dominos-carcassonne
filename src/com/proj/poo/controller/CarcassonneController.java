@@ -37,10 +37,10 @@ public class CarcassonneController {
 		return actualTuile;
 	}
 	
-	public void piocheTuile() {
+	public CarcassonneView.TuileView piocheTuile() {
 		if(party.getPlateau()[0][0] == null) {
 			party.piocher();
-			view.placeTuile(0,0);
+			return view.placeTuile(0,0);
 		}
 		else {
 			int place_x = 0;
@@ -53,7 +53,7 @@ public class CarcassonneController {
 				place_x++;
 			}
 			party.piocher();
-			view.placeTuile(place_x,place_y);
+			return view.placeTuile(place_x,place_y);
 		}
 	}
 	

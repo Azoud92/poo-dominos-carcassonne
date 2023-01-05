@@ -51,11 +51,12 @@ public class CarcassonneView extends JPanel{
 		
 	}
 	
-	public void placeTuile(int x, int y) {
+	public TuileView placeTuile(int x, int y) {
 		TuileView t = new TuileView(x,y);
 		game.add(t);
 		game.repaint();
 		game.paintComponents(game.getGraphics());
+		return t;
 
 	}
 	
@@ -70,7 +71,7 @@ public class CarcassonneView extends JPanel{
 
 		private static final long serialVersionUID = 7425520887508191851L;
 		private int x, y;
-		private int rotation;
+		private double rotation;
 		int tailleTuile = (size.height / controller.getPlateauLength());
 
 		
@@ -81,27 +82,19 @@ public class CarcassonneView extends JPanel{
 			rotation=0;
 			this.setIcon(Auxiliaire.resizeImage(new ImageIcon(Auxiliaire.imgResourcesPath + controller.getActualTuile().getClass().getSimpleName() + ".png"),tailleTuile,tailleTuile));
 			this.setBounds(x * tailleTuile, y * tailleTuile, tailleTuile, tailleTuile);
-			paintComponent(getGraphics());
 			
 
 		}
 		
 		@Override
 		public void paintComponent(Graphics g) {
+			((Graphics2D) g).rotate(rotation,(double) getWidth()/2, (double) getHeight()/2);
             super.paintComponent(g);
-			((Graphics2D) g).rotate(rotation);
 		}
 
-
-
-		
-
 		public void tuileRotation() {
-			if (rotation==270)rotation=0;
-			else {
-				rotation+=90;
-			}
-			this.paintComponent(getGraphics());
+			rotation+=Math.toRadians(90);
+			this.repaint();
 			controller.rotationTuile();
 			game.paintComponents(game.getGraphics());
 		}
@@ -141,7 +134,7 @@ public class CarcassonneView extends JPanel{
 			piocheBtn.setFont(new Font("Arial", Font.BOLD, (int) (30 * scaleX)));
 			boutonsPerso(piocheBtn,new Color(0,128,255),new Color(204,229,255));
 			piocheBtn.addActionListener((ActionEvent e) ->{
-				controller.piocheTuile();
+				tuileV = controller.piocheTuile();
 				game.paintComponents(game.getGraphics());
 				piocheBtn.setEnabled(false);
 				poserBtn.setEnabled(true);

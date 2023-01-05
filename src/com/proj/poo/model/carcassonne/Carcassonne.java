@@ -1,14 +1,13 @@
 package com.proj.poo.model.carcassonne;
 
 import java.util.ArrayList;
+
 import com.proj.poo.controller.CarcassonneController;
 import com.proj.poo.model.Game;
 import com.proj.poo.model.Player;
 import com.proj.poo.model.State;
 import com.proj.poo.model.Tuile;
-import com.proj.poo.model.carcassonne.tuiles.*;
-
-
+import com.proj.poo.model.carcassonne.tuiles.TuilePreCheminGaucheBas;
 
 public class Carcassonne extends Game{
 	
@@ -21,7 +20,7 @@ private CarcassonneController controller;
 		controller.setActualTuile(plateau[plateau.length / 2][plateau.length / 2]);
 		state = State.PLAYING;
 	}
-
+	
 	@Override
 	public void play() {
 		// TODO Auto-generated method stub
@@ -42,7 +41,7 @@ private CarcassonneController controller;
 			sac.add(new TuilePreCheminGaucheBas());
 		}
 		
-		for (int i = 0; i < 8; i++) {
+		/*for (int i = 0; i < 8; i++) {
 			sac.add(new TuilePreCheminHautBas());
 		}
 		
@@ -79,7 +78,7 @@ private CarcassonneController controller;
 		sac.add(new TuileBouclierVillePreBas());
 		sac.add(new TuileVillePreHautBas());
 		sac.add(new TuileBouclierVille());
-		sac.add(new TuileCarrefour());
+		sac.add(new TuileCarrefour());*/
 	}
 
 	@Override
@@ -87,6 +86,4 @@ private CarcassonneController controller;
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
 }
