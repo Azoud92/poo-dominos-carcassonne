@@ -8,7 +8,6 @@ import com.proj.poo.model.Player;
 import com.proj.poo.model.State;
 import com.proj.poo.model.Tuile;
 import com.proj.poo.model.carcassonne.tuiles.*;
-import com.proj.poo.model.dominos.PlayerDominos;
 
 public class Carcassonne extends Game{
 	

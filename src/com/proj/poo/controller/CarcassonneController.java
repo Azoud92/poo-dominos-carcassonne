@@ -1,16 +1,13 @@
 package com.proj.poo.controller;
 
-import java.awt.Color;
+import java.awt.Color; 
 
 import com.proj.poo.model.Tuile;
 import com.proj.poo.model.carcassonne.Carcassonne;
 import com.proj.poo.model.carcassonne.PlayerCarcassonne;
 import com.proj.poo.model.carcassonne.tuiles.TuileCarcassonne;
 import com.proj.poo.model.dominos.IADominos;
-import com.proj.poo.model.dominos.PlayerDominos;
 import com.proj.poo.view.CarcassonneView;
-import com.proj.poo.view.DominosView;
-import com.proj.poo.view.DominosView.TuileView;
 
 public class CarcassonneController {
 	
