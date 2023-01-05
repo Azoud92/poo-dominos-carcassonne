@@ -125,11 +125,4 @@ public class Dominos extends Game {
 		plateau[x][y] = null;
 	}
 
-	public ArrayList<Player> getPlayers(){
-		return players;
-	}
-		
-	public int getTour() {
-		return tour;
-	}
 }

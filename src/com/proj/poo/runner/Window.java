@@ -10,7 +10,7 @@ import com.proj.poo.controller.HomePageController;
 import com.proj.poo.view.HomePageView;
 
 // Classe servant à "héberger" les différentes vues (écran d'accueil, dominos, carcassonne...)
-public class GameView extends JFrame {
+public class Window extends JFrame {
 
 	/**
 	 * 
@@ -25,7 +25,7 @@ public class GameView extends JFrame {
 
 	//private Image background = new ImageIcon(Auxiliaire.imgResourcesPath + "background.jpg").getImage();
 
-	public GameView() {
+	public Window() {
 		// Taille de l'écran en soustrayant celle de la barre des tâches et du haut de la fenêtre
 		size = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().getSize();
 

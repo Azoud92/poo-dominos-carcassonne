@@ -23,7 +23,6 @@ import com.proj.poo.runner.Auxiliaire;
 
 public class HomePageView extends JPanel {
 
-
 	private static final long serialVersionUID = 5106898561647691052L;	
 
 	// on crÃ©e un container principal
@@ -60,7 +59,7 @@ public class HomePageView extends JPanel {
 		container_layout.setVgap((int) (10 * scaleY));
 		bottom_layout.setHgap((int) (20 * scaleX));		
 
-		title = new JLabel("Jeux de Dominos Carrés et de Carcassonne");
+		title = new JLabel("Jeux de Dominos Carrï¿½s et de Carcassonne");
 		title.setFont(new Font("Arial", Font.BOLD, (int) (60 * scaleX)));
 
 		// contiendra le texte entrÃ© par l'utilisateur lorsque celui-ci ajoutera un joueur (qu'il soit IA ou RÃ©el) et qu'il mettra son pseudo
@@ -68,7 +67,7 @@ public class HomePageView extends JPanel {
 		
 		controller = hpc;
 
-		dominosBtn = new JButton("DOMINOS CARRÉS");
+		dominosBtn = new JButton("DOMINOS CARRï¿½S");
 		dominosBtn.setPreferredSize(new Dimension((int) (700 * scaleX), (int) (156 * scaleY)));
 		dominosBtn.setBackground(Color.DARK_GRAY);
 		dominosBtn.setForeground(Color.ORANGE);
@@ -150,7 +149,7 @@ public class HomePageView extends JPanel {
 		static int NB_PLAYERS_D = 0;
 		static int NB_PLAYERS_C = 0;
 		JPanel container;
-		JComboBox choix_partie, choix_color;
+		JComboBox<String> choix_partie, choix_color;
 
 		public AjoutPlayer() {
 
@@ -169,12 +168,12 @@ public class HomePageView extends JPanel {
 			container.add(pseudo);
 			
 			if(NB_PLAYERS_C <4) {
-				String[] t = {"Dominos Carrés", "Carcassonne"};
+				String[] t = {"Dominos Carrï¿½s", "Carcassonne"};
 				choix_partie= new JComboBox<String>(t);
 				container.add(choix_partie);
 				}
 			else {
-				String[] t = {"Dominos Carrés"};
+				String[] t = {"Dominos Carrï¿½s"};
 				choix_partie= new JComboBox<String>(t);
 				container.add(choix_partie);
 			}
@@ -211,19 +210,10 @@ public class HomePageView extends JPanel {
 	            	
 	            }
 	            });
-	                
-	            	
-			
-			
-			
-		
-			
 			
 			valider = new JButton("VALIDER");
 			container.add(valider);
 			
-
-
 			valider.addActionListener((ActionEvent e) ->{ // dÃ¨s qu'on clique sur le bouton valider
 				if (!pseudo.getText().isEmpty() && !pseudo.getText().isBlank()) {// si le pseudo est non vide
 					valider.setEnabled(false);
@@ -260,9 +250,6 @@ public class HomePageView extends JPanel {
 					if(NB_PLAYERS_C + NB_PLAYERS_D < 14) {
 						ajoutBtn.setEnabled(true);
 					}
-					
-					
-
 				}
 			});
 		}

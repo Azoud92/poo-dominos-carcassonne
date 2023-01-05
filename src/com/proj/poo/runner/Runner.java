@@ -11,7 +11,7 @@ public class Runner {
 		//DominosConsole dc = new DominosConsole(50);
 		//dc.gameStart();
 		
-		GameView gw = new GameView();
+		Window gw = new Window();
 	}
 
 }

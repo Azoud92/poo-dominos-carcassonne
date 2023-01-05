@@ -257,7 +257,7 @@ public class CarcassonneView extends JPanel{
 				rotationBtn.setEnabled(false);
 				defausserBtn.setEnabled(false);
 				tour();
-
+				
 				affichePartisans();			
 				
 			});

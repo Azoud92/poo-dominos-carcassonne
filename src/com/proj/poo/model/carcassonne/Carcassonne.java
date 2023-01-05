@@ -103,15 +103,5 @@ private CarcassonneController controller;
 			tour++; 
 		}
 		return true;
-	}
-	
-	public int getTour() {
-		return tour;
-	}
-	
-	public ArrayList<Player> getPlayers(){
-		return players;
-	}
-	
-	
+	}	
 }

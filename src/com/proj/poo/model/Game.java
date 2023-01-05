@@ -168,5 +168,13 @@ public abstract class Game {
 	public final void setState(State s) {
 		state = s;
 	}
+	
+	public final ArrayList<Player> getPlayers(){
+		return players;
+	}
+	
+	public final int getTour() {
+		return tour;
+	}
 
 }
