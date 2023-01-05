@@ -4,10 +4,13 @@ import java.awt.Color;
 
 import com.proj.poo.model.Tuile;
 import com.proj.poo.model.carcassonne.Carcassonne;
+import com.proj.poo.model.carcassonne.IACarcassonne;
 import com.proj.poo.model.carcassonne.PlayerCarcassonne;
 import com.proj.poo.model.carcassonne.tuiles.TuileCarcassonne;
 import com.proj.poo.model.dominos.IADominos;
 import com.proj.poo.view.CarcassonneView;
+import com.proj.poo.view.CarcassonneView.Circle;
+import com.proj.poo.view.CarcassonneView.TuileView;
 
 public class CarcassonneController {
 	
@@ -39,7 +42,7 @@ public class CarcassonneController {
 
 		}
 		else {
-			if (party.getActualPlayer() instanceof IADominos) {
+			if (party.getActualPlayer() instanceof IACarcassonne) {
 				party.piocher();
 				int[] xy = party.placeIA(actualTuile, party.getActualPlayer());
 				if (xy != null) {
@@ -66,8 +69,8 @@ public class CarcassonneController {
 	}
 	
 	public void haut() {
-		CarcassonneView.TuileView tuileV = view.getControle().getTuileV();
-		if (tuileV != null) {
+		TuileView tuileV = view.getControle().getTuileV();
+		if (view.getPartisanAct()==null && tuileV!=null) {
 			try {
 				if (party.getPlateau()[tuileV.getTx()][tuileV.getTy() - 1] == null) {
 					tuileV.setLocation(tuileV.getX(),tuileV.getY() - ((view.getSizeView().height / getPlateauLength())));
@@ -109,11 +112,21 @@ public class CarcassonneController {
 				}
 			}
 		}
+		else {
+			Circle c  = view.getPartisanAct();
+			if (c != null) {
+				if(c.getY() != tuileV.getY()) {
+					c.deplace(c.getX(), c.getY() - view.getTailleTuile()/2 + view.getTailleTuile()/5/2);
+				}
+			}
+			
+		}
+		
 	}
 	
 	public void bas() {
-		CarcassonneView.TuileView tuileV = view.getControle().getTuileV();
-		if (tuileV != null) {
+		TuileView tuileV = view.getControle().getTuileV();
+		if (view.getPartisanAct()==null && tuileV!=null) {
 			try {
 				if (party.getPlateau()[tuileV.getTx()][tuileV.getTy() + 1] == null) {
 					tuileV.setLocation(tuileV.getX(), tuileV.getY() + ((view.getSizeView().height / getPlateauLength())));
@@ -155,11 +168,20 @@ public class CarcassonneController {
 				}
 			}
 		}
+		else {
+			Circle c  = view.getPartisanAct();
+			if (c != null) {
+				if(c.getY() != tuileV.getY() + view.getTailleTuile() - view.getTailleTuile()/5) {
+					c.deplace(c.getX(), c.getY() + view.getTailleTuile()/2 - view.getTailleTuile()/5/2);
+				}
+			}
+			
+		}
 	}
 	
 	public void gauche() {
-		CarcassonneView.TuileView tuileV = view.getControle().getTuileV();
-		if (tuileV != null) {
+		TuileView tuileV = view.getControle().getTuileV();
+		if (view.getPartisanAct()==null && tuileV!=null) {
 			try {
 				if (party.getPlateau()[tuileV.getTx() - 1][tuileV.getTy()] == null) {
 					tuileV.setLocation(tuileV.getX() - ((view.getSizeView().height / getPlateauLength())), tuileV.getY());
@@ -203,11 +225,20 @@ public class CarcassonneController {
 			}
 			
 		}
+		else {
+			Circle c  = view.getPartisanAct();
+			if (c != null) {
+				if(c.getX() != tuileV.getX()) {
+					c.deplace(c.getX() - view.getTailleTuile()/2 + view.getTailleTuile()/5/2, c.getY());
+				}
+			}
+			
+		}
 	}
 	
 	public void droite() {
-		CarcassonneView.TuileView tuileV = view.getControle().getTuileV();
-		if (tuileV != null) {
+		TuileView tuileV = view.getControle().getTuileV();
+		if (view.getPartisanAct()==null && tuileV!=null) {
 			try {
 				if (party.getPlateau()[tuileV.getTx() + 1][tuileV.getTy()] == null) {
 					tuileV.setLocation(tuileV.getX() + ((view.getSizeView().height / getPlateauLength())), tuileV.getY());
@@ -247,6 +278,15 @@ public class CarcassonneController {
 				}
 			}
 		}
+		else {
+			Circle c  = view.getPartisanAct();
+			if (c != null) {
+				if(c.getX() != tuileV.getX() + view.getTailleTuile() - view.getTailleTuile()/5) {
+					c.deplace(c.getX() + view.getTailleTuile()/2 - view.getTailleTuile()/5/2, c.getY());
+				}
+			}
+			
+		}
 	}
 	
 	public Color partisanColor() {
@@ -273,9 +313,9 @@ public class CarcassonneController {
 	}
 	
 	public CarcassonneView.TuileView piocheTuile() {
-		if(party.getPlateau()[5][6] == null) {
+		if(party.getPlateau()[0][0] == null) {
 			party.piocher();
-			return view.placeTuile(5,6);
+			return view.placeTuile(0,0);
 		}
 		else {
 			int place_x = 0;
