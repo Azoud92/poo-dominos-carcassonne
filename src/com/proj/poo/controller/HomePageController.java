@@ -29,13 +29,21 @@ public class HomePageController {
 		}		
 	}
 	
-	public void addCarcassonnePlayer(String pseudo, int id, boolean isIA) {
+	public void addCarcassonnePlayer(String pseudo, int id, boolean isIA, String color) {
+		PlayerColor plColor =null;
+		switch(color) {
+		case "Jaune" : plColor=PlayerColor.JAUNE;break;
+		case "Bleu" : plColor=PlayerColor.BLEU;break;
+		case "Rouge" : plColor=PlayerColor.ROUGE;break;
+		case "Vert" : plColor=PlayerColor.VERT;break;
+		}
+		
 		if (party_carca == null) createParty(GameType.CARCASSONNE);
 		if (!isIA) {
-			party_carca.addPlayer(new PlayerCarcassonne(pseudo, id, PlayerColor.BLEU, party_carca));
+			party_carca.addPlayer(new PlayerCarcassonne(pseudo, id, plColor, party_carca));
 		}
 		else {
-			party_carca.addPlayer(new PlayerCarcassonne(pseudo, id, PlayerColor.BLEU, party_carca));//mettre la creation du bot carcassonne ici
+			party_carca.addPlayer(new PlayerCarcassonne(pseudo, id, plColor, party_carca));//mettre la creation du bot carcassonne ici
 		}		
 	}
 	

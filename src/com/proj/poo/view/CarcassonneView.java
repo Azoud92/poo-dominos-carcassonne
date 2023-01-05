@@ -8,12 +8,14 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.geom.Ellipse2D;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import com.proj.poo.controller.CarcassonneController;
+import com.proj.poo.model.carcassonne.PlayerColor;
 import com.proj.poo.runner.Auxiliaire;
 import com.proj.poo.view.DominosView.TuileView;
 
@@ -83,7 +85,6 @@ public class CarcassonneView extends JPanel{
 			this.setIcon(Auxiliaire.resizeImage(new ImageIcon(Auxiliaire.imgResourcesPath + controller.getActualTuile().getClass().getSimpleName() + ".png"),tailleTuile,tailleTuile));
 			this.setBounds(x * tailleTuile, y * tailleTuile, tailleTuile, tailleTuile);
 			
-
 		}
 		
 		@Override
@@ -99,15 +100,61 @@ public class CarcassonneView extends JPanel{
 			game.paintComponents(game.getGraphics());
 		}
 		
+		public int getTx() {
+			return x;
+		}
+		public int getTy() {
+			return y;
+		}
+		
+		public void setTy(int y) {
+			this.y = y;
+		}
+		
+		public void setTx(int x) {
+			this.x = x;
+		}
+		public void setRotation(double d) {
+			rotation=d;
+		}
+		
+		
 	}
+	public class Circle {
+
+	    private int x, y;
+
+	    public Circle(int x, int y) {
+	        this.x = x;
+	        this.y = y;
+	    }
+	    
+	    public void deplace(int x, int y) {
+	    	this.x = x;
+	    	this.y = y;
+	    	repaint();
+	    }
+
+	    public void draw(Graphics g) {
+	        Graphics2D g2d = (Graphics2D) g;
+	        Ellipse2D.Double circle = new Ellipse2D.Double(0, y, tailleTuile/5, tailleTuile/5);
+	        Color c = controller.partisanColor();
+	        
+	        g2d.setColor(c);
+	        g2d.fill(circle);
+	    }
+
+	}
+	
 	public class Controle extends JPanel{
 
 		private static final long serialVersionUID = -4197348622134353408L;
 
 		JButton piocheBtn, poserBtn, rotationBtn, defausserBtn, abandonBtn;
 		JButton hautBtn, basBtn, gaucheBtn, droiteBtn;
+		JButton partisanBtn, poserPartisanBtn, noPartisanBtn;
 		JLabel name, points, communication;
-		JPanel info, boutons, commandes;
+		JPanel info, boutons, commandes, partisanPnl;
 		TuileView tuileV;
 
 
@@ -146,16 +193,13 @@ public class CarcassonneView extends JPanel{
 			poserBtn.setFont(new Font("Arial", Font.BOLD, (int) (30 * scaleX)));
 			boutonsPerso(poserBtn,new Color(0,128,255),new Color(204, 229, 255));
 			poserBtn.setEnabled(false);
-			/*poserBtn.addActionListener((ActionEvent e) -> {
+			poserBtn.addActionListener((ActionEvent e) -> {
 				int x = tuileV.getTx();
 				int y = tuileV.getTy();
 
 				
 				if (controller.placeTuile(x, y) == true) {
-					game.remove(tuileV);
-					tuileV = null;
-					placeTuile(x, y);
-					controller.setActualTuile(null);
+					
 					communication.setText("Bien joué, vous avez réussi à placer votre tuile");
 					info.add(communication);
 					this.repaint();
@@ -164,13 +208,14 @@ public class CarcassonneView extends JPanel{
 					rotationBtn.setEnabled(false);
 					defausserBtn.setEnabled(false);
 					try {
-						Thread.sleep(500);
+						Thread.sleep(700);
 					} catch (InterruptedException e1) {
 						e1.printStackTrace();
 					}
-					tour();
+					partisanBtn.setEnabled(true);
+					noPartisanBtn.setEnabled(true);
 				}
-			});*/
+			});
 
 			rotationBtn = new JButton("Rotation");
 			rotationBtn.setFont(new Font("Arial", Font.BOLD, (int) (30 * scaleX)));
@@ -184,7 +229,7 @@ public class CarcassonneView extends JPanel{
 			defausserBtn.setFont(new Font("Arial", Font.BOLD, (int) (30 * scaleX)));
 			boutonsPerso(defausserBtn,new Color(0, 128, 255),new Color(204, 229, 255));
 			defausserBtn.setEnabled(false);
-			/*defausserBtn.addActionListener((ActionEvent e) ->{
+			defausserBtn.addActionListener((ActionEvent e) ->{
 				game.remove(tuileV);
 				game.repaint();
 				game.paintComponents(game.getGraphics());
@@ -192,12 +237,12 @@ public class CarcassonneView extends JPanel{
 				rotationBtn.setEnabled(false);
 				defausserBtn.setEnabled(false);
 				tour();
-			});*/
+			});
 
 			abandonBtn = new JButton("Abandonner");
 			abandonBtn.setFont(new Font("Arial", Font.BOLD, (int) (30 * scaleX)));
 			boutonsPerso(abandonBtn,new Color(0, 128, 255),new Color(204, 229, 255));
-			/*abandonBtn.addActionListener((ActionEvent e) ->{
+			abandonBtn.addActionListener((ActionEvent e) ->{
 				controller.abandon();
 				if (tuileV !=null) {
 					game.remove(tuileV);
@@ -210,7 +255,7 @@ public class CarcassonneView extends JPanel{
 				rotationBtn.setEnabled(false);
 				defausserBtn.setEnabled(false);
 				tour();
-			});*/
+			});
 
 
 			boutons_h.add(piocheBtn);
@@ -226,27 +271,27 @@ public class CarcassonneView extends JPanel{
 
 			hautBtn = new JButton(new ImageIcon(Auxiliaire.imgResourcesPath + "touche_haut.png"));
 			boutonsPerso(hautBtn,new Color(0,128,255),null);
-			/*hautBtn.addActionListener((ActionEvent e)->{
+			hautBtn.addActionListener((ActionEvent e)->{
 				controller.haut();
-			});*/
+			});
 
 			basBtn = new JButton(new ImageIcon(Auxiliaire.imgResourcesPath + "touche_bas.png"));
 			boutonsPerso(basBtn,new Color(0,128,255),null);
-			/*basBtn.addActionListener((ActionEvent e)->{
+			basBtn.addActionListener((ActionEvent e)->{
 				controller.bas();
-			});*/
+			});
 
 			gaucheBtn = new JButton(new ImageIcon(Auxiliaire.imgResourcesPath + "touche_gauche.png"));
 			boutonsPerso(gaucheBtn,new Color(0, 128, 255), null);
-			/*gaucheBtn.addActionListener((ActionEvent e)->{
+			gaucheBtn.addActionListener((ActionEvent e)->{
 				controller.gauche();				
-			});*/
+			});
 
 			droiteBtn = new JButton(new ImageIcon(Auxiliaire.imgResourcesPath + "touche_droite.png"));
 			boutonsPerso(droiteBtn, new Color(0, 128, 255),null);
-			/*droiteBtn.addActionListener((ActionEvent e)->{
+			droiteBtn.addActionListener((ActionEvent e)->{
 				controller.droite();				
-			});*/
+			});
 
 
 			JLabel j1 = new JLabel();
@@ -263,22 +308,114 @@ public class CarcassonneView extends JPanel{
 			name = new JLabel("Pseudo du joueur : ");
 			name.setFont(new Font("Arial", Font.BOLD, (int) (30 * scaleX)));
 			name.setForeground(new Color(0, 128, 255));
-
-			points = new JLabel("Nombre de points du joueur : ");
-			points.setFont(new Font("Arial", Font.BOLD, (int) (30 * scaleX)));
-			points.setForeground(new Color(0, 128, 255));
+			
+			
+			partisanPnl = new JPanel();
+			partisanPnl.setBackground(getBackground());
+			
+			partisanBtn = new JButton("Partisan");
+			partisanBtn.setFont(new Font("Arial", Font.BOLD, (int) (25 * scaleX)));
+			boutonsPerso(partisanBtn,new Color(0, 128, 255),new Color(204, 229, 255));
+			partisanBtn.setEnabled(false);
+			partisanBtn.addActionListener((ActionEvent e) ->{
+				partisanBtn.setEnabled(false);
+				noPartisanBtn.setEnabled(false);
+				poserPartisanBtn.setEnabled(true);
+				Circle partisan = new Circle(tuileV.getX()+ tailleTuile/2,tuileV.getY() + tailleTuile/2);
+				System.out.println(tuileV.getX()+"    "+ tuileV.getY()+"     "+ tailleTuile);
+				partisan.draw(getGraphics());
+				tuileV = null;
+				controller.setActualTuile(null);
+			});
+			
+			noPartisanBtn = new JButton("Ne pas poser de partisan");
+			noPartisanBtn.setFont(new Font("Arial", Font.BOLD, (int) (25 * scaleX)));
+			boutonsPerso(noPartisanBtn,new Color(0, 128, 255),new Color(204, 229, 255));
+			noPartisanBtn.setEnabled(false);
+			noPartisanBtn.addActionListener((ActionEvent e) ->{
+				partisanBtn.setEnabled(false);
+				noPartisanBtn.setEnabled(false);
+				tuileV = null;
+				controller.setActualTuile(null);
+				tour();
+			});
+			
+			poserPartisanBtn = new JButton("Poser partisan");
+			poserPartisanBtn.setFont(new Font("Arial", Font.BOLD, (int) (25 * scaleX)));
+			boutonsPerso(poserPartisanBtn,new Color(0, 128, 255),new Color(204, 229, 255));
+			poserPartisanBtn.setEnabled(false);
+			poserPartisanBtn.addActionListener((ActionEvent e) ->{
+				poserPartisanBtn.setEnabled(false);
+				tour();
+			});
+			
+			partisanPnl.add(partisanBtn);
+			partisanPnl.add(poserPartisanBtn);
+			partisanPnl.add(noPartisanBtn);
+			
+			
 
 			communication = new JLabel();
-			communication.setFont(new Font("Arial", Font.BOLD, (int) (22 * scaleX)));
+			communication.setFont(new Font("Arial", Font.BOLD, (int) (28 * scaleX)));
 			communication.setForeground(Color.RED);
 
 			info.add(name);
-			info.add(points);
-
+			info.add(partisanPnl);
+			
 			this.add(info);
 			this.add(boutons);
 			this.add(commandes);
 		}
+		
+		public void tour() {
+			boolean b = controller.tour();
+			
+			if (b) {
+				piocheBtn.setEnabled(true);
+				if (communication!=null) {
+					info.remove(communication);
+					paint();
+				}
+			}
+		}
+		
+		public TuileView getTuileV() {
+			return tuileV;
+		}
+		
+		
+		public void finPartie() {
+			info.remove(name);
+			info.remove(partisanPnl);
+			abandonBtn.setEnabled(false);
+			piocheBtn.setEnabled(false);
+			communication.setText("La partie est terminée");
+			communication.setVisible(true);
+			info.add(communication);
+			JButton exitBtn = new JButton("Quitter le jeu");
+			exitBtn.setFont(new Font("Arial", Font.BOLD, (int) (30 * scaleX)));
+			exitBtn.setBackground(Color.RED);
+			exitBtn.addActionListener(e -> {
+				// action Ã  effectuer pour fermer le programme
+				System.exit(0);
+			});
+			info.add(exitBtn);
+			this.paintComponents(this.getGraphics());
+		}
+		
+		public void paint() {
+			this.repaint();
+			this.paintComponents(getGraphics());
+		}
+		
+		
+		public void setPseudoLabelText(String s) {
+			name.setText("Pseudo du joueur : " + s);
+			name.paintComponents(name.getGraphics());
+		}
+		
+		
+		
 		
 		public void boutonsPerso(JButton b, Color bg, Color fg) {
 			b.setBackground(bg);

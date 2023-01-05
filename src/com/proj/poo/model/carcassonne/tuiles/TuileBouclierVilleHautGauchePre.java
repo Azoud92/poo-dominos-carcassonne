@@ -32,7 +32,7 @@ public class TuileBouclierVilleHautGauchePre extends TuileCarcassonne {
 		// La gauche contient un quartier, un quartier, une limite
 		tuile[3][0] = new ZoneQuartierVille();
 		tuile[3][1] = new ZoneQuartierVille();
-		tuile[3][2] = new ZonePre();
+		tuile[3][2] = new ZoneLimiteVille();
 	}
 
 }

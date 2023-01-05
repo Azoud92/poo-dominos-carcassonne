@@ -35,5 +35,9 @@ public class PlayerCarcassonne extends Player {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public ArrayList<Partisan> getPartisans(){
+		return partisans;
+	}
 
 }

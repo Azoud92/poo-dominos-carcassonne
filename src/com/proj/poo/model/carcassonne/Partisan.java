@@ -7,5 +7,8 @@ public class Partisan {
 		this.color = color;
 		// TODO Auto-generated constructor stub
 	}
+	public PlayerColor getColor() {
+		return color;
+	}
 
 }

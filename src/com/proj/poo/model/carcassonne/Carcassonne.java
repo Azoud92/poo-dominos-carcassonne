@@ -1,13 +1,14 @@
 package com.proj.poo.model.carcassonne;
 
-import java.util.ArrayList;
+import java.util.ArrayList; 
 
 import com.proj.poo.controller.CarcassonneController;
 import com.proj.poo.model.Game;
 import com.proj.poo.model.Player;
 import com.proj.poo.model.State;
 import com.proj.poo.model.Tuile;
-import com.proj.poo.model.carcassonne.tuiles.TuilePreCheminGaucheBas;
+import com.proj.poo.model.carcassonne.tuiles.*;
+import com.proj.poo.model.dominos.PlayerDominos;
 
 public class Carcassonne extends Game{
 	
@@ -24,8 +25,15 @@ private CarcassonneController controller;
 	@Override
 	public void play() {
 		// TODO Auto-generated method stub
+
+		if (state == State.FINISHED) {
+			return;
+		}
+		state = State.PLAYING;
+		controller.setPlayerToPlay( (PlayerCarcassonne) players.get(tour));
 		
 	}
+	
 	@Override
 	public Tuile piocher() {
 		Tuile t = super.piocher();
@@ -41,7 +49,7 @@ private CarcassonneController controller;
 			sac.add(new TuilePreCheminGaucheBas());
 		}
 		
-		/*for (int i = 0; i < 8; i++) {
+		for (int i = 0; i < 8; i++) {
 			sac.add(new TuilePreCheminHautBas());
 		}
 		
@@ -78,7 +86,21 @@ private CarcassonneController controller;
 		sac.add(new TuileBouclierVillePreBas());
 		sac.add(new TuileVillePreHautBas());
 		sac.add(new TuileBouclierVille());
-		sac.add(new TuileCarrefour());*/
+		sac.add(new TuileCarrefour());
+	}
+	
+	public boolean passerTour() {
+		if (sac.size() <= 0 || players.size() <= 1) {
+			state = State.FINISHED;
+			return false;
+		}
+		if (tour + 1 >= players.size()) {
+			tour = 0; 
+		}
+		else { 
+			tour++; 
+		}
+		return true;
 	}
 
 	@Override
@@ -86,4 +108,14 @@ private CarcassonneController controller;
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public int getTour() {
+		return tour;
+	}
+	
+	public ArrayList<Player> getPlayers(){
+		return players;
+	}
+	
+	
 }

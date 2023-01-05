@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -34,9 +35,16 @@ public class HomePageView extends JPanel {
 	private JButton dominosBtn, carcassonneBtn, exitBtn, ajoutBtn;
 	
 	private HomePageController controller;
+	
+	private ArrayList<String> color;
 
 	// crÃ©ation de plusieurs panels afin de pouvoir utiliser les differents layout et bien placer les boutons
 	public HomePageView(Dimension size, double scaleX, double scaleY, double scaleXY, JFrame frame, HomePageController hpc) {
+		color=new ArrayList<String>();
+		color.add("Bleu");
+		color.add("Jaune");
+		color.add("Vert");
+		color.add("Rouge");
 		this.setPreferredSize(size);
 
 		BorderLayout container_layout = new BorderLayout();
@@ -142,7 +150,7 @@ public class HomePageView extends JPanel {
 		static int NB_PLAYERS_D = 0;
 		static int NB_PLAYERS_C = 0;
 		JPanel container;
-		JComboBox choix_partie;
+		JComboBox choix_partie, choix_color;
 
 		public AjoutPlayer() {
 
@@ -160,9 +168,24 @@ public class HomePageView extends JPanel {
 			pseudo = new JTextField();
 			container.add(pseudo);
 			
-			String[] t = {"Dominos Carrés", "Carcassonne"};
-			choix_partie= new JComboBox<String>(t);
-			container.add(choix_partie);
+			if(NB_PLAYERS_C <4) {
+				String[] t = {"Dominos Carrés", "Carcassonne"};
+				choix_partie= new JComboBox<String>(t);
+				container.add(choix_partie);
+				}
+			else {
+				String[] t = {"Dominos Carrés"};
+				choix_partie= new JComboBox<String>(t);
+				container.add(choix_partie);
+			}
+			
+			
+			if (color.size()>0) {
+				String[] array = color.toArray(new String[color.size()]);
+				choix_color= new JComboBox<String>(array);
+				choix_color.setEnabled(false);
+				container.add(choix_color);
+			}
 			
 			isBot = new JCheckBox("IA");
 			if ((NB_PLAYERS_D != 0 && choix_partie.getSelectedIndex()==0) || (NB_PLAYERS_C != 0 && choix_partie.getSelectedIndex()==1)) { // on peut creer un bot seulement apres avoir crï¿½ï¿½ au moins un vrai joueur
@@ -183,6 +206,9 @@ public class HomePageView extends JPanel {
 	            		isBot.setEnabled(false);
 	            	}
 	            	
+	            	if (choix_partie.getSelectedIndex()==1) {choix_color.setEnabled(true);}
+	            	else if (NB_PLAYERS_C <4){choix_color.setEnabled(false);}
+	            	
 	            }
 	            });
 	                
@@ -192,7 +218,7 @@ public class HomePageView extends JPanel {
 			
 		
 			
-
+			
 			valider = new JButton("VALIDER");
 			container.add(valider);
 			
@@ -209,7 +235,8 @@ public class HomePageView extends JPanel {
 							}
 						else {
 							NB_PLAYERS_C++;
-							controller.addCarcassonnePlayer(pseudo.getText(), NB_PLAYERS_C, false);							
+							controller.addCarcassonnePlayer(pseudo.getText(), NB_PLAYERS_C, false, (String) choix_color.getSelectedItem());
+							color.remove(choix_color.getSelectedItem());
 						}
 					}
 					else { 
@@ -219,7 +246,8 @@ public class HomePageView extends JPanel {
 							}
 						else if (choix_partie.getSelectedIndex() == 1 && NB_PLAYERS_C != 0) {
 							NB_PLAYERS_C++;
-							controller.addCarcassonnePlayer(pseudo.getText(), NB_PLAYERS_C, true);
+							controller.addCarcassonnePlayer(pseudo.getText(), NB_PLAYERS_C, true, (String) choix_color.getSelectedItem());
+							color.remove(choix_color.getSelectedItem());
 							
 						}
 					}
@@ -232,6 +260,7 @@ public class HomePageView extends JPanel {
 					if(NB_PLAYERS_C + NB_PLAYERS_D < 14) {
 						ajoutBtn.setEnabled(true);
 					}
+					
 					
 
 				}
