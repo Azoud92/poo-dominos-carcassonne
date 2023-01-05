@@ -18,21 +18,9 @@ public class PlayerCarcassonne extends Player {
 			partisans.add(new Partisan(color));
 		}
 	}
-
-	@Override
-	public void play() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	@SuppressWarnings("unused")
 	private void placerPartisan() {
-		
-	}
-
-	@Override
-	protected void placerTuile(int x, int y) {
-		// TODO Auto-generated method stub
 		
 	}
 	

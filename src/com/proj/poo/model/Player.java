@@ -14,8 +14,16 @@ public abstract class Player {
 		this.partie = partie;
 	}
 	
-	public abstract void play();
-	protected abstract void placerTuile(int x, int y);
+	public void play() {
+		tuileEnMain = partie.piocher();	
+	}
+	
+	protected void placerTuile(int x, int y) {
+		if (partie.isLegalPlacement(x, y, tuileEnMain)) {
+			partie.placeTuile(x, y, tuileEnMain, this);
+			return;
+		}
+	}
 	
 	public void defausser() {
 		tuileEnMain = null;

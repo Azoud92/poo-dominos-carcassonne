@@ -3,8 +3,6 @@ package com.proj.poo.model;
 import java.util.ArrayList;
 import java.util.Random;
 
-import com.proj.poo.model.dominos.TuileDominos;
-
 public abstract class Game {
 
 	protected final int tailleSac;
@@ -40,14 +38,26 @@ public abstract class Game {
 
 	public abstract void play();
 	
-	protected abstract void remplirSac();
-
-	public abstract int[] placeIA(Tuile t, Player p);
+	protected abstract void remplirSac();	
 	
 	public Tuile piocher() {
 		Tuile t = sac.get(rd.nextInt(sac.size()));
 		sac.remove(t);
 		return t;
+	}
+	
+	public int[] placeIA(Tuile t, Player p) {
+		// TODO Auto-generated method stub
+		ArrayList<int[]> p1acements = getAllLegalPlacementsIA(t);
+		if (p1acements.size() > 0) { // si des placements sont possibles
+			int index = rd.nextInt(p1acements.size()); // on en sélectionne un au hasard
+			int[] placement = p1acements.get(index);
+			if (placement[2] > 0) {
+				for (int i = 0; i < placement[2]; i++) t.rotation(); // on fait autant de rotations de la tuile qu'indiquées par le placement
+			}
+			return placement;
+		}
+		return null;
 	}
 
 	// Ces méthodes ne peuvent pas être redéfinies étant donné qu'elles ne peuvent, par définition, pas dériver
@@ -153,6 +163,10 @@ public abstract class Game {
 	public final Player getActualPlayer() {
 		if (players.size() > 0) return players.get(tour);
 		return null;
+	}
+	
+	public final void setState(State s) {
+		state = s;
 	}
 
 }
