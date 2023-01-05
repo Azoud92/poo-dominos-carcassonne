@@ -1,6 +1,6 @@
 package com.proj.poo.view;
 
-import java.awt.BorderLayout; 
+import java.awt.BorderLayout;  
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -9,15 +9,15 @@ import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.geom.Ellipse2D;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import com.proj.poo.controller.CarcassonneController;
-import com.proj.poo.model.carcassonne.PlayerColor;
 import com.proj.poo.runner.Auxiliaire;
-import com.proj.poo.view.DominosView.TuileView;
+
 
 
 
@@ -30,6 +30,7 @@ public class CarcassonneView extends JPanel{
 	private Dimension size;
 	double scaleX, scaleY;	
 	int tailleTuile;
+	ArrayList<Circle> liste_partisans;
 
 	public CarcassonneView(Dimension size, double scaleX, double scaleY, CarcassonneController controller) {
 		this.setPreferredSize(size);
@@ -39,9 +40,15 @@ public class CarcassonneView extends JPanel{
 		this.setLayout(new BorderLayout());
 		this.controller = controller;
 		tailleTuile = (size.height / controller.getPlateauLength());
+		liste_partisans = new ArrayList<Circle>();
 		controle = new Controle();
 
-		game = new JPanel(new GridLayout(controller.getPlateauLength(), controller.getPlateauLength()));
+		game = new JPanel(new GridLayout(controller.getPlateauLength(), controller.getPlateauLength())) {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				affichePartisans();
+		}};
 		game.setPreferredSize(new Dimension(size.height,size.height));
 		game.setBackground(Color.GRAY);
 		game.setLayout(null);
@@ -56,8 +63,8 @@ public class CarcassonneView extends JPanel{
 	public TuileView placeTuile(int x, int y) {
 		TuileView t = new TuileView(x,y);
 		game.add(t);
-		game.repaint();
-		game.paintComponents(game.getGraphics());
+		t.repaint();
+		t.paintComponents(t.getGraphics());
 		return t;
 
 	}
@@ -68,6 +75,20 @@ public class CarcassonneView extends JPanel{
 	}
 	
 	public Controle getControle() { return (Controle) controle; }
+	
+	public void creerPartisan() {
+		Circle partisan = new Circle(((Controle) controle).tuileV.getX() + tailleTuile/2, ((Controle) controle).tuileV.getY() + tailleTuile/2, controller.partisanColor());
+		partisan.draw(getGraphics());
+		liste_partisans.add(partisan);
+	}
+	
+	public void affichePartisans() {
+		for(Circle c : liste_partisans) {
+			c.draw(getGraphics());
+		}
+		game.revalidate();
+	}
+	
 	
 	public class TuileView extends JLabel{
 
@@ -97,7 +118,7 @@ public class CarcassonneView extends JPanel{
 			rotation+=Math.toRadians(90);
 			this.repaint();
 			controller.rotationTuile();
-			game.paintComponents(game.getGraphics());
+			this.paintComponents(this.getGraphics());
 		}
 		
 		public int getTx() {
@@ -123,10 +144,12 @@ public class CarcassonneView extends JPanel{
 	public class Circle {
 
 	    private int x, y;
+	    private Color c;
 
-	    public Circle(int x, int y) {
+	    public Circle(int x, int y, Color c) {
 	        this.x = x;
 	        this.y = y;
+	        this.c = c;
 	    }
 	    
 	    public void deplace(int x, int y) {
@@ -137,8 +160,7 @@ public class CarcassonneView extends JPanel{
 
 	    public void draw(Graphics g) {
 	        Graphics2D g2d = (Graphics2D) g;
-	        Ellipse2D.Double circle = new Ellipse2D.Double(0, y, tailleTuile/5, tailleTuile/5);
-	        Color c = controller.partisanColor();
+	        Ellipse2D.Double circle = new Ellipse2D.Double(x - (tailleTuile/5/2), y - (tailleTuile/5/2), tailleTuile/5, tailleTuile/5);
 	        
 	        g2d.setColor(c);
 	        g2d.fill(circle);
@@ -183,6 +205,7 @@ public class CarcassonneView extends JPanel{
 			piocheBtn.addActionListener((ActionEvent e) ->{
 				tuileV = controller.piocheTuile();
 				game.paintComponents(game.getGraphics());
+				affichePartisans();
 				piocheBtn.setEnabled(false);
 				poserBtn.setEnabled(true);
 				rotationBtn.setEnabled(true);
@@ -204,6 +227,7 @@ public class CarcassonneView extends JPanel{
 					info.add(communication);
 					this.repaint();
 					this.paintComponents(this.getGraphics());
+					affichePartisans();
 					poserBtn.setEnabled(false);
 					rotationBtn.setEnabled(false);
 					defausserBtn.setEnabled(false);
@@ -223,6 +247,7 @@ public class CarcassonneView extends JPanel{
 			rotationBtn.setEnabled(false);
 			rotationBtn.addActionListener((ActionEvent e) -> {
 				tuileV.tuileRotation();
+				affichePartisans();
 
 			});
 			defausserBtn = new JButton("Défausser");
@@ -237,6 +262,8 @@ public class CarcassonneView extends JPanel{
 				rotationBtn.setEnabled(false);
 				defausserBtn.setEnabled(false);
 				tour();
+				affichePartisans();
+				
 			});
 
 			abandonBtn = new JButton("Abandonner");
@@ -255,6 +282,7 @@ public class CarcassonneView extends JPanel{
 				rotationBtn.setEnabled(false);
 				defausserBtn.setEnabled(false);
 				tour();
+				affichePartisans();
 			});
 
 
@@ -273,24 +301,28 @@ public class CarcassonneView extends JPanel{
 			boutonsPerso(hautBtn,new Color(0,128,255),null);
 			hautBtn.addActionListener((ActionEvent e)->{
 				controller.haut();
+				affichePartisans();
 			});
 
 			basBtn = new JButton(new ImageIcon(Auxiliaire.imgResourcesPath + "touche_bas.png"));
 			boutonsPerso(basBtn,new Color(0,128,255),null);
 			basBtn.addActionListener((ActionEvent e)->{
 				controller.bas();
+				affichePartisans();
 			});
 
 			gaucheBtn = new JButton(new ImageIcon(Auxiliaire.imgResourcesPath + "touche_gauche.png"));
 			boutonsPerso(gaucheBtn,new Color(0, 128, 255), null);
 			gaucheBtn.addActionListener((ActionEvent e)->{
-				controller.gauche();				
+				controller.gauche();
+				affichePartisans();
 			});
 
 			droiteBtn = new JButton(new ImageIcon(Auxiliaire.imgResourcesPath + "touche_droite.png"));
 			boutonsPerso(droiteBtn, new Color(0, 128, 255),null);
 			droiteBtn.addActionListener((ActionEvent e)->{
-				controller.droite();				
+				controller.droite();
+				affichePartisans();
 			});
 
 
@@ -321,9 +353,7 @@ public class CarcassonneView extends JPanel{
 				partisanBtn.setEnabled(false);
 				noPartisanBtn.setEnabled(false);
 				poserPartisanBtn.setEnabled(true);
-				Circle partisan = new Circle(tuileV.getX()+ tailleTuile/2,tuileV.getY() + tailleTuile/2);
-				System.out.println(tuileV.getX()+"    "+ tuileV.getY()+"     "+ tailleTuile);
-				partisan.draw(getGraphics());
+				creerPartisan();
 				tuileV = null;
 				controller.setActualTuile(null);
 			});
@@ -366,6 +396,8 @@ public class CarcassonneView extends JPanel{
 			this.add(boutons);
 			this.add(commandes);
 		}
+		
+		
 		
 		public void tour() {
 			boolean b = controller.tour();
