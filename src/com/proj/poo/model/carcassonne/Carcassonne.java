@@ -1,6 +1,7 @@
 package com.proj.poo.model.carcassonne;
 
-import java.util.ArrayList; 
+import java.util.ArrayList;
+import java.util.Collections;
 
 import com.proj.poo.controller.CarcassonneController;
 import com.proj.poo.model.Game;
@@ -86,6 +87,8 @@ private CarcassonneController controller;
 		sac.add(new TuileVillePreHautBas());
 		sac.add(new TuileBouclierVille());
 		sac.add(new TuileCarrefour());
+		
+		Collections.shuffle(sac); // on mélange le sac pour créer du hasard
 	}
 	
 	public boolean passerTour() {
@@ -100,12 +103,6 @@ private CarcassonneController controller;
 			tour++; 
 		}
 		return true;
-	}
-
-	@Override
-	public int[] placeIA(Tuile t, Player p) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 	public int getTour() {

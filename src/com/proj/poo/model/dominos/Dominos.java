@@ -40,22 +40,7 @@ public class Dominos extends Game {
 		controller.setPlayerToPlay((PlayerDominos) players.get(tour));
 		
 	}				
-
-	@Override
-	public int[] placeIA(Tuile t, Player p) {
-		// TODO Auto-generated method stub
-		ArrayList<int[]> p1acements = getAllLegalPlacementsIA(t);
-		if (p1acements.size() > 0) { // si des placements sont possibles
-			int index = rd.nextInt(p1acements.size()); // on en sélectionne un au hasard
-			int[] placement = p1acements.get(index);
-			if (placement[2] > 0) {
-				for (int i = 0; i < placement[2]; i++) t.rotation(); // on fait autant de rotations de la tuile qu'indiquées par le placement
-			}
-			return placement;
-		}
-		return null;
-	}
-	
+		
 	@Override
 	public void placeTuile(int x, int y, Tuile t, Player p) {
 		// TODO Auto-generated method stub
@@ -143,10 +128,7 @@ public class Dominos extends Game {
 	public ArrayList<Player> getPlayers(){
 		return players;
 	}
-	
-	public void setState(State s) {
-		state = s;
-	}
+		
 	public int getTour() {
 		return tour;
 	}

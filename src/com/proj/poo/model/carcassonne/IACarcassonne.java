@@ -1,14 +1,14 @@
-package com.proj.poo.model.dominos;
+package com.proj.poo.model.carcassonne;
 
 import com.proj.poo.model.Game;
 
-public class IADominos extends PlayerDominos {
+public class IACarcassonne extends PlayerCarcassonne {
 
-	public IADominos(String pseudo, int id, Game partie) {
-		super(pseudo, id, partie);
+	public IACarcassonne(String pseudo, int id, PlayerColor color, Game partie) {
+		super(pseudo, id, color, partie);
 		// TODO Auto-generated constructor stub
 	}
-
+	
 	@Override
 	public void play() {
 		// TODO Auto-generated method stub
@@ -23,5 +23,6 @@ public class IADominos extends PlayerDominos {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
+
 
 }

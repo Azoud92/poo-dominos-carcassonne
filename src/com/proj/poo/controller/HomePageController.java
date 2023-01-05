@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import com.proj.poo.model.Game;
 import com.proj.poo.model.GameType;
 import com.proj.poo.model.carcassonne.Carcassonne;
+import com.proj.poo.model.carcassonne.IACarcassonne;
 import com.proj.poo.model.carcassonne.PlayerCarcassonne;
 import com.proj.poo.model.carcassonne.PlayerColor;
 import com.proj.poo.model.dominos.Dominos;
@@ -43,7 +44,7 @@ public class HomePageController {
 			party_carca.addPlayer(new PlayerCarcassonne(pseudo, id, plColor, party_carca));
 		}
 		else {
-			party_carca.addPlayer(new PlayerCarcassonne(pseudo, id, plColor, party_carca));//mettre la creation du bot carcassonne ici
+			party_carca.addPlayer(new IACarcassonne(pseudo, id, plColor, party_carca));
 		}		
 	}
 	
