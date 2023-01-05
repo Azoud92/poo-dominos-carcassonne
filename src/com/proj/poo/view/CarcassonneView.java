@@ -43,12 +43,7 @@ public class CarcassonneView extends JPanel{
 		liste_partisans = new ArrayList<Circle>();
 		controle = new Controle();
 
-		game = new JPanel(new GridLayout(controller.getPlateauLength(), controller.getPlateauLength())) {
-			@Override
-			public void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				affichePartisans();
-		}};
+		game = new JPanel(new GridLayout(controller.getPlateauLength(), controller.getPlateauLength()));
 		game.setPreferredSize(new Dimension(size.height,size.height));
 		game.setBackground(Color.GRAY);
 		game.setLayout(null);
@@ -85,8 +80,8 @@ public class CarcassonneView extends JPanel{
 	public void affichePartisans() {
 		for(Circle c : liste_partisans) {
 			c.draw(getGraphics());
+			
 		}
-		game.revalidate();
 	}
 	
 	
@@ -105,7 +100,6 @@ public class CarcassonneView extends JPanel{
 			rotation=0;
 			this.setIcon(Auxiliaire.resizeImage(new ImageIcon(Auxiliaire.imgResourcesPath + controller.getActualTuile().getClass().getSimpleName() + ".png"),tailleTuile,tailleTuile));
 			this.setBounds(x * tailleTuile, y * tailleTuile, tailleTuile, tailleTuile);
-			
 		}
 		
 		@Override
@@ -223,7 +217,7 @@ public class CarcassonneView extends JPanel{
 				
 				if (controller.placeTuile(x, y) == true) {
 					
-					communication.setText("Bien joué, vous avez réussi à placer votre tuile");
+					communication.setText("Bien jouï¿½, vous avez rï¿½ussi ï¿½ placer votre tuile");
 					info.add(communication);
 					this.repaint();
 					this.paintComponents(this.getGraphics());
@@ -250,7 +244,7 @@ public class CarcassonneView extends JPanel{
 				affichePartisans();
 
 			});
-			defausserBtn = new JButton("Défausser");
+			defausserBtn = new JButton("Dï¿½fausser");
 			defausserBtn.setFont(new Font("Arial", Font.BOLD, (int) (30 * scaleX)));
 			boutonsPerso(defausserBtn,new Color(0, 128, 255),new Color(204, 229, 255));
 			defausserBtn.setEnabled(false);
@@ -258,11 +252,13 @@ public class CarcassonneView extends JPanel{
 				game.remove(tuileV);
 				game.repaint();
 				game.paintComponents(game.getGraphics());
+				
 				poserBtn.setEnabled(false);
 				rotationBtn.setEnabled(false);
 				defausserBtn.setEnabled(false);
 				tour();
-				affichePartisans();
+
+				affichePartisans();			
 				
 			});
 
@@ -409,6 +405,7 @@ public class CarcassonneView extends JPanel{
 					paint();
 				}
 			}
+			
 		}
 		
 		public TuileView getTuileV() {
@@ -421,7 +418,7 @@ public class CarcassonneView extends JPanel{
 			info.remove(partisanPnl);
 			abandonBtn.setEnabled(false);
 			piocheBtn.setEnabled(false);
-			communication.setText("La partie est terminée");
+			communication.setText("La partie est terminï¿½e");
 			communication.setVisible(true);
 			info.add(communication);
 			JButton exitBtn = new JButton("Quitter le jeu");
