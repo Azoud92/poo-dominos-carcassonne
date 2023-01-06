@@ -80,7 +80,13 @@ public class HomePageController {
 	
 	public Carcassonne getCarcassonneParty() {
 		// TODO Auto-generated method stub
+		
 		return party_carca;
+	}
+
+	public void supprimer(String partie, String pseudo) {
+		if (partie.equals("Dominos Carrés"))party_dominos.suppPlayer(pseudo);
+		
 	}
 	
 }

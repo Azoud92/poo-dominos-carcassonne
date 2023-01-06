@@ -157,8 +157,14 @@ public abstract class Game {
 		players.add(p);
 	}
 
-	public final void removePlayer(Player p) {
-		players.add(p);
+	
+	public final void suppPlayer(String pseudoCherche){
+		for (int i =0; i< players.size(); i++) {
+			if (players.get(i).pseudo.equals(pseudoCherche)) {
+				players.remove(i);
+				break;
+			}
+		}
 	}
 	
 	public final void abandon(Player p) {

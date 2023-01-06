@@ -44,7 +44,7 @@ public class HomePageView extends JPanel {
 	public HomePageView(Dimension size, double scaleX, double scaleY, double scaleXY, JFrame frame, HomePageController hpc, Window window) {
 		color=new ArrayList<String>();
 		game= new ArrayList<String>();
-		game.add("Dominos Carrï¿½s");
+		game.add("Dominos Carrés");
 		game.add("Carcassonne");
 		color.add("Bleu");
 		color.add("Jaune");
@@ -65,7 +65,7 @@ public class HomePageView extends JPanel {
 		container_layout.setVgap((int) (10 * scaleY));
 		bottom_layout.setHgap((int) (20 * scaleX));		
 
-		title = new JLabel("Jeux de Dominos Carrï¿½s et de Carcassonne");
+		title = new JLabel("Jeux de Dominos Carrés et de Carcassonne");
 		title.setFont(new Font("Arial", Font.BOLD, (int) (60 * scaleX)));
 
 		// contiendra le texte entrÃ© par l'utilisateur lorsque celui-ci ajoutera un joueur (qu'il soit IA ou RÃ©el) et qu'il mettra son pseudo
@@ -153,7 +153,7 @@ public class HomePageView extends JPanel {
 		private static final long serialVersionUID = 1902883529203225339L;
 		JTextField pseudo;
 		JCheckBox isBot;
-		JButton valider;
+		JButton valider, supprimer;
 		static int NB_PLAYERS_D = 0;
 		static int NB_PLAYERS_C = 0;
 		JPanel container;
@@ -167,7 +167,7 @@ public class HomePageView extends JPanel {
 			 */
 			container = new JPanel();
 			container.setBackground(Color.CYAN);
-			container.setLayout(new GridLayout(6,1));
+			container.setLayout(new GridLayout(7,1));
 
 			JLabel nom = new JLabel("Pseudo du joueur : " );
 			container.add(nom);
@@ -190,6 +190,12 @@ public class HomePageView extends JPanel {
 			}
 			if (game.size()==1 && game.get(0).equals("Carcassonne")) choix_color.setEnabled(true);
 			
+			if (choix_partie.getSelectedItem().equals("Carcassonne")) {
+				choix_color.setEnabled(true);
+			}
+			else {
+				if(choix_color!=null) choix_color.setEnabled(false);
+			}
 			
 			isBot = new JCheckBox("IA");
 			if (NB_PLAYERS_D > 0 || NB_PLAYERS_C > 0 ) { // on peut creer un bot seulement apres avoir crï¿½ï¿½ au moins un vrai joueur
@@ -203,13 +209,14 @@ public class HomePageView extends JPanel {
 			choix_partie.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent event) {
 	            	if (choix_partie.getSelectedItem().equals("Carcassonne")){choix_color.setEnabled(true);}
-	            	else if(choix_partie.getSelectedItem().equals("Dominos Carrï¿½s") && t.length>1){choix_color.setEnabled(false);}
+	            	else if(choix_partie.getSelectedItem().equals("Dominos Carrés") && t.length>1){choix_color.setEnabled(false);}
 	       
 	            	
 	            } 
 	            });
 			
 			valider = new JButton("VALIDER");
+			valider.setForeground(Color.GREEN);
 			container.add(valider);
 			
 			valider.addActionListener((ActionEvent e) ->{ // dÃ¨s qu'on clique sur le bouton valider
@@ -222,7 +229,7 @@ public class HomePageView extends JPanel {
 						choix_color.setEnabled(false);
 						}
 					if (!isBot.isSelected()) { // si c'est pas un bot
-						if (choix_partie.getSelectedItem().equals("Dominos Carrï¿½s")) {
+						if (choix_partie.getSelectedItem().equals("Dominos Carrés")) {
 							NB_PLAYERS_D++;
 							controller.addDominosPlayer(pseudo.getText(), NB_PLAYERS_D, false);
 							if (NB_PLAYERS_D == 1) game.remove("Carcassonne");
@@ -233,11 +240,11 @@ public class HomePageView extends JPanel {
 							NB_PLAYERS_C++;
 							controller.addCarcassonnePlayer(pseudo.getText(), NB_PLAYERS_C, false, (String) choix_color.getSelectedItem());
 							color.remove(choix_color.getSelectedItem());
-							if (NB_PLAYERS_C == 1) game.remove("Dominos Carrï¿½s");
+							if (NB_PLAYERS_C == 1) game.remove("Dominos Carrés");
 						}
 					}
 					else { 
-						if (choix_partie.getSelectedItem().equals("Dominos Carrï¿½s") && NB_PLAYERS_D != 0) {
+						if (choix_partie.getSelectedItem().equals("Dominos Carrés") && NB_PLAYERS_D != 0) {
 							NB_PLAYERS_D++;
 							controller.addDominosPlayer(pseudo.getText(), NB_PLAYERS_D, true);
 							}
@@ -260,6 +267,37 @@ public class HomePageView extends JPanel {
 					else {
 						ajoutBtn.setEnabled(false);
 					}
+					supprimer.setEnabled(true);
+				}
+			});
+			
+			supprimer = new JButton("Supprimer");
+			supprimer.setForeground(Color.RED);
+			supprimer.setEnabled(false);
+			container.add(supprimer);
+			supprimer.addActionListener((ActionEvent e) -> {
+				
+				if(choix_partie.getSelectedItem().toString().equals("Carcassonne")) {
+					if (NB_PLAYERS_C>0)NB_PLAYERS_C--;
+					color.add(choix_color.getSelectedItem().toString());
+				}
+				else {
+					if (NB_PLAYERS_D>0)NB_PLAYERS_D--;
+				}
+				if(NB_PLAYERS_D<2)dominosBtn.setEnabled(false);
+				if(NB_PLAYERS_C<2)carcassonneBtn.setEnabled(false);
+				controller.supprimer(choix_partie.getSelectedItem().toString(), pseudo.getText());
+				getMainContainer().remove(this.container);
+				container.removeAll();
+				getMainContainer().repaint();
+				getMainContainer().paintComponents(getMainContainer().getGraphics());
+				if(NB_PLAYERS_D ==0 && NB_PLAYERS_C ==0) {
+					if (game.get(0).equals("Carcassonne")) {
+						game.add("Dominos Carrés");
+					}
+					else {
+						game.add("Carcassonne");
+						}
 				}
 			});
 		}
