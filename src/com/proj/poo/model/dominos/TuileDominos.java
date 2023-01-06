@@ -19,7 +19,7 @@ public class TuileDominos extends Tuile {
 		// TODO Auto-generated method stub
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 3; j++) {
-				tuile[i][j] = new IntegerZoneTuile(rd.nextInt(0, 10));
+				tuile[i][j] = new IntegerZoneTuile(rd.nextInt(0, 3));
 			}
 		}
 	}

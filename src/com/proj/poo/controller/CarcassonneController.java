@@ -23,6 +23,7 @@ public class CarcassonneController extends Controller {
 		else {
 			if (party.getActualPlayer() instanceof IACarcassonne) {
 				party.piocher();
+				System.out.println(actualTuile.toString());
 				int[] xy = party.placeIA(actualTuile, party.getActualPlayer());
 				if (xy != null) {
 					try {
@@ -35,6 +36,7 @@ public class CarcassonneController extends Controller {
 										
 					view.placeTuile(xy[0], xy[1], xy[2]);
 					party.placeTuile(xy[0], xy[1], actualTuile, party.getActualPlayer());
+					
 					view.getControle().paint();
 					
 				}

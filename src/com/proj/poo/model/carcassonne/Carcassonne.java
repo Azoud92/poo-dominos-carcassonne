@@ -9,6 +9,7 @@ import com.proj.poo.model.Player;
 import com.proj.poo.model.State;
 import com.proj.poo.model.Tuile;
 import com.proj.poo.model.carcassonne.tuiles.*;
+import com.proj.poo.runner.Auxiliaire;
 
 public class Carcassonne extends Game{
 	
@@ -20,6 +21,50 @@ private CarcassonneController controller;
 		
 		controller.setActualTuile(plateau[plateau.length / 2][plateau.length / 2]);
 		state = State.PLAYING;
+	}
+	
+	private void printPlateau() {
+		// ces ArrayList servent à afficher correctement les tuiles : pour chaque ligne, on imprime les côtés des tuiles
+		ArrayList<String> toPrint = new ArrayList<String>();
+		ArrayList<Integer> spToPrint = new ArrayList<Integer>();
+
+		int spaceToPrint = 0; // sert à compter le nombre d'espaces à ajouter pour l'alignement avec la partie haute de la tuile
+
+		for (int i = 0; i < plateau.length; i++) {
+			for (int j = 0; j < plateau[i].length; j++) {
+				TuileCarcassonne x = (TuileCarcassonne) plateau[j][i];
+				if (x == null) {
+					String s = "(" + Auxiliaire.space(String.valueOf(plateau.length).length() - String.valueOf(i).length()) + i + ";" + Auxiliaire.space(String.valueOf(plateau[i].length).length() - String.valueOf(j).length()) + j + ") "; // une tuile nulle est représentée par une coordonnée "(x, y)"
+					System.out.print(s);
+					spaceToPrint += s.length();
+				}
+				else {
+					String s = x.toStringHaut();
+					System.out.print(s); // sinon on affiche d'abord le haut de la tuile
+					toPrint.add(x.toStringMilieuBas());
+					spToPrint.add(spaceToPrint);
+					spaceToPrint = 0;
+				}
+
+			}
+			spaceToPrint = 0;
+			System.out.println(); // on passe à la ligne
+			if (toPrint.size() > 0) { // s'il y a des tuiles à afficher, on le fait
+				for (int y = 0; y < 4; y++) {
+					for (int z = 0; z < toPrint.size(); z++) {
+						String[] sx = toPrint.get(z).split("\n");
+						int sp = spToPrint.get(z);
+						System.out.print(Auxiliaire.space(sp) + sx[y]); // on met le nombre d'espaces requis pour l'alignement et on affiche le "morceau" de tuile
+					}
+					System.out.println();
+				}
+				toPrint.removeAll(toPrint);
+				spToPrint.removeAll(spToPrint);
+			}
+
+
+		}
+		System.out.println();
 	}
 	
 	@Override
@@ -38,7 +83,8 @@ private CarcassonneController controller;
 	public Tuile piocher() {
 		Tuile t = super.piocher();
 		if (controller != null) controller.setActualTuile(t);
-		return t;
+		printPlateau();
+		return t;		
 	}
 	
 

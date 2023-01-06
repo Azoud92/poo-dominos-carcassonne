@@ -56,7 +56,9 @@ public abstract class Game {
 			int index = rd.nextInt(p1acements.size()); // on en sélectionne un au hasard
 			int[] placement = p1acements.get(index);
 			if (placement[2] > 0) {
-				for (int i = 0; i < placement[2]; i++) t.rotation(); // on fait autant de rotations de la tuile qu'indiquées par le placement
+				for (int i = 0; i < placement[2]; i++) {
+					t.rotation(); // on fait autant de rotations de la tuile qu'indiquées par le placement
+				}
 			}
 			return placement;
 		}
@@ -136,7 +138,7 @@ public abstract class Game {
 		Tuile[] adja = tuilesAdjacentes(x, y);
 		if (adja == null) throw new InvalidPlacementException(); // s'il n'y a aucune adjacence 
 		
-		// Si l'une des adjacences qui n'est pas nulle ne correspond pas à la tuile, on renvoie false
+		// Si l'une des adjacences qui n'est pas nulle ne correspond pas à la tuile, erreur
 		for (int i = 0; i < 4; i++) {
 			if (adja[i] != null) {
 				if ((i == 0 && !adja[0].bottomEquals(t.getHaut())) ||

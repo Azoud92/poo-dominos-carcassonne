@@ -2,12 +2,12 @@ package com.proj.poo.model.carcassonne;
 
 public enum TypeZone {
 
-	ABBAYE(10),
-	CARREFOUR(15),
-	QUARTIER_VILLE(20),
-	LIMITE_VILLE(25),	
-	PRE(30),
-	CHEMIN(35);
+	ABBAYE(0),
+	CARREFOUR(1),
+	QUARTIER_VILLE(2),
+	LIMITE_VILLE(3),	
+	PRE(4),
+	CHEMIN(5);
 
 	private final int val;
 	private TypeZone(int val) {

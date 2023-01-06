@@ -57,6 +57,9 @@ public class CarcassonneView extends GameView {
 		game.add(t);
 		t.repaint();
 		t.paintComponents(t.getGraphics());
+		game.repaint();
+		game.paintComponents(game.getGraphics());
+		
 		return t;
 	}
 	
@@ -113,7 +116,6 @@ public class CarcassonneView extends GameView {
 		public void tuileRotation() {
 			rotation+=Math.toRadians(90);
 			this.repaint();
-			controller.rotationTuile();
 			this.paintComponents(this.getGraphics());
 		}
 		
@@ -256,6 +258,7 @@ public class CarcassonneView extends GameView {
 		@Override
 		protected void rotationBtnAction() {
 			tuileV.tuileRotation();
+			controller.rotationTuile();
 			affichePartisans();
 		}
 
@@ -264,7 +267,7 @@ public class CarcassonneView extends GameView {
 			game.remove(tuileV);
 			game.repaint();
 			game.paintComponents(game.getGraphics());
-			
+									
 			poserBtn.setEnabled(false);
 			rotationBtn.setEnabled(false);
 			defausserBtn.setEnabled(false);

@@ -1,8 +1,8 @@
 package com.proj.poo.model.carcassonne.tuiles;
 
+import com.proj.poo.model.carcassonne.tuiles.cotes.CotePre;
 import com.proj.poo.model.carcassonne.tuiles.cotes.CotePreCheminPre;
 import com.proj.poo.model.carcassonne.tuiles.zones.ZoneLimiteVille;
-import com.proj.poo.model.carcassonne.tuiles.zones.ZonePre;
 import com.proj.poo.model.carcassonne.tuiles.zones.ZoneQuartierVille;
 
 public class TuileVilleHautCheminGaucheBasPre extends TuileCarcassonne {
@@ -21,9 +21,7 @@ public class TuileVilleHautCheminGaucheBasPre extends TuileCarcassonne {
 		tuile[0][2] = new ZoneLimiteVille();
 
 		// La droite contient un pré, un pré, un pré
-		tuile[1][0] = new ZonePre();
-		tuile[1][1] = new ZonePre();
-		tuile[1][2] = new ZonePre();
+		tuile[1] = new CotePre().getCote();
 
 		// Le bas contient un pré, un chemin, et un pré
 		tuile[2] = new CotePreCheminPre().getCote();
