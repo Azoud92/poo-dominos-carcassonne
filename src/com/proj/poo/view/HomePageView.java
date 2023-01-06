@@ -73,7 +73,7 @@ public class HomePageView extends JPanel {
 		
 		controller = hpc;
 
-		dominosBtn = new JButton("DOMINOS CARRï¿½S");
+		dominosBtn = new JButton("DOMINOS CARRÉS");
 		dominosBtn.setPreferredSize(new Dimension((int) (700 * scaleX), (int) (156 * scaleY)));
 		dominosBtn.setBackground(Color.DARK_GRAY);
 		dominosBtn.setForeground(Color.ORANGE);
@@ -167,7 +167,7 @@ public class HomePageView extends JPanel {
 			 */
 			container = new JPanel();
 			container.setBackground(Color.CYAN);
-			container.setLayout(new GridLayout(7,1));
+			container.setLayout(new GridLayout(4,2));
 
 			JLabel nom = new JLabel("Pseudo du joueur : " );
 			container.add(nom);
@@ -205,6 +205,14 @@ public class HomePageView extends JPanel {
         		isBot.setEnabled(false);
         	}
 			container.add(isBot);
+			if (choix_color != null) {
+				JLabel espace = new JLabel();
+				espace.setBackground(Color.WHITE);
+				espace.setVisible(true);
+				espace.setOpaque(true);
+				container.add(espace);
+				}
+			
 			
 			choix_partie.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent event) {
@@ -261,7 +269,7 @@ public class HomePageView extends JPanel {
 					if (NB_PLAYERS_C >= 2) { 
 						carcassonneBtn.setEnabled(true);
 					}
-					if(NB_PLAYERS_D < 14 || NB_PLAYERS_C < 4) {
+					if(NB_PLAYERS_D < 5 || NB_PLAYERS_C < 4) {
 						ajoutBtn.setEnabled(true);
 					}
 					else {
