@@ -103,6 +103,10 @@ public class CarcassonneView extends GameView {
 			// TODO Auto-generated constructor stub
 		}
 		
+		public JLabel getImgLabel() {
+			return img;
+		}
+		
 		@Override
 		public void paintComponent(Graphics g) {
 			((Graphics2D) g).rotate(rotation,(double) getWidth()/2, (double) getHeight()/2);
@@ -235,7 +239,7 @@ public class CarcassonneView extends GameView {
 			
 			if (controller.placeTuile(x, y) == true) {
 				
-				communication.setText("Bien jouï¿½, vous avez rï¿½ussi ï¿½ placer votre tuile");
+				communication.setText("Bien joué, vous avez réussi à placer votre tuile");
 				info.add(communication);
 				this.repaint();
 				this.paintComponents(this.getGraphics());
@@ -261,9 +265,14 @@ public class CarcassonneView extends GameView {
 
 		@Override
 		protected void defausserBtnAction() {
+			
 			game.remove(tuileV);
-			game.repaint();
-			game.paintComponents(game.getGraphics());
+			JPanel efface = new JPanel();
+			efface.setBounds(tuileV.getX(), tuileV.getY(), tailleTuile, tailleTuile);
+			efface.setBackground(game.getBackground());
+			game.add(efface);
+			efface.repaint();
+			((TuileView)tuileV).repaint();
 			
 			poserBtn.setEnabled(false);
 			rotationBtn.setEnabled(false);
@@ -339,6 +348,7 @@ public class CarcassonneView extends GameView {
 
 		}
 		
+	
 	}
 
 
