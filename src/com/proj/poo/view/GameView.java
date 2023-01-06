@@ -163,24 +163,36 @@ public abstract class GameView extends JPanel {
 			boutonsPerso(hautBtn,new Color(0,128,255),null);
 			hautBtn.addActionListener((ActionEvent e) -> {
 				hautBtnAction();
+				info.remove(communication);
+				info.repaint();
+				info.paintComponents(info.getGraphics());
 			});
 
 			basBtn = new JButton(new ImageIcon(Auxiliaire.imgResourcesPath + "touche_bas.png"));
 			boutonsPerso(basBtn,new Color(0,128,255),null);
 			basBtn.addActionListener((ActionEvent e) -> {
 				basBtnAction();
+				info.remove(communication);
+				info.repaint();
+				info.paintComponents(info.getGraphics());
 			});
 
 			gaucheBtn = new JButton(new ImageIcon(Auxiliaire.imgResourcesPath + "touche_gauche.png"));
 			boutonsPerso(gaucheBtn,new Color(0, 128, 255), null);
 			gaucheBtn.addActionListener((ActionEvent e) -> {
 				gaucheBtnAction();
+				info.remove(communication);
+				info.repaint();
+				info.paintComponents(info.getGraphics());
 			});
 
 			droiteBtn = new JButton(new ImageIcon(Auxiliaire.imgResourcesPath + "touche_droite.png"));
 			boutonsPerso(droiteBtn, new Color(0, 128, 255),null);
 			droiteBtn.addActionListener((ActionEvent e) -> {
 				droiteBtnAction();
+				info.remove(communication);
+				info.repaint();
+				info.paintComponents(info.getGraphics());
 			});
 
 
@@ -265,7 +277,12 @@ public abstract class GameView extends JPanel {
 		
 		public final void setInfoLabelText(String s) {
 			communication.setText(s);
-			communication.paintComponents(communication.getGraphics());
+			info.add(communication);
+			this.repaint();
+			this.paintComponents(this.getGraphics());
 		}
+		
+		
+		
 	}
 }

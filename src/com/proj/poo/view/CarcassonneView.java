@@ -106,6 +106,10 @@ public class CarcassonneView extends GameView {
 			// TODO Auto-generated constructor stub
 		}
 		
+		public JLabel getImgLabel() {
+			return img;
+		}
+		
 		@Override
 		public void paintComponent(Graphics g) {
 			((Graphics2D) g).rotate(rotation,(double) getWidth()/2, (double) getHeight()/2);
@@ -264,10 +268,15 @@ public class CarcassonneView extends GameView {
 
 		@Override
 		protected void defausserBtnAction() {
+			
 			game.remove(tuileV);
-			game.repaint();
-			game.paintComponents(game.getGraphics());
-									
+			JPanel efface = new JPanel();
+			efface.setBounds(tuileV.getX(), tuileV.getY(), tailleTuile, tailleTuile);
+			efface.setBackground(game.getBackground());
+			game.add(efface);
+			efface.repaint();
+			((TuileView)tuileV).repaint();
+			
 			poserBtn.setEnabled(false);
 			rotationBtn.setEnabled(false);
 			defausserBtn.setEnabled(false);
@@ -342,6 +351,7 @@ public class CarcassonneView extends GameView {
 
 		}
 		
+	
 	}
 
 

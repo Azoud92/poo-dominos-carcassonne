@@ -36,7 +36,7 @@ public abstract class Controller {
 			return true;
 		}
 		catch (InvalidPlacementException e) {
-			// METTRE ICI L'AFFICHAGE DU MESSAGE DANS LE INFO
+			view.getControle().setInfoLabelText("La tuile est mal placée");
 		}
 		catch (InvalidCoordinatesException e) {
 			
