@@ -1,42 +1,21 @@
 package com.proj.poo.controller;
 
-import java.awt.Color; 
+import java.awt.Color;
 
-import com.proj.poo.model.Tuile;
 import com.proj.poo.model.carcassonne.Carcassonne;
 import com.proj.poo.model.carcassonne.IACarcassonne;
 import com.proj.poo.model.carcassonne.PlayerCarcassonne;
-import com.proj.poo.model.carcassonne.tuiles.TuileCarcassonne;
-import com.proj.poo.model.dominos.IADominos;
 import com.proj.poo.view.CarcassonneView;
 import com.proj.poo.view.CarcassonneView.Circle;
-import com.proj.poo.view.CarcassonneView.TuileView;
+import com.proj.poo.view.GameView;
+import com.proj.poo.view.GameView.TuileView;
 
-public class CarcassonneController {
-	
-	private Carcassonne party;
-	private CarcassonneView view;
-	
-	private TuileCarcassonne actualTuile;
+public class CarcassonneController extends Controller {
 
-	
-	public void setParty(Carcassonne party) { this.party = party; }
-
-
-	public void setView(CarcassonneView view) { 
-		this.view = view; 
-		view.placeTuile(getPlateauLength() / 2, getPlateauLength() / 2);
-		party.play();
-		}
-
-
-	public void setActualTuile(Tuile tuile) {
-		this.actualTuile = (TuileCarcassonne) tuile;
-	}
-	
-	
+	@Override
 	public boolean tour() {
-		boolean b = party.passerTour();
+		// TODO Auto-generated method stub
+		boolean b = ((Carcassonne) party).passerTour();
 		if (!b) {
 			view.getControle().finPartie();
 
@@ -53,7 +32,8 @@ public class CarcassonneController {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					view.placeTuile(xy[0], xy[1]);
+										
+					view.placeTuile(xy[0], xy[1], xy[2]);
 					party.placeTuile(xy[0], xy[1], actualTuile, party.getActualPlayer());
 					view.getControle().paint();
 					
@@ -65,12 +45,12 @@ public class CarcassonneController {
 		}
 		
 		return b;
-		
 	}
-	
+
+	@Override
 	public void haut() {
 		TuileView tuileV = view.getControle().getTuileV();
-		if (view.getPartisanAct()==null && tuileV!=null) {
+		if (((CarcassonneView) view).getPartisanAct()==null && tuileV!=null) {
 			try {
 				if (party.getPlateau()[tuileV.getTx()][tuileV.getTy() - 1] == null) {
 					tuileV.setLocation(tuileV.getX(),tuileV.getY() - ((view.getSizeView().height / getPlateauLength())));
@@ -113,20 +93,21 @@ public class CarcassonneController {
 			}
 		}
 		else {
-			Circle c  = view.getPartisanAct();
+			Circle c  = ((CarcassonneView) view).getPartisanAct();
 			if (c != null) {
 				if(c.getY() != tuileV.getY()) {
-					c.deplace(c.getX(), c.getY() - view.getTailleTuile()/2 + view.getTailleTuile()/5/2);
+					c.deplace(c.getX(), c.getY() - ((CarcassonneView) view).getTailleTuile()/2 + ((CarcassonneView) view).getTailleTuile()/5/2);
 				}
 			}
 			
 		}
 		
 	}
-	
+
+	@Override
 	public void bas() {
 		TuileView tuileV = view.getControle().getTuileV();
-		if (view.getPartisanAct()==null && tuileV!=null) {
+		if (((CarcassonneView) view).getPartisanAct()==null && tuileV!=null) {
 			try {
 				if (party.getPlateau()[tuileV.getTx()][tuileV.getTy() + 1] == null) {
 					tuileV.setLocation(tuileV.getX(), tuileV.getY() + ((view.getSizeView().height / getPlateauLength())));
@@ -169,19 +150,21 @@ public class CarcassonneController {
 			}
 		}
 		else {
-			Circle c  = view.getPartisanAct();
+			Circle c  = ((CarcassonneView) view).getPartisanAct();
 			if (c != null) {
-				if(c.getY() != tuileV.getY() + view.getTailleTuile() - view.getTailleTuile()/5) {
-					c.deplace(c.getX(), c.getY() + view.getTailleTuile()/2 - view.getTailleTuile()/5/2);
+				if(c.getY() != tuileV.getY() + ((CarcassonneView) view).getTailleTuile() - ((CarcassonneView) view).getTailleTuile()/5) {
+					c.deplace(c.getX(), c.getY() + ((CarcassonneView) view).getTailleTuile()/2 - ((CarcassonneView) view).getTailleTuile()/5/2);
 				}
 			}
 			
 		}
+		
 	}
-	
+
+	@Override
 	public void gauche() {
 		TuileView tuileV = view.getControle().getTuileV();
-		if (view.getPartisanAct()==null && tuileV!=null) {
+		if (((CarcassonneView) view).getPartisanAct()==null && tuileV!=null) {
 			try {
 				if (party.getPlateau()[tuileV.getTx() - 1][tuileV.getTy()] == null) {
 					tuileV.setLocation(tuileV.getX() - ((view.getSizeView().height / getPlateauLength())), tuileV.getY());
@@ -226,19 +209,21 @@ public class CarcassonneController {
 			
 		}
 		else {
-			Circle c  = view.getPartisanAct();
+			Circle c  = ((CarcassonneView) view).getPartisanAct();
 			if (c != null) {
 				if(c.getX() != tuileV.getX()) {
-					c.deplace(c.getX() - view.getTailleTuile()/2 + view.getTailleTuile()/5/2, c.getY());
+					c.deplace(c.getX() - ((CarcassonneView) view).getTailleTuile()/2 + ((CarcassonneView) view).getTailleTuile()/5/2, c.getY());
 				}
 			}
 			
 		}
+		
 	}
-	
+
+	@Override
 	public void droite() {
 		TuileView tuileV = view.getControle().getTuileV();
-		if (view.getPartisanAct()==null && tuileV!=null) {
+		if (((CarcassonneView) view).getPartisanAct()==null && tuileV!=null) {
 			try {
 				if (party.getPlateau()[tuileV.getTx() + 1][tuileV.getTy()] == null) {
 					tuileV.setLocation(tuileV.getX() + ((view.getSizeView().height / getPlateauLength())), tuileV.getY());
@@ -279,14 +264,15 @@ public class CarcassonneController {
 			}
 		}
 		else {
-			Circle c  = view.getPartisanAct();
+			Circle c  = ((CarcassonneView) view).getPartisanAct();
 			if (c != null) {
-				if(c.getX() != tuileV.getX() + view.getTailleTuile() - view.getTailleTuile()/5) {
-					c.deplace(c.getX() + view.getTailleTuile()/2 - view.getTailleTuile()/5/2, c.getY());
+				if(c.getX() != tuileV.getX() + ((CarcassonneView) view).getTailleTuile() - ((CarcassonneView) view).getTailleTuile()/5) {
+					c.deplace(c.getX() + ((CarcassonneView) view).getTailleTuile()/2 - ((CarcassonneView) view).getTailleTuile()/5/2, c.getY());
 				}
 			}
 			
 		}
+		
 	}
 	
 	public Color partisanColor() {
@@ -298,24 +284,12 @@ public class CarcassonneController {
 		}
 		return null;
 	}
-	
-	public void abandon() {
-		party.abandon(party.getActualPlayer());
-	}
-	
-	
-	public int getPlateauLength() {
-		return party.getPlateau().length;
-	}
-		
-	public TuileCarcassonne getActualTuile() {
-		return actualTuile;
-	}
-	
-	public CarcassonneView.TuileView piocheTuile() {
+
+	@Override
+	public GameView.TuileView piocheTuile() {
 		if(party.getPlateau()[0][0] == null) {
 			party.piocher();
-			return view.placeTuile(0,0);
+			return view.placeTuile(0,0,0);
 		}
 		else {
 			int place_x = 0;
@@ -328,25 +302,8 @@ public class CarcassonneController {
 				place_x++;
 			}
 			party.piocher();
-			return view.placeTuile(place_x,place_y);
+			return view.placeTuile(place_x,place_y,0);
 		}
-	}
-	
-	public boolean placeTuile(int x, int y) {
-		if (party.isLegalPlacement(x, y, actualTuile)) {
-			party.placeTuile(x, y, actualTuile, party.getActualPlayer());
-			setPlayerToPlay((PlayerCarcassonne) party.getPlayers().get(party.getTour()));
-			return true;
-		}
-		return false;
-	}
-	
-	public void setPlayerToPlay(PlayerCarcassonne p) {
-		view.getControle().setPseudoLabelText(p.pseudo);
-	}
-	
-	public void rotationTuile() {
-		actualTuile.rotation();
 	}
 
 }

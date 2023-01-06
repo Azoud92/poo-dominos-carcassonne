@@ -1,7 +1,6 @@
 package com.proj.poo.controller;
 
 import java.awt.Dimension; 
-import com.proj.poo.model.Game;
 import com.proj.poo.model.GameType;
 import com.proj.poo.model.carcassonne.Carcassonne;
 import com.proj.poo.model.carcassonne.IACarcassonne;

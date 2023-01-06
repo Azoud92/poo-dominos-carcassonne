@@ -11,7 +11,9 @@ public class Runner {
 		//DominosConsole dc = new DominosConsole(50);
 		//dc.gameStart();
 		
+		@SuppressWarnings("unused")
 		Window gw = new Window();
+		
 	}
 
 }

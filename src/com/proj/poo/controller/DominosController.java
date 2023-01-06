@@ -1,23 +1,20 @@
 package com.proj.poo.controller;
 
-import com.proj.poo.model.Tuile;  
+import com.proj.poo.model.Player;
 import com.proj.poo.model.dominos.Dominos;
 import com.proj.poo.model.dominos.IADominos;
 import com.proj.poo.model.dominos.PlayerDominos;
-import com.proj.poo.model.dominos.TuileDominos;
 import com.proj.poo.view.DominosView;
+import com.proj.poo.view.DominosView.Controle;
+import com.proj.poo.view.GameView.TuileView;
 
-public class DominosController {
+public class DominosController extends Controller {
 
-	private Dominos party;
-	private DominosView view;
-
-	private TuileDominos actualTuile;
-		
+	@Override
 	public boolean tour() {
-		boolean b=party.passerTour();
+		boolean b=((Dominos) party).passerTour();
 		if (!b) {
-			PlayerDominos winner= party.finPartie();
+			PlayerDominos winner= ((Dominos) party).finPartie();
 			setWinner(winner);
 
 		}
@@ -33,7 +30,7 @@ public class DominosController {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					view.placeTuile(xy[0], xy[1]);
+					view.placeTuile(xy[0], xy[1], 0);
 					party.placeTuile(xy[0], xy[1], actualTuile, party.getActualPlayer());
 					view.getControle().paint();
 					
@@ -43,20 +40,11 @@ public class DominosController {
 			}
 		}
 		return b;
-		
 	}
-	
-	public boolean placeTuile(int x, int y) {
-		if (party.isLegalPlacement(x, y, actualTuile)) {
-			party.placeTuile(x, y, actualTuile, party.getActualPlayer());
-			setPlayerToPlay((PlayerDominos) party.getPlayers().get(party.getTour()));
-			return true;
-		}
-		return false;
-	}
-	
+
+	@Override
 	public void haut() {
-		DominosView.TuileView tuileV = view.getControle().getTuileV();
+		DominosView.TuileView tuileV = (DominosView.TuileView) view.getControle().getTuileV();
 		if (tuileV != null) {
 			try {
 				if (party.getPlateau()[tuileV.getTx()][tuileV.getTy() - 1] == null) {
@@ -100,9 +88,10 @@ public class DominosController {
 			}
 		}
 	}
-	
+
+	@Override
 	public void bas() {
-		DominosView.TuileView tuileV = view.getControle().getTuileV();
+		DominosView.TuileView tuileV = (DominosView.TuileView) view.getControle().getTuileV();
 		if (tuileV != null) {
 			try {
 				if (party.getPlateau()[tuileV.getTx()][tuileV.getTy() + 1] == null) {
@@ -146,9 +135,10 @@ public class DominosController {
 			}
 		}
 	}
-	
+
+	@Override
 	public void gauche() {
-		DominosView.TuileView tuileV = view.getControle().getTuileV();
+		DominosView.TuileView tuileV = (DominosView.TuileView) view.getControle().getTuileV();
 		if (tuileV != null) {
 			try {
 				if (party.getPlateau()[tuileV.getTx() - 1][tuileV.getTy()] == null) {
@@ -194,9 +184,10 @@ public class DominosController {
 			
 		}
 	}
-	
+
+	@Override
 	public void droite() {
-		DominosView.TuileView tuileV = view.getControle().getTuileV();
+		DominosView.TuileView tuileV = (DominosView.TuileView) view.getControle().getTuileV();
 		if (tuileV != null) {
 			try {
 				if (party.getPlateau()[tuileV.getTx() + 1][tuileV.getTy()] == null) {
@@ -236,19 +227,14 @@ public class DominosController {
 					
 				}
 			}
-		}
-	}
-	
-	public void abandon() {
-		party.abandon(party.getActualPlayer());
+		}		
 	}
 
-	
-	
-	public DominosView.TuileView piocheTuile() {
+	@Override
+	public TuileView piocheTuile() {
 		if(party.getPlateau()[0][0] == null) {
 			party.piocher();
-			return view.new TuileView(0, 0);
+			return ((DominosView) view).new TuileView(0, 0);
 		}
 		else {
 			int place_x = 0;
@@ -261,11 +247,11 @@ public class DominosController {
 				place_x++;
 			}
 			party.piocher();
-			return view.new TuileView(place_x, place_y);
+			return ((DominosView) view).new TuileView(place_x, place_y);
 			
 		}
 	}
-
+	
 	public String getHautValue(int pos) {
 		return " " + actualTuile.getHaut()[pos].getValue();
 	}
@@ -281,42 +267,22 @@ public class DominosController {
 	public String getLeftValue(int pos) {
 		return "  " + actualTuile.getGauche()[pos].getValue();
 	}
-
-	public void rotationTuile() {
-		actualTuile.rotation();
-	}
-
-	public void setPlayerToPlay(PlayerDominos p) {
-		view.getControle().setPseudoLabelText(p.pseudo);
-		view.getControle().setPointsLabelText(String.valueOf(p.getPoints()));
-	}
-
-	public int getPlateauLength() {
-		return party.getPlateau().length;
-	}
-
-	public void setParty(Dominos party) { this.party = party; }
 	
-	public void setView(DominosView view) { 
-		this.view = view; 
-		view.placeTuile(getPlateauLength() / 2, getPlateauLength() / 2);
-		party.play();
-		}
-
+	@Override
+	public void setPlayerToPlay(Player p) {
+		super.setPlayerToPlay(p);
+		((Controle) view.getControle()).setPointsLabelText(String.valueOf(((PlayerDominos) p).getPoints()));
+	}
+	
 	public void setWinner(PlayerDominos p) {
 		// TODO Auto-generated method stub
 		if (p != null) {
-			view.getControle().winner(p.pseudo, p.getPoints());
+			((DominosView.Controle) view.getControle()).winner(p.pseudo, p.getPoints());
 		}
 		else {
-			view.getControle().winner(null, -1);
+			((DominosView.Controle) view.getControle()).winner(null, -1);
 		}
 		
-	}
-
-	public void setActualTuile(Tuile tuile) {
-		// TODO Auto-generated method stub
-		this.actualTuile = (TuileDominos) tuile;
 	}
 
 }

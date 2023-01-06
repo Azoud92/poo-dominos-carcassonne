@@ -14,12 +14,17 @@ import com.proj.poo.runner.Auxiliaire;
 public class DominosConsole extends Dominos {
 
 	private Scanner sc = new Scanner(System.in);
-	public DominosConsole(int tailleSac) {
-		super(tailleSac, null, null);
+	public DominosConsole() {		
+		super(70, null, null);
 		// TODO Auto-generated constructor stub
 		
 		int nbPlayers = requestNbPlayers();
 		requestTypeAndPseudoPlayers(nbPlayers);
+		
+		state = State.READY;
+		play();
+		
+		
 	}
 	
 	private int requestNbPlayers() {

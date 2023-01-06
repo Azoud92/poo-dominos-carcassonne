@@ -3,6 +3,9 @@ package com.proj.poo.model;
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.proj.poo.exceptions.InvalidCoordinatesException;
+import com.proj.poo.exceptions.InvalidPlacementException;
+
 public abstract class Game {
 
 	protected final int tailleSac;
@@ -70,11 +73,17 @@ public abstract class Game {
 				if (plateau[i][j] == null) { // l'emplacement est libre
 					Tuile tmp = t; // on crée une tuile temporaire pour la faire tourner
 					for (int rot = 0; rot < 4; rot++) { // on fait tourner la tuile et on enregistre l'indice de rotation (0 = pas de rotation)
-						if (isLegalPlacement(i, j, tmp)) {
+						try {
+							isLegalPlacement(i, j, tmp);
 							int[] pos = {i, j, rot};
 							res.add(pos);
 						}
-						tmp.rotation();
+						catch (Exception e) {
+							
+						}
+						finally {
+							tmp.rotation();
+						}
 					}					
 				}
 			}
@@ -113,19 +122,19 @@ public abstract class Game {
 		return res;	// res[0] = adjacences en haut, res[1] à droite, "" en bas, "" à gauche
 	}
 	
-	public final boolean isLegalPlacement(int x, int y, Tuile t) {
+	public final void isLegalPlacement(int x, int y, Tuile t) throws InvalidCoordinatesException, InvalidPlacementException {
 		Tuile p;
 		try { // on vérifie si les coordonnées sont valides
 			p = plateau[x][y];
 		}
 		catch(IndexOutOfBoundsException e) {
-			return false;
+			throw new InvalidCoordinatesException();
 		}
 				
-		if (p != null) return false; // si l'emplacement est occupé on ne peut rien placer
+		if (p != null) throw new InvalidPlacementException(); // si l'emplacement est occupé on ne peut rien placer
 		
 		Tuile[] adja = tuilesAdjacentes(x, y);
-		if (adja == null) return false; // s'il n'y a aucune adjacence 
+		if (adja == null) throw new InvalidPlacementException(); // s'il n'y a aucune adjacence 
 		
 		// Si l'une des adjacences qui n'est pas nulle ne correspond pas à la tuile, on renvoie false
 		for (int i = 0; i < 4; i++) {
@@ -133,11 +142,9 @@ public abstract class Game {
 				if ((i == 0 && !adja[0].bottomEquals(t.getHaut())) ||
 						(i == 1 && !adja[1].leftEquals(t.getDroite())) ||
 						(i == 2 && !adja[2].topEquals(t.getBas())) ||
-						(i == 3 && !adja[3].rightEquals(t.getGauche()))) return false;
+						(i == 3 && !adja[3].rightEquals(t.getGauche()))) throw new InvalidPlacementException();
 			}
 		}
-				
-		return true;
 	}
 	
 	public void placeTuile(int x, int y, Tuile t, Player p) {

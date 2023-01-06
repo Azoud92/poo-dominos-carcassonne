@@ -6,20 +6,13 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.proj.poo.controller.CarcassonneController;
 import com.proj.poo.controller.Controller;
 import com.proj.poo.runner.Auxiliaire;
-import com.proj.poo.view.CarcassonneView.Circle;
-import com.proj.poo.view.CarcassonneView.Controle;
-import com.proj.poo.view.CarcassonneView.TuileView;
 
 public abstract class GameView extends JPanel {
 
@@ -47,27 +40,22 @@ public abstract class GameView extends JPanel {
 		game.setLayout(null);
 
 		this.add(game,BorderLayout.WEST);
-		this.add(controle,BorderLayout.EAST);
-		this.setVisible(true);	
-		
-		// INSTANCIER LE CONTROLE
 	}
 	
-	public abstract TuileView placeTuile(int x, int y);
+	public abstract TuileView placeTuile(int x, int y, int r);
 	
-	public Dimension getSizeView() {
+	public final Dimension getSizeView() {
 		return size;
 	}
 	
-	public Controle getControle() { return (Controle) controle; }
+	public final Controle getControle() { return (Controle) controle; }
 	
 	public abstract class TuileView extends JPanel {
 
 		private static final long serialVersionUID = 8825429997330574373L;
 
 		private int x, y;
-		int tailleTuile = (size.height / controller.getPlateauLength());
-
+		
 		public TuileView (int x, int y) {
 			this.x = x;
 			this.y = y;
@@ -97,7 +85,7 @@ public abstract class GameView extends JPanel {
 
 		JButton piocheBtn, poserBtn, rotationBtn, defausserBtn, abandonBtn;
 		JButton hautBtn, basBtn, gaucheBtn, droiteBtn;
-		JLabel name, points, communication;
+		JLabel name, communication;
 		TuileView tuileV;
 		JPanel info, boutons, commandes;
 
@@ -211,46 +199,42 @@ public abstract class GameView extends JPanel {
 			name.setFont(new Font("Arial", Font.BOLD, (int) (30 * scaleX)));
 			name.setForeground(new Color(0, 128, 255));
 
-			points = new JLabel("Nombre de points du joueur : ");
-			points.setFont(new Font("Arial", Font.BOLD, (int) (30 * scaleX)));
-			points.setForeground(new Color(0, 128, 255));
-
+			
 			communication = new JLabel();
 			communication.setFont(new Font("Arial", Font.BOLD, (int) (22 * scaleX)));
 			communication.setForeground(Color.RED);
 
 			info.add(name);
-			info.add(points);
 
 			this.add(info);
 			this.add(boutons);
 			this.add(commandes);
 		}
 		
-		protected abstract ActionListener piocheBtnAction();
-		protected abstract ActionListener poserBtnAction();
-		protected abstract ActionListener rotationBtnAction();
-		protected abstract ActionListener defausserBtnAction();
-		protected abstract ActionListener abandonBtnAction();
+		protected abstract void piocheBtnAction();
+		protected abstract void poserBtnAction();
+		protected abstract void rotationBtnAction();
+		protected abstract void defausserBtnAction();
+		protected abstract void abandonBtnAction();
 		
-		protected ActionListener hautBtnAction() {
+		protected void hautBtnAction() {
 			controller.haut();
 		};		
-		protected ActionListener basBtnAction() {
+		protected void basBtnAction() {
 			controller.bas();
 		};
-		protected ActionListener gaucheBtnAction() {
+		protected void gaucheBtnAction() {
 			controller.gauche();
 		};
-		protected ActionListener droiteBtnAction() {
-			controller.droite;
+		protected void droiteBtnAction() {
+			controller.droite();
 		};
 		
-		public TuileView getTuileV() {
+		public final TuileView getTuileV() {
 			return tuileV;
 		}
 		
-		public void tour() {
+		public final void tour() {
 			boolean b = controller.tour();
 			
 			if (b) {
@@ -262,26 +246,26 @@ public abstract class GameView extends JPanel {
 			}
 		}
 		
-		public void paint() {
+		public final void paint() {
 			this.repaint();
 			this.paintComponents(getGraphics());
 		}
 
 		public abstract void finPartie();
 		
-		public void boutonsPerso(JButton b, Color bg, Color fg) {
+		public final void boutonsPerso(JButton b, Color bg, Color fg) {
 			b.setBackground(bg);
 			b.setForeground(fg);
 		}
 		
-		public void setPseudoLabelText(String s) {
+		public final void setPseudoLabelText(String s) {
 			name.setText("Pseudo du joueur : " + s);
 			name.paintComponents(name.getGraphics());
 		}
 		
-		public void setPointsLabelText(String s) {
-			points.setText("Nombre de points du joueur : " + s);
-			points.paintComponents(points.getGraphics());
+		public final void setInfoLabelText(String s) {
+			communication.setText(s);
+			communication.paintComponents(communication.getGraphics());
 		}
 	}
 }

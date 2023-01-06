@@ -15,9 +15,12 @@ public class Dominos extends Game {
 	
 	public Dominos(int tailleSac, ArrayList<Player> p, DominosController controller) {		
 		super(tailleSac, p);
-		this.controller = controller;
 		
-		controller.setActualTuile(plateau[plateau.length / 2][plateau.length / 2]);
+		if (controller != null) {
+			this.controller = controller;			
+			controller.setActualTuile(plateau[plateau.length / 2][plateau.length / 2]);
+		}
+		
 		state = State.PLAYING;
 	}
 

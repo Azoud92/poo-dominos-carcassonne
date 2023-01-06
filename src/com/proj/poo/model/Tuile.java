@@ -32,7 +32,7 @@ public abstract class Tuile {
 		if (zt.length != tuile[0].length) return false;
 		
 		for (int i = 0; i < tuile[0].length; i++) {
-			if (tuile[0][i].getValue() != zt[i].getValue()) return false;
+			if (tuile[0][i].compareTo(zt[i]) != 0) return false;
 		}
 		
 		return true;
@@ -43,7 +43,7 @@ public abstract class Tuile {
 		if (zt.length != tuile[1].length) return false;
 		
 		for (int i = 0; i < tuile[1].length; i++) {
-			if (tuile[1][i].getValue() != zt[i].getValue()) return false;
+			if (tuile[1][i].compareTo(zt[i]) != 0) return false;
 		}
 		
 		return true;
@@ -54,7 +54,7 @@ public abstract class Tuile {
 		if (zt.length != tuile[2].length) return false;
 
 		for (int i = 0; i < tuile[2].length; i++) {
-			if (tuile[2][i].getValue() != zt[i].getValue()) return false;
+			if (tuile[2][i].compareTo(zt[i]) != 0) return false;
 		}
 
 		return true;
@@ -65,7 +65,7 @@ public abstract class Tuile {
 		if (zt.length != tuile[3].length) return false;
 
 		for (int i = 0; i < tuile[3].length; i++) {
-			if (tuile[3][i].getValue() != zt[i].getValue()) return false;
+			if (tuile[3][i].compareTo(zt[i]) != 0) return false;
 		}
 
 		return true;

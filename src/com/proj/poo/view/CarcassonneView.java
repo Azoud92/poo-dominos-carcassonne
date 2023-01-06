@@ -1,6 +1,6 @@
 package com.proj.poo.view;
 
-import java.awt.BorderLayout;  
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -15,58 +15,49 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import com.proj.poo.controller.CarcassonneController;
+
+import com.proj.poo.controller.Controller;
 import com.proj.poo.runner.Auxiliaire;
+import com.proj.poo.controller.CarcassonneController;
 
+public class CarcassonneView extends GameView {
 
-
-
-public class CarcassonneView extends JPanel{
-
-	private static final long serialVersionUID = 4489854025470300053L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1818114304386621614L;
 	
-	private CarcassonneController controller;
-	private JPanel game, controle;
-	private Dimension size;
-	double scaleX, scaleY;	
-	int tailleTuile;
-	ArrayList<Circle> liste_partisans;
-	Circle partisanActuel;
+	private int tailleTuile;
+	private ArrayList<Circle> liste_partisans;
+	private Circle partisanActuel;
 
-	public CarcassonneView(Dimension size, double scaleX, double scaleY, CarcassonneController controller) {
-		this.setPreferredSize(size);
-		this.size = size;
-		this.scaleX = scaleX;
-		this.scaleY = scaleY;
-		this.setLayout(new BorderLayout());
-		this.controller = controller;
+	public CarcassonneView(Dimension size, double scaleX, double scaleY, Controller controller) {
+		super(size, scaleX, scaleY, controller);
+
 		tailleTuile = (size.height / controller.getPlateauLength());
 		liste_partisans = new ArrayList<Circle>();
 		controle = new Controle();
-
-		game = new JPanel(new GridLayout(controller.getPlateauLength(), controller.getPlateauLength()));
-		game.setPreferredSize(new Dimension(size.height,size.height));
-		game.setBackground(Color.GRAY);
-		game.setLayout(null);
-
-		this.add(game,BorderLayout.WEST);
 		this.add(controle,BorderLayout.EAST);
-		this.setVisible(true);
-
-		
+		this.setVisible(true);	
+		// TODO Auto-generated constructor stub
 	}
 	
 	public int getTailleTuile() {
 		return tailleTuile;
 	}
-	
-	public TuileView placeTuile(int x, int y) {
+
+	@Override
+	public TuileView placeTuile(int x, int y, int r) {
 		TuileView t = new TuileView(x,y);
+		if (r != 0) {
+			for (int i = 0; i < r; i++) {
+				t.tuileRotation();
+			}
+		}
 		game.add(t);
 		t.repaint();
 		t.paintComponents(t.getGraphics());
 		return t;
-
 	}
 	
 	public Circle getPartisanAct(){
@@ -76,41 +67,40 @@ public class CarcassonneView extends JPanel{
 		partisanActuel = c;
 	}
 	
-	public Dimension getSizeView() {
-		return size;
-	}
-	
-	public Controle getControle() { return (Controle) controle; }
-	
 	public void creerPartisan() {
-		partisanActuel = new Circle(((Controle) controle).tuileV.getX() + tailleTuile/2 - (tailleTuile/5/2), ((Controle) controle).tuileV.getY() + tailleTuile/2 - (tailleTuile/5/2), controller.partisanColor());
+		partisanActuel = new Circle(((Controle) controle).tuileV.getX() + tailleTuile/2 - (tailleTuile/5/2), ((Controle) controle).tuileV.getY() + tailleTuile/2 - (tailleTuile/5/2), ((CarcassonneController) controller).partisanColor());
 		partisanActuel.draw(getGraphics());
 		liste_partisans.add(partisanActuel);
 	}
 	
 	public void affichePartisans() {
 		for(Circle c : liste_partisans) {
-			c.draw(getGraphics());
-			
+			c.draw(getGraphics());			
 		}
 	}
 	
-	
-	public class TuileView extends JLabel{
+	public class TuileView extends GameView.TuileView {
 
-		private static final long serialVersionUID = 7425520887508191851L;
-		private int x, y;
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -4915955738710999129L;
 		private double rotation;
-		int tailleTuile = (size.height / controller.getPlateauLength());
-
 		
+		JLabel img;
 		
-		public TuileView (int x, int y) {
-			this.x = x;
-			this.y = y;
+		public TuileView(int x, int y) {
+			super(x, y);
 			rotation=0;
-			this.setIcon(Auxiliaire.resizeImage(new ImageIcon(Auxiliaire.imgResourcesPath + controller.getActualTuile().getClass().getSimpleName() + ".png"),tailleTuile,tailleTuile));
+			
+			img = new JLabel();
+			img.setIcon(Auxiliaire.resizeImage(new ImageIcon(Auxiliaire.imgResourcesPath + controller.getActualTuile().getClass().getSimpleName() + ".png"),tailleTuile,tailleTuile));
+						
+			this.setLayout(new BorderLayout());
 			this.setBounds(x * tailleTuile, y * tailleTuile, tailleTuile, tailleTuile);
+			this.add(img);
+		
+			// TODO Auto-generated constructor stub
 		}
 		
 		@Override
@@ -119,6 +109,7 @@ public class CarcassonneView extends JPanel{
             super.paintComponent(g);
 		}
 
+		@Override
 		public void tuileRotation() {
 			rotation+=Math.toRadians(90);
 			this.repaint();
@@ -126,26 +117,12 @@ public class CarcassonneView extends JPanel{
 			this.paintComponents(this.getGraphics());
 		}
 		
-		public int getTx() {
-			return x;
-		}
-		public int getTy() {
-			return y;
-		}
-		
-		public void setTy(int y) {
-			this.y = y;
-		}
-		
-		public void setTx(int x) {
-			this.x = x;
-		}
 		public void setRotation(double d) {
 			rotation=d;
 		}
 		
-		
 	}
+	
 	public class Circle {
 
 	    private int x, y;
@@ -181,187 +158,20 @@ public class CarcassonneView extends JPanel{
 
 	}
 	
-	public class Controle extends JPanel{
+	public class Controle extends GameView.Controle {
 
-		private static final long serialVersionUID = -4197348622134353408L;
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 6815678984610206865L;
 
-		JButton piocheBtn, poserBtn, rotationBtn, defausserBtn, abandonBtn;
-		JButton hautBtn, basBtn, gaucheBtn, droiteBtn;
 		JButton partisanBtn, poserPartisanBtn, noPartisanBtn;
-		JLabel name, points, communication;
-		JPanel info, boutons, commandes, partisanPnl;
-		TuileView tuileV;
-
-
+		JPanel partisanPnl;
+		
 		public Controle() {
-			this.setPreferredSize(new Dimension(size.width - size.height, size.height));
-			this.setBackground(new Color(204,229,255));
-			this.setLayout(new GridLayout(3,1,10,10));
-
-			info = new JPanel(new GridLayout(3,1));
-			info.setBackground(getBackground());
-			boutons = new JPanel(new GridLayout(3,1));
-			boutons.setBackground(this.getBackground());
-			commandes = new JPanel(new GridLayout(2,3));
-			commandes.setBackground(getBackground());
-
-			JPanel boutons_h = new JPanel(new GridLayout(1,1));
-			boutons_h.setBackground(this.getBackground());
-			JPanel boutons_m = new JPanel(new GridLayout(1,3));
-			boutons_m.setBackground(this.getBackground());
-			JPanel boutons_b = new JPanel(new GridLayout(1,1));
-			boutons_b.setBackground(this.getBackground());
-
-			piocheBtn = new JButton("Piocher");
-			piocheBtn.setFont(new Font("Arial", Font.BOLD, (int) (30 * scaleX)));
-			boutonsPerso(piocheBtn,new Color(0,128,255),new Color(204,229,255));
-			piocheBtn.addActionListener((ActionEvent e) ->{
-				tuileV = controller.piocheTuile();
-				game.paintComponents(game.getGraphics());
-				affichePartisans();
-				piocheBtn.setEnabled(false);
-				poserBtn.setEnabled(true);
-				rotationBtn.setEnabled(true);
-				defausserBtn.setEnabled(true);
-			});
-
-			poserBtn = new JButton("Poser");
-			poserBtn.setFont(new Font("Arial", Font.BOLD, (int) (30 * scaleX)));
-			boutonsPerso(poserBtn,new Color(0,128,255),new Color(204, 229, 255));
-			poserBtn.setEnabled(false);
-			poserBtn.addActionListener((ActionEvent e) -> {
-				int x = tuileV.getTx();
-				int y = tuileV.getTy();
-
-				
-				if (controller.placeTuile(x, y) == true) {
-					
-					communication.setText("Bien jou�, vous avez r�ussi � placer votre tuile");
-					info.add(communication);
-					this.repaint();
-					this.paintComponents(this.getGraphics());
-					affichePartisans();
-					poserBtn.setEnabled(false);
-					rotationBtn.setEnabled(false);
-					defausserBtn.setEnabled(false);
-					try {
-						Thread.sleep(700);
-					} catch (InterruptedException e1) {
-						e1.printStackTrace();
-					}
-					partisanBtn.setEnabled(true);
-					noPartisanBtn.setEnabled(true);
-				}
-			});
-
-			rotationBtn = new JButton("Rotation");
-			rotationBtn.setFont(new Font("Arial", Font.BOLD, (int) (30 * scaleX)));
-			boutonsPerso(rotationBtn,new Color(0, 128, 255),new Color(204, 229, 255));
-			rotationBtn.setEnabled(false);
-			rotationBtn.addActionListener((ActionEvent e) -> {
-				tuileV.tuileRotation();
-				affichePartisans();
-
-			});
-			defausserBtn = new JButton("D�fausser");
-			defausserBtn.setFont(new Font("Arial", Font.BOLD, (int) (30 * scaleX)));
-			boutonsPerso(defausserBtn,new Color(0, 128, 255),new Color(204, 229, 255));
-			defausserBtn.setEnabled(false);
-			defausserBtn.addActionListener((ActionEvent e) ->{
-				game.remove(tuileV);
-				game.repaint();
-				game.paintComponents(game.getGraphics());
-				
-				poserBtn.setEnabled(false);
-				rotationBtn.setEnabled(false);
-				defausserBtn.setEnabled(false);
-				tour();
-				
-				affichePartisans();			
-				
-			});
-
-			abandonBtn = new JButton("Abandonner");
-			abandonBtn.setFont(new Font("Arial", Font.BOLD, (int) (30 * scaleX)));
-			boutonsPerso(abandonBtn,new Color(0, 128, 255),new Color(204, 229, 255));
-			abandonBtn.addActionListener((ActionEvent e) ->{
-				controller.abandon();
-				if (tuileV !=null) {
-					game.remove(tuileV);
-					game.repaint();
-					game.paintComponents(game.getGraphics());
-					}
-				
-				
-				poserBtn.setEnabled(false);
-				rotationBtn.setEnabled(false);
-				defausserBtn.setEnabled(false);
-				tour();
-				affichePartisans();
-			});
-
-
-			boutons_h.add(piocheBtn);
-			boutons_m.add(poserBtn);
-			boutons_m.add(rotationBtn);
-			boutons_m.add(defausserBtn);
-			boutons_b.add(abandonBtn);
-
-
-			boutons.add(boutons_h);
-			boutons.add(boutons_m);
-			boutons.add(boutons_b);
-
-			hautBtn = new JButton(new ImageIcon(Auxiliaire.imgResourcesPath + "touche_haut.png"));
-			boutonsPerso(hautBtn,new Color(0,128,255),null);
-			hautBtn.addActionListener((ActionEvent e)->{
-				controller.haut();
-				game.paintComponents(game.getGraphics());
-				affichePartisans();
-			});
-
-			basBtn = new JButton(new ImageIcon(Auxiliaire.imgResourcesPath + "touche_bas.png"));
-			boutonsPerso(basBtn,new Color(0,128,255),null);
-			basBtn.addActionListener((ActionEvent e)->{
-				controller.bas();
-				game.paintComponents(game.getGraphics());
-				affichePartisans();
-			});
-
-			gaucheBtn = new JButton(new ImageIcon(Auxiliaire.imgResourcesPath + "touche_gauche.png"));
-			boutonsPerso(gaucheBtn,new Color(0, 128, 255), null);
-			gaucheBtn.addActionListener((ActionEvent e)->{
-				controller.gauche();
-				game.paintComponents(game.getGraphics());
-				affichePartisans();
-			});
-
-			droiteBtn = new JButton(new ImageIcon(Auxiliaire.imgResourcesPath + "touche_droite.png"));
-			boutonsPerso(droiteBtn, new Color(0, 128, 255),null);
-			droiteBtn.addActionListener((ActionEvent e)->{
-				controller.droite();
-				game.paintComponents(game.getGraphics());
-				affichePartisans();
-			});
-
-
-			JLabel j1 = new JLabel();
-			JLabel j2 = new JLabel();
-
-			commandes.add(j1);
-			commandes.add(hautBtn);
-			commandes.add(j2);
-			commandes.add(gaucheBtn);
-			commandes.add(basBtn);
-			commandes.add(droiteBtn);
-
-
-			name = new JLabel("Pseudo du joueur : ");
-			name.setFont(new Font("Arial", Font.BOLD, (int) (30 * scaleX)));
-			name.setForeground(new Color(0, 128, 255));
-			
-			
+			super();
 			partisanPnl = new JPanel();
+			partisanPnl.setLayout(new GridLayout(1, 3));
 			partisanPnl.setBackground(getBackground());
 			
 			partisanBtn = new JButton("Partisan");
@@ -376,7 +186,7 @@ public class CarcassonneView extends JPanel{
 				controller.setActualTuile(null);
 			});
 			
-			noPartisanBtn = new JButton("Ne pas poser de partisan");
+			noPartisanBtn = new JButton("Ne rien poser");
 			noPartisanBtn.setFont(new Font("Arial", Font.BOLD, (int) (25 * scaleX)));
 			boutonsPerso(noPartisanBtn,new Color(0, 128, 255),new Color(204, 229, 255));
 			noPartisanBtn.setEnabled(false);
@@ -403,40 +213,112 @@ public class CarcassonneView extends JPanel{
 			partisanPnl.add(poserPartisanBtn);
 			partisanPnl.add(noPartisanBtn);
 			
-			
-
-			communication = new JLabel();
-			communication.setFont(new Font("Arial", Font.BOLD, (int) (28 * scaleX)));
-			communication.setForeground(Color.RED);
-
-			info.add(name);
 			info.add(partisanPnl);
-			
-			this.add(info);
-			this.add(boutons);
-			this.add(commandes);
 		}
 		
-		
-		
-		public void tour() {
-			boolean b = controller.tour();
+		@Override
+		protected void piocheBtnAction() {
+			tuileV = controller.piocheTuile();
+			game.paintComponents(game.getGraphics());
+			affichePartisans();
+			piocheBtn.setEnabled(false);
+			poserBtn.setEnabled(true);
+			rotationBtn.setEnabled(true);
+			defausserBtn.setEnabled(true);
+		}
+
+		@Override
+		protected void poserBtnAction() {
+			int x = tuileV.getTx();
+			int y = tuileV.getTy();
+
 			
-			if (b) {
-				piocheBtn.setEnabled(true);
-				if (communication!=null) {
-					info.remove(communication);
-					paint();
+			if (controller.placeTuile(x, y) == true) {
+				
+				communication.setText("Bien jou�, vous avez r�ussi � placer votre tuile");
+				info.add(communication);
+				this.repaint();
+				this.paintComponents(this.getGraphics());
+				affichePartisans();
+				poserBtn.setEnabled(false);
+				rotationBtn.setEnabled(false);
+				defausserBtn.setEnabled(false);
+				try {
+					Thread.sleep(700);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
 				}
+				partisanBtn.setEnabled(true);
+				noPartisanBtn.setEnabled(true);
 			}
+		}
+
+		@Override
+		protected void rotationBtnAction() {
+			tuileV.tuileRotation();
+			affichePartisans();
+		}
+
+		@Override
+		protected void defausserBtnAction() {
+			game.remove(tuileV);
+			game.repaint();
+			game.paintComponents(game.getGraphics());
 			
+			poserBtn.setEnabled(false);
+			rotationBtn.setEnabled(false);
+			defausserBtn.setEnabled(false);
+			tour();
+			
+			affichePartisans();	
+		}
+
+		@Override
+		protected void abandonBtnAction() {
+			controller.abandon();
+			if (tuileV !=null) {
+				game.remove(tuileV);
+				game.repaint();
+				game.paintComponents(game.getGraphics());
+				}
+			
+			
+			poserBtn.setEnabled(false);
+			rotationBtn.setEnabled(false);
+			defausserBtn.setEnabled(false);
+			tour();
+			affichePartisans();
 		}
 		
-		public TuileView getTuileV() {
-			return tuileV;
-		}
+		@Override
+		protected void hautBtnAction() {
+			super.hautBtnAction();
+			game.paintComponents(game.getGraphics());
+			affichePartisans();
+		};	
 		
+		@Override
+		protected void basBtnAction() {
+			super.basBtnAction();
+			game.paintComponents(game.getGraphics());
+			affichePartisans();
+		};
 		
+		@Override
+		protected void gaucheBtnAction() {
+			super.gaucheBtnAction();
+			game.paintComponents(game.getGraphics());
+			affichePartisans();
+		};
+		
+		@Override
+		protected void droiteBtnAction() {
+			super.droiteBtnAction();
+			game.paintComponents(game.getGraphics());
+			affichePartisans();
+		};
+
+		@Override
 		public void finPartie() {
 			info.remove(name);
 			info.remove(partisanPnl);
@@ -454,28 +336,10 @@ public class CarcassonneView extends JPanel{
 			});
 			info.add(exitBtn);
 			this.paintComponents(this.getGraphics());
+
 		}
 		
-		public void paint() {
-			this.repaint();
-			this.paintComponents(getGraphics());
-		}
-		
-		
-		public void setPseudoLabelText(String s) {
-			name.setText("Pseudo du joueur : " + s);
-			name.paintComponents(name.getGraphics());
-		}
-		
-		
-		
-		
-		public void boutonsPerso(JButton b, Color bg, Color fg) {
-			b.setBackground(bg);
-			b.setForeground(fg);
-		}
 	}
-	
-	
+
 
 }

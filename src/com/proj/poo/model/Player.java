@@ -19,9 +19,13 @@ public abstract class Player {
 	}
 	
 	protected void placerTuile(int x, int y) {
-		if (partie.isLegalPlacement(x, y, tuileEnMain)) {
+		try {
+			partie.isLegalPlacement(x, y, tuileEnMain);
 			partie.placeTuile(x, y, tuileEnMain, this);
 			return;
+		}
+		catch (Exception e) {
+			
 		}
 	}
 	

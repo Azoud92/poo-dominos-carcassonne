@@ -2,6 +2,8 @@ package com.proj.poo.model.dominos.console;
 
 import java.util.Scanner;
 
+import com.proj.poo.exceptions.InvalidCoordinatesException;
+import com.proj.poo.exceptions.InvalidPlacementException;
 import com.proj.poo.model.dominos.PlayerDominos;
 
 public class PlayerDominosConsole extends PlayerDominos {
@@ -70,11 +72,18 @@ public class PlayerDominosConsole extends PlayerDominos {
 					resp = sc.next();
 					int y = Integer.valueOf(resp);
 					
-					if (partie.isLegalPlacement(x, y, tuileEnMain)) {
+					try {
+						partie.isLegalPlacement(x, y, tuileEnMain);
 						partie.placeTuile(x, y, tuileEnMain, this);
 						return;
 					}
-					System.out.println("Impossible de placer une tuile à cet endroit. Veuillez vérifier vos coordonnées et réessayer.");
+					catch (InvalidCoordinatesException e) {
+						System.out.println("Coordonnées invalides. Veuillez réessayer.");
+					}
+					catch (InvalidPlacementException e) {
+						System.out.println("Impossible de placer une tuile à cet endroit. Veuillez vérifier vos coordonnées et réessayer.");
+					}
+					
 				}
 				catch (NumberFormatException e) {
 					System.out.println("Erreur : entrée non reconnue.");

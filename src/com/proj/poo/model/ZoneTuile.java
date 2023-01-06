@@ -1,6 +1,6 @@
 package com.proj.poo.model;
 
-public abstract class ZoneTuile {
+public abstract class ZoneTuile implements Comparable<ZoneTuile> {
 
 	protected int value;
 	
@@ -10,6 +10,14 @@ public abstract class ZoneTuile {
 	
 	public int getValue() {
 		return value;
+	}
+	
+	@Override
+	public int compareTo(ZoneTuile zt) {
+		if (value < zt.value) return -1;
+		else if (value == zt.value) return 0;
+		else return 1;
+		
 	}
 	
 }

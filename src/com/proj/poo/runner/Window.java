@@ -2,7 +2,8 @@ package com.proj.poo.runner;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.GraphicsEnvironment;
+import java.awt.Toolkit;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -27,18 +28,24 @@ public class Window extends JFrame {
 
 	public Window() {
 		// Taille de l'écran en soustrayant celle de la barre des tâches et du haut de la fenêtre
-		size = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().getSize();
+		size = new Dimension();
+		size.width = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+		size.height = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() - Toolkit.getDefaultToolkit().getScreenInsets(getGraphicsConfiguration()).bottom - 15;
 
-		scaleX = (double) size.width / 1360; // on suppose qu'on compare la résolution du client à 1360x768 pixels (donc 1360x720 car on prend la taille effective de la fenêtre) 
-		scaleY = (double) size.height / 720;
-		scaleXY = (double) (size.width * size.height) / (1360.0 * 720.0);
+		scaleX = (double) size.width / 1360; // on suppose qu'on compare la résolution du client à 1360x768 pixels (donc 1360x705 car on prend la taille effective de la fenêtre) 
+		scaleY = (double) size.height / 705;
+		scaleXY = (double) (size.width * size.height) / (1360.0 * 705.0);
 
 		EventQueue.invokeLater(() -> { // on programme de façon thread-safe
 			frame = new JFrame();		
+			
 			frame.setPreferredSize(size);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			frame.setTitle("Jeu de Dominos et de Carcassonne / Projet 2022 - Team 92");
+			frame.setTitle("Jeu de Dominos et de Carcassonne / Projet 2022 - Team 92");			
 			frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+			
+			frame.setMinimumSize(size);
+			frame.setMaximumSize(size);			
 
 			// Afin de redéfinir la méthode "paintComponent" servant à afficher le fond d'écran, on procède par un bloc d'initialisation
 
