@@ -1,6 +1,4 @@
-package com.proj.poo.model.carcassonne.tuiles.cotes;
-
-import com.proj.poo.model.ZoneTuile;
+package com.proj.poo.model;
 
 public abstract class Cote {
 

@@ -11,7 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.proj.poo.controller.Controller;
+import com.proj.poo.controller.GameController;
 import com.proj.poo.runner.Auxiliaire;
 
 public abstract class GameView extends JPanel {
@@ -21,12 +21,12 @@ public abstract class GameView extends JPanel {
 	 */
 	private static final long serialVersionUID = -4557073736316076902L;
 
-	protected Controller controller;
+	protected GameController controller;
 	protected JPanel game, controle;
 	protected Dimension size;
 	protected double scaleX, scaleY;	
 	
-	public GameView(Dimension size, double scaleX, double scaleY, Controller controller) {
+	public GameView(Dimension size, double scaleX, double scaleY, GameController controller) {
 		this.setPreferredSize(size);
 		this.size = size;
 		this.scaleX = scaleX;

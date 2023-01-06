@@ -20,6 +20,7 @@ import javax.swing.JTextField;
 
 import com.proj.poo.controller.HomePageController;
 import com.proj.poo.runner.Auxiliaire;
+import com.proj.poo.runner.Window;
 
 public class HomePageView extends JPanel {
 
@@ -40,10 +41,10 @@ public class HomePageView extends JPanel {
 	private ArrayList<String> game;
 
 	// crÃ©ation de plusieurs panels afin de pouvoir utiliser les differents layout et bien placer les boutons
-	public HomePageView(Dimension size, double scaleX, double scaleY, double scaleXY, JFrame frame, HomePageController hpc) {
+	public HomePageView(Dimension size, double scaleX, double scaleY, double scaleXY, JFrame frame, HomePageController hpc, Window window) {
 		color=new ArrayList<String>();
 		game= new ArrayList<String>();
-		game.add("Dominos Carrés");
+		game.add("Dominos Carrï¿½s");
 		game.add("Carcassonne");
 		color.add("Bleu");
 		color.add("Jaune");
@@ -72,7 +73,7 @@ public class HomePageView extends JPanel {
 		
 		controller = hpc;
 
-		dominosBtn = new JButton("DOMINOS CARRÉS");
+		dominosBtn = new JButton("DOMINOS CARRï¿½S");
 		dominosBtn.setPreferredSize(new Dimension((int) (700 * scaleX), (int) (156 * scaleY)));
 		dominosBtn.setBackground(Color.DARK_GRAY);
 		dominosBtn.setForeground(Color.ORANGE);
@@ -81,6 +82,7 @@ public class HomePageView extends JPanel {
 		dominosBtn.addActionListener(e -> {
 			container.setVisible(false);
 			DominosView dcv = controller.runDominosParty(size, scaleX, scaleY);
+			window.disableBg();
 			frame.add(dcv);
 		});
 
@@ -91,6 +93,7 @@ public class HomePageView extends JPanel {
 		carcassonneBtn.addActionListener(e -> {
 			container.setVisible(false);
 			CarcassonneView ccv = controller.runCarcassonneParty(size, scaleX, scaleY);
+			window.disableBg();
 			frame.add(ccv);
 			
 		});
@@ -200,7 +203,7 @@ public class HomePageView extends JPanel {
 			choix_partie.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent event) {
 	            	if (choix_partie.getSelectedItem().equals("Carcassonne")){choix_color.setEnabled(true);}
-	            	else if(choix_partie.getSelectedItem().equals("Dominos Carrés") && t.length>1){choix_color.setEnabled(false);}
+	            	else if(choix_partie.getSelectedItem().equals("Dominos Carrï¿½s") && t.length>1){choix_color.setEnabled(false);}
 	       
 	            	
 	            } 
@@ -219,8 +222,7 @@ public class HomePageView extends JPanel {
 						choix_color.setEnabled(false);
 						}
 					if (!isBot.isSelected()) { // si c'est pas un bot
-						// IL FAUT AJOUTER UN PARAMETRE POUR SAVOIR SI ON VEUT AJOUTER UN JOUEUR DE DOMINOS OU DE CARCASSONNE
-						if (choix_partie.getSelectedItem().equals("Dominos Carrés")) {
+						if (choix_partie.getSelectedItem().equals("Dominos Carrï¿½s")) {
 							NB_PLAYERS_D++;
 							controller.addDominosPlayer(pseudo.getText(), NB_PLAYERS_D, false);
 							if (NB_PLAYERS_D == 1) game.remove("Carcassonne");
@@ -231,11 +233,11 @@ public class HomePageView extends JPanel {
 							NB_PLAYERS_C++;
 							controller.addCarcassonnePlayer(pseudo.getText(), NB_PLAYERS_C, false, (String) choix_color.getSelectedItem());
 							color.remove(choix_color.getSelectedItem());
-							if (NB_PLAYERS_C == 1) game.remove("Dominos Carrés");
+							if (NB_PLAYERS_C == 1) game.remove("Dominos Carrï¿½s");
 						}
 					}
 					else { 
-						if (choix_partie.getSelectedItem().equals("Dominos Carrés") && NB_PLAYERS_D != 0) {
+						if (choix_partie.getSelectedItem().equals("Dominos Carrï¿½s") && NB_PLAYERS_D != 0) {
 							NB_PLAYERS_D++;
 							controller.addDominosPlayer(pseudo.getText(), NB_PLAYERS_D, true);
 							}

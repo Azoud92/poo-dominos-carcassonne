@@ -16,7 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.proj.poo.controller.Controller;
+import com.proj.poo.controller.GameController;
 import com.proj.poo.runner.Auxiliaire;
 import com.proj.poo.controller.CarcassonneController;
 
@@ -31,7 +31,7 @@ public class CarcassonneView extends GameView {
 	private ArrayList<Circle> liste_partisans;
 	private Circle partisanActuel;
 
-	public CarcassonneView(Dimension size, double scaleX, double scaleY, Controller controller) {
+	public CarcassonneView(Dimension size, double scaleX, double scaleY, GameController controller) {
 		super(size, scaleX, scaleY, controller);
 
 		tailleTuile = (size.height / controller.getPlateauLength());

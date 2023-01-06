@@ -8,7 +8,7 @@ import com.proj.poo.view.DominosView;
 import com.proj.poo.view.DominosView.Controle;
 import com.proj.poo.view.GameView.TuileView;
 
-public class DominosController extends Controller {
+public class DominosController extends GameController {
 
 	@Override
 	public boolean tour() {

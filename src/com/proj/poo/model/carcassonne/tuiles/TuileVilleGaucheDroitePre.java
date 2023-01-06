@@ -1,8 +1,7 @@
 package com.proj.poo.model.carcassonne.tuiles;
 
+import com.proj.poo.model.carcassonne.tuiles.cotes.CoteLimiteQuartierLimite;
 import com.proj.poo.model.carcassonne.tuiles.cotes.CotePre;
-import com.proj.poo.model.carcassonne.tuiles.zones.ZoneLimiteVille;
-import com.proj.poo.model.carcassonne.tuiles.zones.ZoneQuartierVille;
 
 public class TuileVilleGaucheDroitePre extends TuileCarcassonne {
 
@@ -18,17 +17,13 @@ public class TuileVilleGaucheDroitePre extends TuileCarcassonne {
 		tuile[0] = new CotePre().getCote();
 
 		// La droite contient une limite, un quartier, une limite
-		tuile[1][0] = new ZoneLimiteVille();
-		tuile[1][1] = new ZoneQuartierVille();
-		tuile[1][2] = new ZoneLimiteVille();
+		tuile[1] = new CoteLimiteQuartierLimite().getCote();
 
 		// Le bas contient un pré, un pré, et un pré
 		tuile[2] = new CotePre().getCote();
 
 		// La gauche contient une limite, un quartier, une limite
-		tuile[3][0] = new ZoneLimiteVille();
-		tuile[3][1] = new ZoneQuartierVille();
-		tuile[3][2] = new ZoneLimiteVille();
+		tuile[3] = new CoteLimiteQuartierLimite().getCote();
 	}
 
 }

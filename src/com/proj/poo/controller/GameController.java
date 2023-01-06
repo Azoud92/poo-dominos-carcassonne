@@ -7,7 +7,7 @@ import com.proj.poo.model.Player;
 import com.proj.poo.model.Tuile;
 import com.proj.poo.view.GameView;
 
-public abstract class Controller {
+public abstract class GameController {
 
 	protected Game party;
 	protected GameView view;
@@ -36,7 +36,7 @@ public abstract class Controller {
 			return true;
 		}
 		catch (InvalidPlacementException e) {
-			view.getControle().setInfoLabelText("La tuile est mal placée");
+			view.getControle().setInfoLabelText("La tuile est mal placï¿½e");
 		}
 		catch (InvalidCoordinatesException e) {
 			

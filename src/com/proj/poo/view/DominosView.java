@@ -10,7 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 
 import com.proj.poo.controller.DominosController;
-import com.proj.poo.controller.Controller;
+import com.proj.poo.controller.GameController;
 
 public class DominosView extends GameView {
 
@@ -19,7 +19,7 @@ public class DominosView extends GameView {
 	 */
 	private static final long serialVersionUID = 607256897312570488L;
 
-	public DominosView(Dimension size, double scaleX, double scaleY, Controller controller) {
+	public DominosView(Dimension size, double scaleX, double scaleY, GameController controller) {
 		super(size, scaleX, scaleY, controller);
 		controle = new Controle();
 		this.add(controle,BorderLayout.EAST);

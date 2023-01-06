@@ -1,5 +1,6 @@
 package com.proj.poo.model.carcassonne.tuiles.cotes;
 
+import com.proj.poo.model.Cote;
 import com.proj.poo.model.carcassonne.tuiles.zones.ZoneChemin;
 import com.proj.poo.model.carcassonne.tuiles.zones.ZonePre;
 

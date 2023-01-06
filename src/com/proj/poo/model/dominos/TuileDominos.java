@@ -2,7 +2,21 @@ package com.proj.poo.model.dominos;
 
 import java.util.Random;
 
+import com.proj.poo.model.Cote;
 import com.proj.poo.model.Tuile;
+import com.proj.poo.model.dominos.cotes.CoteCinqSeptTrois;
+import com.proj.poo.model.dominos.cotes.CoteCinqZeroHuit;
+import com.proj.poo.model.dominos.cotes.CoteDeuxZeroZero;
+import com.proj.poo.model.dominos.cotes.CoteNeufUnUn;
+import com.proj.poo.model.dominos.cotes.CoteQuatreHuitSept;
+import com.proj.poo.model.dominos.cotes.CoteSixSixNeuf;
+import com.proj.poo.model.dominos.cotes.CoteUnHuitQuatre;
+import com.proj.poo.model.dominos.cotes.CoteUnNeufTrois;
+import com.proj.poo.model.dominos.cotes.CoteUnSeptCinq;
+import com.proj.poo.model.dominos.cotes.CoteUnSixZero;
+import com.proj.poo.model.dominos.cotes.CoteUnUnUn;
+import com.proj.poo.model.dominos.cotes.CoteZeroCinqZero;
+import com.proj.poo.model.dominos.cotes.CoteZeroNeufDeux;
 import com.proj.poo.runner.Auxiliaire;
 
 public class TuileDominos extends Tuile {
@@ -16,11 +30,25 @@ public class TuileDominos extends Tuile {
 	public void remplirTuile() {
 		
 		Random rd = new Random();
+		
+		Cote[] c = new Cote[13];
+		c[0] = new CoteCinqSeptTrois();
+		c[1] = new CoteCinqZeroHuit();
+		c[2] = new CoteDeuxZeroZero();
+		c[3] = new CoteNeufUnUn();
+		c[4] = new CoteQuatreHuitSept();
+		c[5] = new CoteSixSixNeuf();
+		c[6] = new CoteUnHuitQuatre();
+		c[7] = new CoteUnNeufTrois();
+		c[8] = new CoteUnSeptCinq();
+		c[9] = new CoteUnSixZero();
+		c[10] = new CoteUnUnUn();
+		c[11] = new CoteZeroCinqZero();
+		c[12] = new CoteZeroNeufDeux();
+		
 		// TODO Auto-generated method stub
 		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 3; j++) {
-				tuile[i][j] = new IntegerZoneTuile(rd.nextInt(0, 3));
-			}
+			tuile[i] = c[rd.nextInt(0, 13)].getCote();
 		}
 	}
 		

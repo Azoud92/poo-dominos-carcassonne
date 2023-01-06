@@ -10,7 +10,7 @@ import com.proj.poo.view.CarcassonneView.Circle;
 import com.proj.poo.view.GameView;
 import com.proj.poo.view.GameView.TuileView;
 
-public class CarcassonneController extends Controller {
+public class CarcassonneController extends GameController {
 
 	@Override
 	public boolean tour() {

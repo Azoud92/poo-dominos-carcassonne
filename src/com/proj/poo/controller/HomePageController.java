@@ -62,7 +62,7 @@ public class HomePageController {
 	private void createParty(GameType gt) {		
 		if (gt == GameType.DOMINOS) {
 			dominosController = new DominosController();
-			party_dominos = new Dominos(30, null, dominosController);
+			party_dominos = new Dominos(50, null, dominosController);
 			dominosController.setParty(party_dominos);
 		}
 		else if (gt == GameType.CARCASSONNE) {
